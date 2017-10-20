@@ -27,7 +27,7 @@ setwd("~/Dropbox/berkeley/Git-Repos/r-graphics")
 ```
 
 ### The dataset
-For the following examples, we will using the gapminder dataset we were playing around with on Friday. Gapminder is a country-year dataset with information on life expectancy, among other things.
+For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy, among other things.
 
 ```{r}
 dat <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = F)
