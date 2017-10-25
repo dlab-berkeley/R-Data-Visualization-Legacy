@@ -1,0 +1,494 @@
+---
+title: 
+output:
+  revealjs::revealjs_presentation:
+    theme: serif
+    transition: fade
+    highlight: zenburn
+    center: true
+  
+---
+
+##R Graphics
+
+UC Berkeley Library and D-Lab
+
+Fall 2017
+
+-------
+
+
+###Plotting in R
+
+There are two major* sets of tools for creating plots in R:
+
+**Base** graphics, which come with all R installations as is 
+
+
+**ggplot2**, a specialty package that we'll be using mostly
+
+
+
+
+
+<small>*lattice is another but base and gpplot2 are by far most used</small>
+
+-----
+
+
+
+### Gapminder Dataset
+Gapminder is a country-year dataset with information on life expectancy, population, and GDP per capita.
+
+```{r }
+dat <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = F)
+head(dat)
+```
+
+------
+
+### R base graphics
+
+*Minimal* call takes the following form
+
+plot(x=)
+
+```{r fig.height = 4, fig.align="center"}
+
+plot(x = dat$lifeExp) 
+```
+
+
+------
+
+### R base graphics
+
+*Basic* call takes the following form
+
+plot(x=, y=)
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp)
+```
+
+
+----
+
+### R base graphics
+
+- The *type* argument tells R what shape to use in plot
+
+- "p" = point/scatter plots (default plotting behavior)
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+```
+
+----
+
+### R base graphics
+
+- "l" = line plots
+
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l") 
+
+```
+
+
+----
+
+### R base graphics
+
+- "b" -- both line and point plots
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="b") 
+```
+
+----
+
+### R base graphics
+
+* Certain plot types require different calls outside of the "type" argument
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+hist(x=dat$lifeExp)
+```
+
+----
+
+
+### R base graphics
+
+* *breaks* changes the start/end of bins
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+hist(x=dat$lifeExp, breaks=5)
+```
+
+----
+
+
+### R base graphics
+
+* *breaks* changes the start/end of bins
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+hist(x=dat$lifeExp, breaks=10)
+```
+
+----
+
+
+
+
+### R base graphics
+
+* density plots
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+age.density<-density(x=dat$lifeExp, na.rm=T)
+plot(x=age.density)
+```
+
+----
+
+
+### R base graphics
+
+* density plots
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Plot the density object, bandwidth of 0.5
+plot(x=density(x=dat$lifeExp, bw=.5, na.rm=T))
+```
+
+----
+
+
+### R base graphics
+
+* density plots
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Plot the density object, bandwidth of 0.5
+plot(x=density(x=dat$lifeExp, bw=4, na.rm=T))
+```
+
+----
+
+
+
+
+### R base graphics
+
+* Labels
+
+```{r, eval=F}
+plot(x=, y=, type="", xlab="", ylab="", main="") 
+```
+
+----
+
+
+
+### R base graphics
+
+* Labels
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", xlab="GDP per cap", ylab="Life Expectancy", main="Life Expectancy ~ GDP") # Add labels for axes and overall plot
+```
+
+----
+
+
+
+
+### R base graphics
+
+
+* Axis and size scaling
+
+```{r, eval=F}
+plot(x=, y=, type="", xlim=, ylim=, cex=)
+```
+
+----
+
+### R base graphics
+
+
+* Axis and size scaling
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp)
+```
+
+----
+
+
+### R base graphics
+
+* Axis and size scaling
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000)) 
+
+```
+
+
+----
+
+
+### R base graphics
+
+* Axis and size scaling
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000), cex=2) 
+
+```
+
+
+----
+
+
+### R base graphics
+
+* Axis and size scaling
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000), cex=0.5) 
+
+```
+
+
+----
+
+
+
+### R base graphics
+
+* Basic call with popular scaling arguments
+
+```{r, eval=F}
+plot(x=, y=, type="", col="", pch=, lty=, lwd=)
+```
+
+
+----
+
+
+
+### R base graphics
+
+* Colors
+```{r}
+colors() # View all elements of the color vector
+colors()[179] # View specific element of the color vector
+```
+
+----
+
+
+### R base graphics
+
+* Colors
+
+http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
+
+http://research.stowers.org/mcm/efg/R/Color/Chart/
+
+----
+
+
+
+
+### R base graphics
+
+* Colors
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", col=colors()[145]) # or col="gold3"
+```
+
+
+----
+
+
+
+### R base graphics
+
+* Colors
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", col="seagreen4") # or col=colors()[578]
+```
+
+
+----
+
+
+### R base graphics
+
+* Point Styles and Widths
+
+[A Good Reference](http://www.endmemo.com/program/R/pic/pchsymbols.png)
+
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change point style to crosses
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", pch=3) 
+```
+
+
+----
+
+
+### R base graphics
+
+* Point Styles and Widths
+
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change point style to filled squares
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p",pch=15) 
+```
+
+
+----
+
+
+
+### R base graphics
+
+* Point Styles and Widths
+
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change point style to filled squares and increase point size to 3
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p",pch=15, cex=3) 
+```
+
+----
+
+
+
+### R base graphics
+
+* Point Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change point style to "w"
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", pch="w")
+```
+
+----
+
+
+
+
+### R base graphics
+
+* Line Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Line plot with solid line
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=1)
+```
+
+----
+
+
+
+### R base graphics
+
+* Line Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Line plot with medium dashed line
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=2)
+```
+
+----
+
+
+
+
+### R base graphics
+
+* Line Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change line width to 2
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=3, lwd=2)
+```
+
+----
+
+
+
+
+### R base graphics
+
+* Line Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change line width to 10 and use dash-dot
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l",  lty=4, lwd=10)
+```
+
+----
+
+
+
+### R base graphics
+
+* Annotations, reference lines, and legends
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# plot the line first
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+# now add the label
+text(x=40000, y=50, labels="Evens Out", cex = .75)
+```
+
+----
+
+
+### R base graphics
+
+* Annotations, reference lines, and legends
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# plot the line
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+# now the guides
+abline(v=40000, h=75, lty=2)
+```
+
+----
+
+
+### R base graphics
+
+**Your turn**
+
+1. Make a histogram to examine the distribution of the population variable. 
+
+```{r eval = F}
+
+hist(x=, breaks=)
+
+```
+
+2. Make a scatterplot with life expectancy on the x axis and population on the y axis. Change the color to "peachpuff3" and the point symbol to "+"
+
+```{r eval = F}
+
+plot(x=, y=, type=, col=, pch=)
+
+```

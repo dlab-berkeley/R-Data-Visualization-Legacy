@@ -1,7 +1,7 @@
 ---
 title: "Plotting and Visualization in R"
-author: "Rochelle Terman"
-date: "Fall 2015"
+author: "Rochelle Terman", "Josh Quan"
+date: "Fall 2017"
 output: html_document
 ---
 
