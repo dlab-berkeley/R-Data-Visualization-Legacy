@@ -4,7 +4,7 @@ output:
   revealjs::revealjs_presentation:
     theme: serif
     transition: fade
-    highlight: zenburn
+    highlight: tango
     center: true
 width: 1200
 
