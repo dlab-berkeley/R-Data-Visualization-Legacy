@@ -309,7 +309,7 @@ In the previous challenge, you plotted lifExp over time. Using a scatterplot pro
 ggplot(data = dat, aes(x=year, y=lifeExp, by=country, color=continent)) + geom_line()
 ```
 
-Instead of adding a `geom_point` layer, we’ve added a `geom_line` layer. We’ve added the **by** aesthetic, which tells ggplot to draw a line for each country.
+Instead of adding a `geom_point` layer, we’ve added a `geom_line` layer. We’ve added the **by** aesthetic, which tells ggplot to draw a line for each country. **group** works the same as **by**. 
 
 But what if we want to visualise both lines and points on the plot? We can simply add another layer to the plot:
 
