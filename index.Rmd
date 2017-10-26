@@ -674,7 +674,7 @@ Switch the order of the point and line layers from the previous example. What ha
 
 ## ggplot2
 
-Labels are considered to be their own layers in ggplot.
+Labels are their own layers in ggplot.
 
 ```{r fig.height = 4, fig.width = 6, fig.align = "center"}
 # add x and y axis labels
@@ -792,8 +792,7 @@ Modify the color and size of the points on the point layer in the previous examp
 Facets
 
 ```{r fig.height = 4, fig.width = 6, fig.align = "center"}
-ggplot(data = dat, aes(x = year, y = lifeExp)) +
-  geom_point() + facet_wrap( ~ continent)
+ggplot(data = dat, aes(x = year, y = lifeExp)) + geom_point() + facet_wrap( ~ continent)
 ```
 
 ----
