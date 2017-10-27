@@ -414,7 +414,15 @@ ggplot(data = dat, aes(x = lifeExp)) + geom_bar(stat="bin")
 ggplot(data = dat, aes(x = lifeExp, fill = continent)) + geom_bar(stat="bin")
 ```
 
-**box plots**
+**
+**Density Plots**
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(dat, aes(lifeExp)) + geom_density(bw = .5, na.rm= T)
+```
+
+
+box plots**
 
 ```{r}
 ggplot(data = dat, aes(x = continent, y = lifeExp)) + geom_boxplot()

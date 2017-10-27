@@ -798,9 +798,12 @@ ggplot(data = dat, aes(x = year, y = lifeExp)) + geom_point() + facet_wrap( ~ co
 
 Putting it all together
 
-<small>RStudio provides a really useful [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) of the different layers available, and more extensive documentation is available on the [ggplot2 website](http://docs.ggplot2.org/current/). 
 
-Finally, if you have no idea how to change something, a quick google search will usually send you to a relevant question and answer on Stack Overflow with reusable code to modify!</small>
+RStudio [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) of the different layers available.
+
+More extensive documentation on the [ggplot2 website](http://docs.ggplot2.org/current/). 
+
+[Stack Overflow](https://stackoverflow.com/)
 
 
 ----
@@ -817,8 +820,6 @@ ggplot(data = dat, aes(x = lifeExp)) + geom_bar(stat="bin")
 ```
 
 ----
-
-
 
 ## ggplot2
 
@@ -840,6 +841,8 @@ ggplot(dat, aes(lifeExp)) + geom_density(bw = .5, na.rm= T)
 ```
 
 ----
+
+
 ## ggplot2
 
 Box Plots
@@ -857,15 +860,11 @@ ggplot(data = dat, aes(x = continent, y = lifeExp)) + geom_boxplot()
 **Your Turn**
 
 
-Create a density plot of GDP per capita, filled by continent.
+- Create a density plot of GDP per capita, filled by continent.
 
+- Transform the x axis to better visualise the data spread. 
 
-<small>
-Advanced: 
->Transform the x axis to better visualise the data spread. 
-
->Add a facet layer to panel the density plots by year.
-</small>
+- Add a facet layer to panel the density plots by year.
 
 -----
 
