@@ -1,5 +1,7 @@
 ---
-title: 
+title: "R Graphics"
+author: "D-Lab and UC Berkeley Library"
+date: "2017-10-27"
 output:
   revealjs::revealjs_presentation:
     theme: serif
@@ -10,13 +12,6 @@ width: 1200
 
 ---
 
-##R Graphics
-
-UC Berkeley Library and D-Lab
-
-Fall 2017
-
--------
 
 
 ###Plotting in R
@@ -165,6 +160,7 @@ plot(x=age.density)
 # Plot the density object, bandwidth of 0.5
 plot(x=density(x=dat$lifeExp, bw=.5, na.rm=T))
 ```
+
 
 ----
 
@@ -802,7 +798,9 @@ ggplot(data = dat, aes(x = year, y = lifeExp)) + geom_point() + facet_wrap( ~ co
 
 Putting it all together
 
-<small>RStudio provides a really useful [cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) of the different layers available, and more extensive documentation is available on the [ggplot2 website](http://docs.ggplot2.org/current/). Finally, if you have no idea how to change something, a quick google search will usually send you to a relevant question and answer on Stack Overflow with reusable code to modify!</small>
+<small>RStudio provides a really useful [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) of the different layers available, and more extensive documentation is available on the [ggplot2 website](http://docs.ggplot2.org/current/). 
+
+Finally, if you have no idea how to change something, a quick google search will usually send you to a relevant question and answer on Stack Overflow with reusable code to modify!</small>
 
 
 ----
@@ -833,8 +831,15 @@ ggplot(data = dat, aes(x = lifeExp, fill = continent)) + geom_bar(stat="bin")
 
 ----
 
+## ggplot2
 
+Density Plots
 
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(dat, aes(lifeExp)) + geom_density(bw = .5, na.rm= T)
+```
+
+----
 ## ggplot2
 
 Box Plots
@@ -845,8 +850,6 @@ ggplot(data = dat, aes(x = continent, y = lifeExp)) + geom_boxplot()
 ```
 
 ----
-
-
 
 ## ggplot2
 
@@ -860,6 +863,7 @@ Create a density plot of GDP per capita, filled by continent.
 <small>
 Advanced: 
 >Transform the x axis to better visualise the data spread. 
+
 >Add a facet layer to panel the density plots by year.
 </small>
 
