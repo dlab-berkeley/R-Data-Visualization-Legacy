@@ -177,8 +177,6 @@ plot(x=density(x=dat$lifeExp, bw=4, na.rm=T))
 ----
 
 
-
-
 ### R base graphics
 
 **Your turn**
@@ -303,10 +301,20 @@ plot(x=, y=, type="", col="", pch=, lty=, lwd=)
 * Colors
 ```{r}
 colors() # View all elements of the color vector
+```
+
+----
+
+
+### R base graphics
+
+* Colors
+```{r}
 colors()[179] # View specific element of the color vector
 ```
 
 ----
+
 
 
 ### R base graphics
