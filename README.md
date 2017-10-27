@@ -4,7 +4,7 @@ This workshop will provide a comprehensive overview of graphics in R, including 
 
 **Prior knowledge**: Previous experience with (basic) R is assumed. 
 
-**Offered**: [UC Berkeley D-Lab](dlab.berkeley.edu), August 23, 2016
+**Offered**: [UC Berkeley D-Lab](dlab.berkeley.edu), October 30, 2017
 
 ## Setup
 
@@ -28,9 +28,6 @@ Install R by downloading and running [this .pkg file from CRAN](http://cran.r-pr
 
 You can download the [binary files](http://cran.r-project.org/index.html) for your distribution from CRAN. Or you can use your package manager (e.g. for Debian/Ubuntu run `sudo apt-get install r-base` and for Fedora run `sudo yum install R`). Also, please install the [RStudio IDE](http://www.rstudio.com/ide/download/desktop).
 
-### Materials
-
-Download and unpack the zip-file of the materials by clicking on this link: https://github.com/rochelleterman/r-graphics/archive/master.zip
 
 ### Testing your installation
 
