@@ -21,7 +21,7 @@ There are two major* sets of tools for creating plots in R:
 **Base** graphics, which come with all R installations as is 
 
 
-**ggplot2**, a specialty package that we'll be using mostly
+**ggplot2**, a popular visualization package that we'll be focusing on
 
 
 
@@ -383,8 +383,6 @@ plot(x = dat$gdpPercap, y = dat$lifeExp, type="p",pch=15)
 
 
 ----
-
-
 
 ### R base graphics
 
