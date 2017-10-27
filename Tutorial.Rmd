@@ -415,7 +415,7 @@ ggplot(data = dat, aes(x = lifeExp, fill = continent)) + geom_bar(stat="bin")
 ```
 
 **
-**Density Plots**
+**density plots**
 
 ```{r fig.height = 4, fig.width = 6, fig.align = "center"}
 ggplot(dat, aes(lifeExp)) + geom_density(bw = .5, na.rm= T)
