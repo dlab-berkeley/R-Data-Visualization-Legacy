@@ -163,7 +163,8 @@ colors() # View all elements of the color vector
 colors()[179] # View specific element of the color vector
 ```
 
-Another option: [R Color Infographic](http://research.stowers-institute.org/efg/R/Color/Chart/ColorsChart1.jpg)
+Another option: [R Color Infographic](http://research.stowers.org/mcm/efg/R/Color/Chart/)
+
 ```{r, fig.cap=" "}
 plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", col=colors()[145]) # or col="gold3"
 plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", col="seagreen4") # or col=colors()[578]
