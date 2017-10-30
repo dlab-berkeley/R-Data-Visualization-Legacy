@@ -1,7 +1,7 @@
 ---
 title: "R Graphics"
 author: "D-Lab and UC Berkeley Library"
-date: "2017-10-27"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   revealjs::revealjs_presentation:
     theme: serif
