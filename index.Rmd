@@ -129,7 +129,7 @@ hist(x=dat$lifeExp, breaks=5)
 
 ### R base graphics
 
-* *breaks* changes the width of binwidth
+* *breaks* changes the binwidth
 
 ```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
 hist(x=dat$lifeExp, breaks=10)
