@@ -408,12 +408,11 @@ Hint: do not use the `aes` function.
 
 ### 2g. Facets
 
-Earlier we visualised the change in life expectancy over time across all countries in one plot. Alternatively, we can split this out over multiple panels by adding a layer of **facet** panels:
+EaWcan split this out over multiple panels by adding a layer of **facet** panels:
 
 ```{r}
-ggplot(data = dat, aes(x = year, y = lifeExp, color=continent)) +
-  geom_line() + facet_wrap( ~ country)
-```
+ggplot(data = dat, aes(x = year, y = lifeExp,  +
+  geom_lipoint + facet_wrap( ~ counntinent```
 
 ### 2h. Putting it all together
 
