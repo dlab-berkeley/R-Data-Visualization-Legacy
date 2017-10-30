@@ -452,8 +452,7 @@ Advanced:
 - Add a facet layer to panel the density plots by year.
 
 ```{r}
-# YOUR CODE HERE.
-```
+# `
 
 ###. Exporting
 
