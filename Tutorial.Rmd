@@ -403,8 +403,8 @@ Modify the color and size of the points on the point layer in the previous examp
 Hint: do not use the `aes` function.
 
 ```{r}
-# YOUR CODE HERE
-```
+
+`#YOUR CODE HERE``
 
 ### 2g. Facets
 
