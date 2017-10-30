@@ -16,15 +16,6 @@ There are two major sets of tools for creating plots in R:
 
 Note that other plotting facilities do exist (notably **lattice**), but base and ggplot2 are by far the most popular. 
 
-### setup environment
-
-```{r}
-# remove all objects
-rm(list=ls())
-
-# set working directory
-setwd("~/Dropbox/berkeley/Git-Repos/r-graphics")
-```
 
 ### The dataset
 For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy, among other things.
