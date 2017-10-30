@@ -224,6 +224,15 @@ plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
 abline(v=40000, h=75, lty=2)
 ```
 
+# Exercise 
+
+Make a scatterplot with population on the x axis and life expectancy on the y axis. Change the color to “peachpuff3” and the point character to “+”
+
+```{r}
+plot(x=, y=, type=, col=, pch=)
+
+```
+
 # 2. ggplot2
 
 ### 2a. Why ggplot?
