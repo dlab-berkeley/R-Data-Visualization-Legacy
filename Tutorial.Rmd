@@ -97,6 +97,20 @@ plot(x=density(x=dat$lifeExp, bw=2, na.rm=T))
 plot(x=density(x=dat$lifeExp, bw=6, na.rm=T)) 
 ```
 
+### Exercise
+
+Make a histogram to examine the distribution of the `gdpPercap` variable.
+
+```{r}
+
+hist(x=, breaks=)
+
+
+```
+
+
+
+
 ### 1c. Labels
 
 * Basic call with popular labeling arguments

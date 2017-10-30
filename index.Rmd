@@ -181,7 +181,7 @@ plot(x=density(x=dat$lifeExp, bw=4, na.rm=T))
 
 **Your turn**
 
-1. Make a histogram to examine the distribution of the population variable. 
+1. Make a histogram to examine the distribution of the gdpPercap variable. 
 
 ```{r eval = F}
 
