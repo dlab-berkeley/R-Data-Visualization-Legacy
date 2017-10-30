@@ -403,20 +403,21 @@ Modify the color and size of the points on the point layer in the previous examp
 Hint: do not use the `aes` function.
 
 ```{r}
-
-`#YOUR CODE HERE``
+#YOUR CODE HERE
+```
 
 ### 2g. Facets
 
-EaWcan split this out over multiple panels by adding a layer of **facet** panels:
+We can split this out over multiple panels by adding a layer of **facet** panels:
 
 ```{r}
-ggplot(data = dat, aes(x = year, y = lifeExp,  +
-  geom_lipoint + facet_wrap( ~ counntinent```
+ggplot(data = dat, aes(x = year, y = lifeExp)) +
+  geom_point() + facet_wrap( ~ continent)
+```
 
 ### 2h. Putting it all together
 
-This is just a taste of what you can do with ggplot2. RStudio provides a really useful [cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) of the different layers available, and more extensive documentation is available on the [ggplot2 website](http://docs.ggplot2.org/current/). Finally, if you have no idea how to change something, a quick google search will usually send you to a relevant question and answer on Stack Overflow with reusable code to modify!
+This is just a taste of what you can do with ggplot2. RStudio provides a really useful [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) of the different layers available, and more extensive documentation is available on the [ggplot2 website](http://docs.ggplot2.org/current/). Finally, if you have no idea how to change something, a quick google search will usually send you to a relevant question and answer on Stack Overflow with reusable code to modify!
 
 **bar plots**
 
