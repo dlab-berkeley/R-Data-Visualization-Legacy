@@ -671,6 +671,11 @@ ggplot(data = dat, aes(x=year, y=lifeExp, by=country)) +
 
 Switch the order of the point and line layers from the previous example. What happened?
 
+```{r}
+
+```
+
+
 
 ----
 
