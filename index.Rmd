@@ -118,7 +118,7 @@ hist(x=dat$lifeExp)
 
 ### R base graphics
 
-* *breaks* changes the start/end of bins
+* *breaks* changes the binwidth
 
 ```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
 hist(x=dat$lifeExp, breaks=5)
@@ -129,7 +129,7 @@ hist(x=dat$lifeExp, breaks=5)
 
 ### R base graphics
 
-* *breaks* changes the start/end of bins
+* *breaks* changes the width of binwidth
 
 ```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
 hist(x=dat$lifeExp, breaks=10)
@@ -186,6 +186,7 @@ plot(x=density(x=dat$lifeExp, bw=4, na.rm=T))
 ```{r eval = F}
 
 hist(x=, breaks=)
+
 
 ```
 
