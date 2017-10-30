@@ -1,6 +1,6 @@
 ---
 title: "Plotting and Visualization in R"
-author: "Rochelle Terman", "Josh Quan"
+author: "Rochelle Terman and Josh Quan"
 date: "Fall 2017"
 output: html_document
 ---
@@ -101,7 +101,7 @@ plot(x=density(x=dat$lifeExp, bw=6, na.rm=T))
 
 Make a histogram to examine the distribution of the `gdpPercap` variable.
 
-```{r}
+```{r eval=F}
 
 hist(x=, breaks=)
 
@@ -228,7 +228,7 @@ abline(v=40000, h=75, lty=2)
 
 Make a scatterplot with population on the x axis and life expectancy on the y axis. Change the color to “peachpuff3” and the point character to “+”
 
-```{r}
+```{r eval = F}
 plot(x=, y=, type=, col=, pch=)
 
 ```
@@ -451,8 +451,6 @@ Advanced:
 - Transform the x axis to better visualise the data spread. 
 - Add a facet layer to panel the density plots by year.
 
-```{r}
-# `
 
 ###. Exporting
 
