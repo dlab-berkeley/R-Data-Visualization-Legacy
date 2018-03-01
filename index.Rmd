@@ -4,6 +4,8 @@ author: "D-Lab and UC Berkeley Library"
 date:  "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   revealjs::revealjs_presentation:
+    self_contained: false
+    reveal_plugins: ["chalkboard"]
     theme: serif
     transition: fade
     highlight: tango
