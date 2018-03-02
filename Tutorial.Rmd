@@ -1,7 +1,7 @@
 ---
 title: "Plotting and Visualization in R"
 author: "Rochelle Terman and Josh Quan"
-date: "Fall 2017"
+date: "Spring 2018"
 output: html_document
 ---
 
@@ -80,21 +80,11 @@ hist(x=dat$lifeExp, breaks=10)
 * Ex) Density plots
 
 ```{r, fig.cap=" "}
-# Create a density object (NOTE: be sure to remove missing values)
-age.density<-density(x=dat$lifeExp, na.rm=T)
-# Check the class of the object
-class(age.density)
-# View the contents of the object
-age.density 
 
 # Plot the density object
-plot(x=age.density)
-# Plot the density object, bandwidth of 0.5
-plot(x=density(x=dat$lifeExp, bw=.5, na.rm=T))
-# Plot the density object, bandwidth of 2
-plot(x=density(x=dat$lifeExp, bw=2, na.rm=T))
-# Plot the density object, bandwidth of 6
-plot(x=density(x=dat$lifeExp, bw=6, na.rm=T)) 
+plot(density(dat$lifeExp))
+# Plot the density object, bandwidth of 10
+plot(density(dat$lifeExp, bw = .5, na.rm=T))
 ```
 
 ### Exercise
@@ -150,7 +140,7 @@ plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000), cex=0.5)
 
 ### 1e. Graphical parameters
 
-* Basic call with popular scaling arguments
+* Basic call with popular scaling arguments. [quick-r](https://www.statmethods.net/advgraphs/parameters.html)
 
 ```{r, eval=F}
 plot(x=, y=, type="", col="", pch=, lty=, lwd=)
@@ -268,7 +258,7 @@ ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()
 ```
 
-So the first thing we do is call the `ggplot` function. This function lets R know that we’re creating a new plot, and any of the arguments we give the ggplot function are the global options for the plot: they apply to all layers on the plot.
+SoT first thing we do is call the `ggplot` function. This function lets R know that we’re creating a new plot, and any of the arguments we give the ggplot function are the global options for the plot: they apply to all layers on the plot.
 
 We’ve passed in two arguments to `ggplot`. First, we tell ggplot what `data` we want to show on our figure, in this example the `gapminder` data we read in earlier. 
 
