@@ -258,7 +258,7 @@ ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()
 ```
 
-SoT first thing we do is call the `ggplot` function. This function lets R know that we’re creating a new plot, and any of the arguments we give the ggplot function are the global options for the plot: they apply to all layers on the plot.
+The first thing we do is call the `ggplot` function. This function lets R know that we’re creating a new plot, and any of the arguments we give the ggplot function are the global options for the plot: they apply to all layers on the plot.
 
 We’ve passed in two arguments to `ggplot`. First, we tell ggplot what `data` we want to show on our figure, in this example the `gapminder` data we read in earlier. 
 
@@ -303,7 +303,7 @@ Normally, specifying options like `color="red"` or `size=10` for a given layer r
 **Color** isn't the only aesthetic argument we can set to display variation in the data. We can also vary by shape, size, etc.
 
 ```{r, eval=FALSE}
-ggplot(data=, aes(x=, y=, by =, color=, linetype=, shape=, size=))
+ggplot(data=, aes(x=, y=, group =, color=, linetype=, shape=, size=))
 ```
 
 ### 2d. Layers
@@ -311,7 +311,7 @@ ggplot(data=, aes(x=, y=, by =, color=, linetype=, shape=, size=))
 In the previous challenge, you plotted lifExp over time. Using a scatterplot probably isn’t the best for visualising change over time. Instead, let’s tell ggplot to visualise the data as a line plot:
 
 ```{r}
-ggplot(data = dat, aes(x=year, y=lifeExp, by=country, color=continent)) + geom_line()
+ggplot(data = dat, aes(x=year, y=lifeExp, group=country, color=continent)) + geom_line()
 ```
 
 Instead of adding a `geom_point` layer, we’ve added a `geom_line` layer. We’ve added the **by** aesthetic, which tells ggplot to draw a line for each country. **group** works the same as **by**. 
@@ -319,13 +319,13 @@ Instead of adding a `geom_point` layer, we’ve added a `geom_line` layer. We’
 But what if we want to visualise both lines and points on the plot? We can simply add another layer to the plot:
 
 ```{r}
-ggplot(data = dat, aes(x=year, y=lifeExp, by=country, color=continent)) + geom_line() + geom_point()
+ggplot(data = dat, aes(x=year, y=lifeExp, group=country, color=continent)) + geom_line() + geom_point()
 ```
 
 It’s important to note that each layer is drawn on top of the previous layer. In this example, the points have been drawn on top of the lines. Here’s a demonstration:
 
 ```{r}
-ggplot(data = dat, aes(x=year, y=lifeExp, by=country)) + geom_line(aes(color=continent)) + geom_point()
+ggplot(data = dat, aes(x=year, y=lifeExp, group=country)) + geom_line(aes(color=continent)) + geom_point()
 ```
 
 In this example, the aesthetic mapping of **color** has been moved from the global plot options in ggplot to the `geom_line` layer so it no longer applies to the points. Now we can clearly see that the points are drawn on top of the lines.
