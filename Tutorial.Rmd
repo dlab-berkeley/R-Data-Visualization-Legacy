@@ -14,7 +14,7 @@ There are two major sets of tools for creating plots in R:
 * 1. [base](#1-r-base-graphics), which  come with all R installations 
 * 2. [ggplot2](#2-ggplot2), a stand-alone package.  
 
-Note that other plotting facilities do exist (notably **lattice**), but base and ggplot2 are by far the most popular. 
+Note that other plotting facilities do exist (notably **lattice**), but base and ggplot2 are by far the most popular. [Base/lattice/ggplot2](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2)
 
 
 ### The dataset
