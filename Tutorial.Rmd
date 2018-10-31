@@ -436,7 +436,7 @@ Challenge 4
 Suppose I want to visualize a sample of southeast Asian countries and how life expectancy has changed over time. Given the below seAsia vector object, combine `dplyr` and `ggplot2` to subset the data and give each country it's own facet.
 
 ```{r}
-
+seAsia <- c("Myanmar","Thailand","Cambodia","Vietnam", "Indonesia")
 
 ```
 
