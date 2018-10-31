@@ -1,7 +1,7 @@
 ---
 title: "Plotting and Visualization in R"
 author: "Rochelle Terman and Josh Quan"
-date: "Spring 2018"
+date: "Fall 2018"
 output: html_document
 ---
 
@@ -21,7 +21,7 @@ Note that other plotting facilities do exist (notably **lattice**), but base and
 For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy, among other things.
 
 ```{r}
-dat <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = F)
+gapminder <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = F)
 ```
 
 # 1. R base graphics
@@ -33,7 +33,7 @@ plot(x=)
 ```
 ```{r}
 # Note that when asked to plot a single vector, R will assume the index positions of each vector element are the implied horizontal dimension
-plot(x = dat$lifeExp) 
+plot(x = gapminder$lifeExp) 
 ```
 
 * *Basic* call takes the following form
@@ -42,7 +42,7 @@ plot(x = dat$lifeExp)
 plot(x=, y=)
 ```
 ```{r}
-plot(x = dat$gdpPercap, y = dat$lifeExp)
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp)
 ```
 
 ### 1a. Scatter and Line Plots
@@ -51,19 +51,19 @@ plot(x = dat$gdpPercap, y = dat$lifeExp)
 * "p" -- point/scatter plots (default plotting behavior)
 
 ```{r, fig.cap=" "}
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p")
 ```
 * "l" -- line graphs
 
 ```{r, fig.cap=" "}
 # Note that "line" does not create a smoothing line, just connected points
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="l") 
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="l") 
 
 ```
 * "b" -- both line and point plots
 
 ```{r, fig.cap=" "}
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="b") 
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="b") 
 ```
 
 ### 1b. Histograms and density Plots
@@ -72,9 +72,9 @@ plot(x = dat$gdpPercap, y = dat$lifeExp, type="b")
 * Ex) Histograms
 
 ```{r, fig.cap=" "}
-hist(x=dat$lifeExp)
-hist(x=dat$lifeExp, breaks=5)
-hist(x=dat$lifeExp, breaks=10)
+hist(x=gapminder$lifeExp)
+hist(x=gapminder$lifeExp, breaks=5)
+hist(x=gapminder$lifeExp, breaks=10)
 ```
 
 * Ex) Density plots
@@ -82,18 +82,16 @@ hist(x=dat$lifeExp, breaks=10)
 ```{r, fig.cap=" "}
 
 # Plot the density object
-plot(density(dat$lifeExp))
+plot(density(gapminder$lifeExp))
 # Plot the density object, bandwidth of 10
-plot(density(dat$lifeExp, bw = .5, na.rm=T))
+plot(density(gapminder$lifeExp, bw = .5, na.rm=T))
 ```
 
-### Exercise
+### Exercise 
 
 Make a histogram to examine the distribution of the `gdpPercap` variable.
 
 ```{r eval=F}
-
-hist(x=, breaks=)
 
 
 ```
@@ -105,14 +103,14 @@ hist(x=, breaks=)
 
 * Basic call with popular labeling arguments
 
-```{r, eval=F}
+```{r eval=F, message=FALSE, warning=FALSE}
 plot(x=, y=, type="", xlab="", ylab="", main="") 
 ```
 
 * From the previous example
 
 ```{r, fig.cap=" "}
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", xlab="GDP per cap", ylab="Life Expectancy", main="Life Expectancy ~ GDP") # Add labels for axes and overall plot
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p", xlab="GDP per cap", ylab="Life Expectancy", main="Life Expectancy ~ GDP") # Add labels for axes and overall plot
 ```
 
 ### 1d. Axis and size scaling
@@ -129,13 +127,13 @@ plot(x=, y=, type="", xlim=, ylim=, cex=)
 
 ```{r, fig.cap=" "}
 # Create a basic plot
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p")
 # Limit gdp (x-axis) to between 1,000 and 20,000
-plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000)) 
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, xlim = c(1000,20000)) 
 # Limit gdp (x-axis) to between 1,000 and 20,000, increase point size to 2
-plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000), cex=2) 
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, xlim = c(1000,20000), cex=2) 
 # Limit gdp (x-axis) to between 1,000 and 20,000, decrease point size to 0.5
-plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000), cex=0.5)  
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, xlim = c(1000,20000), cex=0.5)  
 ```
 
 ### 1e. Graphical parameters
@@ -148,16 +146,16 @@ plot(x=, y=, type="", col="", pch=, lty=, lwd=)
 
 * Colors
 
-```{r}
-colors() # View all elements of the color vector
-colors()[179] # View specific element of the color vector
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+#colors() # View all elements of the color vector
+#colors()[179] # View specific element of the color vector
 ```
 
 Another option: [R Color Infographic](http://research.stowers.org/mcm/efg/R/Color/Chart/)
 
 ```{r, fig.cap=" "}
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", col=colors()[145]) # or col="gold3"
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", col="seagreen4") # or col=colors()[578]
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p", col=colors()[145]) # or col="gold3"
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p", col="seagreen4") # or col=colors()[578]
 ```
 
 * Point Styles and Widths
@@ -166,32 +164,32 @@ plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", col="seagreen4") # or col=col
 
 ```{r, fig.cap=" "}
 # Change point style to crosses
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", pch=3) 
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p", pch=3) 
 # Change point style to filled squares
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p",pch=15) 
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p",pch=15) 
 # Change point style to filled squares and increase point size to 3
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p",pch=15, cex=3) 
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p",pch=15, cex=3) 
 # Change point style to "w"
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", pch="w")
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p", pch="w")
 # Change point style to "$" and increase point size to 2
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p",pch="$", cex=2) 
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p",pch="$", cex=2) 
 ```
 
 * Line Styles and Widths
 
 ```{r, fig.cap=" "}
 # Line plot with solid line
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=1)
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="l", lty=1)
 # Line plot with medium dashed line
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=2)
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="l", lty=2)
 # Line plot with short dashed line
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=3)
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="l", lty=3)
 # Change line width to 2
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=3, lwd=2)
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="l", lty=3, lwd=2)
 # Change line width to 5
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="l",  lwd=5)
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="l",  lwd=5)
 # Change line width to 10 and use dash-dot
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="l",  lty=4, lwd=10)
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="l",  lty=4, lwd=10)
 ```
 
 ### 1f. Annotations, reference lines, and legends]
@@ -200,7 +198,7 @@ plot(x = dat$gdpPercap, y = dat$lifeExp, type="l",  lty=4, lwd=10)
 
 ```{r, fig.cap=" "}
 # plot the line first
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p")
 # now add the label
 text(x=40000, y=50, labels="Evens Out", cex = .75)
 ```
@@ -209,7 +207,7 @@ text(x=40000, y=50, labels="Evens Out", cex = .75)
 
 ```{r, fig.cap=" "}
 # plot the line
-plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+plot(x = gapminder$gdpPercap, y = gapminder$lifeExp, type="p")
 # now the guides
 abline(v=40000, h=75, lty=2)
 ```
@@ -219,7 +217,6 @@ abline(v=40000, h=75, lty=2)
 Make a scatterplot with population on the x axis and life expectancy on the y axis. Change the color to “peachpuff3” and the point character to “+”
 
 ```{r eval = F}
-plot(x=, y=, type=, col=, pch=)
 
 ```
 
@@ -239,7 +236,7 @@ plot(x=, y=, type=, col=, pch=)
 The general call for ggplot2 looks like this:
   
 ```{r, eval=FALSE}
-ggplot(data=, aes(x=, y=), color=, size=,) + geom_xxxx()+geom_yyyy()
+ggplot(data=, aes(x=, y=), color=, size=,) + geom_xxxx()+ geom_yyyy()
 ```
 
 The *grammar* involves some basic components:
@@ -252,9 +249,9 @@ The key to understanding ggplot2 is thinking about a figure in layers: just like
 
 Let's look at an example:
 
-```{r}
+```{r echo=TRUE}
 library(ggplot2)
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) +
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()
 ```
 
@@ -267,16 +264,16 @@ For the second argument we passed in the `aes` function, which tells `ggplot` ho
 By itself, the call to ggplot isn’t enough to draw a figure:
 
 ```{r eval=FALSE}
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp))
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp))
 ```
 
 We need to tell `ggplot` how we want to visually represent the data, which we do by adding a new `geom` layer. In our example, we used `geom_point`, which tells ggplot we want to visually represent the relationship between x and y as a scatterplot of points:
 
 ```{r}
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point()
 
 # same as
-my_plot <- ggplot(data = dat, aes(x = gdpPercap, y = lifeExp))
+my_plot <- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp))
 my_plot + geom_point()
 ```
 
@@ -287,7 +284,7 @@ Modify the example so that the figure visualise how life expectancy has changed 
 Hint: the gapminder dataset has a column called "year"", which should appear on the x-axis.
 
 ```{r}
-# YOUR CODE HERE
+
 ```
 
 ### 2c. Anatomy of `aes`
@@ -295,7 +292,7 @@ Hint: the gapminder dataset has a column called "year"", which should appear on 
 In the previous examples and challenge we’ve used the `aes` function to tell the scatterplot geom about the **x** and **y** locations of each point. Another aesthetic property we can modify is the point **color**. 
 
 ```{r}
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point()
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point()
 ```
 
 Normally, specifying options like `color="red"` or `size=10` for a given layer results in its contents being red and quite large.  Inside the `aes()` function, however, these arguments are given entire variables whose values will then be displayed using different realizations of that aesthetic.
@@ -311,7 +308,7 @@ ggplot(data=, aes(x=, y=, group =, color=, linetype=, shape=, size=))
 In the previous challenge, you plotted lifExp over time. Using a scatterplot probably isn’t the best for visualising change over time. Instead, let’s tell ggplot to visualise the data as a line plot:
 
 ```{r}
-ggplot(data = dat, aes(x=year, y=lifeExp, group=country, color=continent)) + geom_line()
+ggplot(data = gapminder, aes(x=year, y=lifeExp, group=country, color=continent)) + geom_line()
 ```
 
 Instead of adding a `geom_point` layer, we’ve added a `geom_line` layer. We’ve added the **by** aesthetic, which tells ggplot to draw a line for each country. **group** works the same as **by**. 
@@ -319,13 +316,13 @@ Instead of adding a `geom_point` layer, we’ve added a `geom_line` layer. We’
 But what if we want to visualise both lines and points on the plot? We can simply add another layer to the plot:
 
 ```{r}
-ggplot(data = dat, aes(x=year, y=lifeExp, group=country, color=continent)) + geom_line() + geom_point()
+ggplot(data = gapminder, aes(x=year, y=lifeExp, group=country, color=continent)) + geom_line() + geom_point()
 ```
 
 It’s important to note that each layer is drawn on top of the previous layer. In this example, the points have been drawn on top of the lines. Here’s a demonstration:
 
 ```{r}
-ggplot(data = dat, aes(x=year, y=lifeExp, group=country)) + geom_line(aes(color=continent)) + geom_point()
+ggplot(data = gapminder, aes(x=year, y=lifeExp, group=country)) + geom_line(aes(color=continent)) + geom_point()
 ```
 
 In this example, the aesthetic mapping of **color** has been moved from the global plot options in ggplot to the `geom_line` layer so it no longer applies to the points. Now we can clearly see that the points are drawn on top of the lines.
@@ -334,20 +331,29 @@ In this example, the aesthetic mapping of **color** has been moved from the glob
 
 Switch the order of the point and line layers from the previous example. What happened?
 
+
+```{r}
+
+
+
+```
+
+
+
 ### 2e. Labels 
 
 Labels are considered to be their own layers in ggplot.
 
 ```{r}
 # add x and y axis labels
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + xlab("GDP per capita") + ylab("Life Expectancy") + ggtitle("My fancy graph")
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + xlab("GDP per capita") + ylab("Life Expectancy") + ggtitle("My fancy graph")
 ```
 
 So are scales:
 
 ```{r}
 # limit x axis from 1,000 to 20,000
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + xlab("GDP per capita") + ylab("Life Expectancy") + ggtitle("My fancy graph") + xlim(1000, 20000)
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + xlab("GDP per capita") + ylab("Life Expectancy") + ggtitle("My fancy graph") + xlim(1000, 20000)
 ```
 
 ### 2f. Transformations and Stats
@@ -355,13 +361,13 @@ ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_poin
 ggplot also makes it easy to overlay statistical models over the data. To demonstrate we’ll go back to an earlier example:
 
 ```{r}
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point()
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point()
 ```
 
 We can change the scale of units on the x axis using the `scale` functions. These control the mapping between the data values and visual values of an aesthetic.
 
 ```{r}
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + scale_x_log10()
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + scale_x_log10()
 ```
 
 The `log10` function applied a transformation to the values of the `gdpPercap` column before rendering them on the plot, so that each multiple of 10 now only corresponds to an increase in 1 on the transformed scale, e.g. a GDP per capita of 1,000 is now 3 on the y axis, a value of 10,000 corresponds to 4 on the x axis and so on. This makes it easier to visualise the spread of data on the x-axis.
@@ -369,13 +375,13 @@ The `log10` function applied a transformation to the values of the `gdpPercap` c
 We can fit a simple relationship to the data by adding another layer, `geom_smooth`:
 
 ```{r}
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + scale_x_log10() + geom_smooth(method="lm")
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + scale_x_log10() + geom_smooth(method="lm")
 ```
 
 Note that we 5 lines, one for each region, because the **color** option is the global `aes` function.. But if we move it, we get different restuls:
 
 ```{r}
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) + geom_point(aes(color=continent)) + scale_x_log10() + geom_smooth(method="lm")
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point(aes(color=continent)) + scale_x_log10() + geom_smooth(method="lm")
 ```
 
 So there are two ways an aesthetic can be specified. Here we set the **color** aesthetic by passing it as an argument to `geom_point`. Previously in the lesson we’ve used the `aes` function to define a *mapping* between data variables and their visual representation.
@@ -383,7 +389,7 @@ So there are two ways an aesthetic can be specified. Here we set the **color** a
 We can make the line thicker by setting the **size** aesthetic in the geom_smooth layer:
 
 ```{r}
-ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) + geom_point(aes(color=continent)) + scale_x_log10() + geom_smooth(method="lm", size = 1.5)
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point(aes(color=continent)) + scale_x_log10() + geom_smooth(method="lm", size = 1.5)
 ```
 
 #### Challenge 3
@@ -393,7 +399,10 @@ Modify the color and size of the points on the point layer in the previous examp
 Hint: do not use the `aes` function.
 
 ```{r}
-#YOUR CODE HERE
+
+
+
+
 ```
 
 ### 2g. Facets
@@ -401,45 +410,91 @@ Hint: do not use the `aes` function.
 We can split this out over multiple panels by adding a layer of **facet** panels:
 
 ```{r}
-ggplot(data = dat, aes(x = year, y = lifeExp)) +
+ggplot(data = gapminder, aes(x = year, y = lifeExp)) +
   geom_point() + facet_wrap( ~ continent)
 ```
 
-### 2h. Putting it all together
+What if we wanted to facet by countries? We have 142 countries in our dataset. Let's examine using `dplyr` to subset our data to countries that start with a or z and plot them. 
 
-This is just a taste of what you can do with ggplot2. RStudio provides a really useful [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) of the different layers available, and more extensive documentation is available on the [ggplot2 website](http://docs.ggplot2.org/current/). Finally, if you have no idea how to change something, a quick google search will usually send you to a relevant question and answer on Stack Overflow with reusable code to modify!
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+
+a.z.country <- gapminder %>% 
+  filter(substr(country,1,1) %in% c("A", "Z"))
+
+a.z.country %>% 
+  ggplot(aes(x = year, y = lifeExp, color = continent)) +
+  geom_line() + 
+  facet_wrap(~ country)
+
+```
+
+Challenge 4
+
+Suppose I want to visualize a sample of southeast Asian countries and how life expectancy has changed over time. Given the below seAsia vector object, combine `dplyr` and `ggplot2` to subset the data and give each country it's own facet.
+
+```{r}
+
+
+```
+
+
 
 **bar plots**
 
 ```{r}
 # count of lifeExp bins
-ggplot(data = dat, aes(x = lifeExp)) + geom_bar(stat="bin")
+ggplot(data = gapminder, aes(x = lifeExp)) + geom_bar(stat="bin")
 
 # with color representing regions
-ggplot(data = dat, aes(x = lifeExp, fill = continent)) + geom_bar(stat="bin")
+ggplot(data = gapminder, aes(x = lifeExp, fill = continent)) + geom_bar(stat="bin")
 ```
 
 **
 **density plots**
 
 ```{r fig.height = 4, fig.width = 6, fig.align = "center"}
-ggplot(dat, aes(lifeExp)) + geom_density(bw = .5, na.rm= T)
+ggplot(gapminder, aes(lifeExp)) + geom_density(bw = .5, na.rm= T)
 ```
 
 
 box plots**
 
 ```{r}
-ggplot(data = dat, aes(x = continent, y = lifeExp)) + geom_boxplot()
+ggplot(data = gapminder, aes(x = continent, y = lifeExp)) + geom_boxplot()
 ```
 
-#### Challenge 4 
+#### Challenge 5
 
-Create a density plot of GDP per capita, filled by continent.
+Create a density plot of GDP per capita, filled by continent excluding Oceania.
 
 Advanced: 
 - Transform the x axis to better visualise the data spread. 
 - Add a facet layer to panel the density plots by year.
+
+
+
+```{r}
+
+gapminder_minusOceania <- gapminder %>% filter(continent != "Oceania")
+
+
+
+```
+
+### Themes
+
+There are a number of built-in themes:
+
+*`theme_bw()`
+*`theme_classic()`
+*`theme_grey()`
+*`theme_minimal()`
+
+The `ggthemes` package extends this even further. 
+
+Check it out: https://jrnold.github.io/ggthemes/reference/index.html#section-themes
+
 
 
 ###. Exporting
@@ -470,5 +525,10 @@ dev.off()
 
 ```{r, eval=FALSE}
 # Assume we saved our plot is an object called example.plot
-ggsave(filename="example.pdf", plot=example.plot, scale=, width=, height=)
+ggsave(filename="example.pdf", plot=example.plot,  width= 20, height=20, dpi = 300)
 ```
+
+
+### 2h. Putting it all together
+
+This is just a taste of what you can do with ggplot2. RStudio provides a really useful [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) of the different layers available, and more extensive documentation is available on the [ggplot2 website](http://docs.ggplot2.org/current/). Finally, if you have no idea how to change something, a quick google search will usually send you to a relevant question and answer on Stack Overflow with reusable code to modify!
