@@ -3,6 +3,8 @@ title: "Plotting and Visualization in R"
 author: "Rochelle Terman and Josh Quan"
 date: "Fall 2018"
 output: html_document
+editor_options: 
+  chunk_output_type: inline
 ---
 
 > "Make it informative, then make it pretty"
