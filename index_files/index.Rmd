@@ -1,0 +1,927 @@
+---
+title: "R Graphics"
+author: "D-Lab and UC Berkeley Library"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  revealjs::revealjs_presentation:
+    self_contained: false
+    reveal_plugins: ["chalkboard"]
+    theme: serif
+    transition: fade
+    highlight: tango
+    center: true
+width: 1200
+
+---
+
+
+
+###Plotting in R
+
+There are two major* sets of tools for creating plots in R:
+
+**Base** graphics, which come with all R installations as is 
+
+
+**ggplot2**, a popular visualization package that we'll be focusing on
+
+
+
+
+
+<small>*lattice is another but base and gpplot2 are by far most used</small>
+
+-----
+
+
+
+### Gapminder Dataset
+Gapminder is a country-year dataset with information on life expectancy, population, and GDP per capita.
+
+```{r }
+dat <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = F)
+head(dat)
+```
+
+------
+
+### R base graphics
+
+*Minimal* call takes the following form
+
+plot(x=)
+
+```{r fig.height = 4, fig.align="center"}
+
+plot(x = dat$lifeExp) 
+```
+
+
+------
+
+### R base graphics
+
+*Basic* call takes the following form
+
+plot(x=, y=)
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp)
+```
+
+
+----
+
+### R base graphics
+
+- The *type* argument tells R what shape to use in plot
+
+- "p" = point/scatter plots (default plotting behavior)
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+```
+
+----
+
+### R base graphics
+
+- "l" = line plots
+
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l") 
+
+```
+
+
+----
+
+### R base graphics
+
+- "b" -- both line and point plots
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="b") 
+```
+
+----
+
+### R base graphics
+
+* Certain plot types require different calls outside of the "type" argument
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+hist(x=dat$lifeExp)
+```
+
+----
+
+
+### R base graphics
+
+* *breaks* changes the binwidth
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+hist(x=dat$lifeExp, breaks=5)
+```
+
+----
+
+
+### R base graphics
+
+* *breaks* changes the binwidth
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+hist(x=dat$lifeExp, breaks=10)
+```
+
+----
+
+
+
+
+### R base graphics
+
+* density plots
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+age.density<-density(x=dat$lifeExp, na.rm=T)
+plot(x=age.density)
+```
+
+----
+
+
+### R base graphics
+
+* density plots
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Plot the density object, bandwidth of 0.5
+plot(x=density(x=dat$lifeExp, bw=.5, na.rm=T))
+```
+
+
+----
+
+
+### R base graphics
+
+* density plots
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Plot the density object, bandwidth of 0.5
+plot(x=density(x=dat$lifeExp, bw=4, na.rm=T))
+```
+
+----
+
+
+### R base graphics
+
+**Your turn**
+
+1. Make a histogram to examine the distribution of the gdpPercap variable. 
+
+```{r eval = F}
+
+hist(x=, breaks=)
+
+
+```
+
+
+
+----
+
+
+### R base graphics
+
+* Labels
+
+```{r, eval=F}
+plot(x=, y=, type="", xlab="", ylab="", main="") 
+```
+
+----
+
+
+
+### R base graphics
+
+* Labels
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", 
+     xlab="GDP per cap", ylab="Life Expectancy", main="Life Expectancy ~ GDP") # Add labels for axes and overall plot
+```
+
+----
+
+
+
+
+### R base graphics
+
+
+* Axis and size scaling
+
+```{r, eval=F}
+plot(x=, y=, type="", xlim=, ylim=, cex=)
+```
+
+----
+
+### R base graphics
+
+
+* Axis and size scaling
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp)
+```
+
+----
+
+
+### R base graphics
+
+* Axis and size scaling
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000)) 
+
+```
+
+
+----
+
+
+### R base graphics
+
+* Axis and size scaling
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000), cex=2) 
+
+```
+
+
+----
+
+
+### R base graphics
+
+* Axis and size scaling
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, xlim = c(1000,20000), cex=0.5) 
+
+```
+
+
+----
+
+
+
+### R base graphics
+
+* Basic call with popular scaling arguments
+
+```{r, eval=F}
+plot(x=, y=, type="", col="", pch=, lty=, lwd=)
+```
+
+
+----
+
+
+
+### R base graphics
+
+* Colors
+```{r}
+colors() # View all elements of the color vector
+```
+
+----
+
+
+### R base graphics
+
+* Colors
+```{r}
+colors()[179] # View specific element of the color vector
+```
+
+----
+
+
+
+### R base graphics
+
+* Colors
+
+http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
+
+http://research.stowers.org/mcm/efg/R/Color/Chart/
+
+----
+
+
+
+
+### R base graphics
+
+* Colors
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", col=colors()[145]) # or col="gold3"
+```
+
+
+----
+
+
+
+### R base graphics
+
+* Colors
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", col="seagreen4") # or col=colors()[578]
+```
+
+
+----
+
+
+### R base graphics
+
+* Point Styles and Widths
+
+[A Good Reference](http://www.endmemo.com/program/R/pic/pchsymbols.png)
+
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change point style to crosses
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", pch=3) 
+```
+
+
+----
+
+
+### R base graphics
+
+* Point Styles and Widths
+
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change point style to filled squares
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p",pch=15) 
+```
+
+
+----
+
+### R base graphics
+
+* Point Styles and Widths
+
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change point style to filled squares and increase point size to 3
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p",pch=15, cex=3) 
+```
+
+----
+
+
+
+### R base graphics
+
+* Point Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change point style to "w"
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p", pch="w")
+```
+
+----
+
+
+
+
+### R base graphics
+
+* Line Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Line plot with solid line
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=1)
+```
+
+----
+
+
+
+### R base graphics
+
+* Line Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Line plot with medium dashed line
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=2)
+```
+
+----
+
+
+
+
+### R base graphics
+
+* Line Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change line width to 2
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l", lty=3, lwd=2)
+```
+
+----
+
+
+
+
+### R base graphics
+
+* Line Styles and Widths
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# Change line width to 10 and use dash-dot
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="l",  lty=4, lwd=10)
+```
+
+----
+
+
+
+### R base graphics
+
+* Annotations, reference lines, and legends
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# plot the line first
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+# now add the label
+text(x=40000, y=50, labels="Evens Out", cex = .75)
+```
+
+----
+
+
+### R base graphics
+
+* Annotations, reference lines, and legends
+
+```{r, fig.height = 4, fig.width = 6, fig.align = "center"}
+# plot the line
+plot(x = dat$gdpPercap, y = dat$lifeExp, type="p")
+# now the guides
+abline(v=40000, h=75, lty=2)
+```
+
+----
+
+
+### R base graphics
+
+**Your turn**
+
+Make a scatterplot with population on the x axis and life expectancy on the y axis. Change the color to "peachpuff3" and the point character to "+"
+
+```{r eval = F}
+
+plot(x=, y=, type=, col=, pch=)
+
+```
+
+----
+
+## ggplot2
+
+- More elegant and compact code
+
+- Aesthetically pleasing defaults
+
+- Powerful for exploratory data analysis
+
+- Follows a grammar like a language
+
+
+----
+
+
+## ggplot2
+
+```{r, eval=FALSE}
+ggplot(data=, aes(x=, y=), color=, size=,) + geom_xxxx()+geom_yyyy()
+```
+
+The *grammar* involves some basic components:
+
+1. **Data**: a data.frame
+2. **Aes**thetics: How your data are represented visually, aka "mapping". Which variables are shown on x, y axes, as well as color, size, shape, etc.
+3. **Geom**etry: The geometric objects in a plot. points, lines, polygons, etc.
+
+----
+
+## ggplot2
+
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+library(ggplot2)
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+```
+
+----
+
+
+## ggplot2
+
+By itself, the call to ggplot isn’t enough to draw a figure:
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+library(ggplot2)
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) 
+```
+
+----
+
+
+## ggplot2
+
+
+```{r eval= F}
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+
+```
+
+equivalent to:
+
+```{r eval = F}
+my_plot <- ggplot(data = dat, aes(x = gdpPercap, y = lifeExp))
+my_plot + geom_point()
+```
+
+----
+
+
+## ggplot2
+
+
+**Your Turn**
+
+Modify the example so that the figure visualises how life expectancy has changed over time:
+
+<small>Hint: the gapminder dataset has a column called "year", which should appear on the x-axis.</small>
+
+```{r eval = F}
+
+ggplot(data = , aes(x = , y = )) + geom_point()
+
+
+```
+
+
+## ggplot2
+
+
+Anatomy of **aes**
+
+<small>We’ve used the **aes** function to tell the scatterplot geom about the **x** and **y** locations of each point. Another **aes** property we can modify is the point **color** </small>
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point()
+```
+
+
+----
+
+## ggplot2
+
+Anatomy of **aes**
+
+**Color** isn't the only aesthetic argument we can set to display variation in the data. We can also vary by shape, size, etc.
+
+```{r, eval=FALSE}
+ggplot(data=, aes(x=, y=, by =, color=, linetype=, shape=, size=))
+```
+
+----
+
+
+## ggplot2
+
+Anatomy of **aes**
+
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center" }
+ggplot(data = dat, aes(x=year, y=lifeExp, by=country, color=continent)) + geom_line()
+
+```
+
+----
+
+
+
+## ggplot2
+
+Anatomy of **aes**
+
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center" }
+ggplot(data = dat, aes(x=year, y=lifeExp, by=country, color=continent)) + geom_line() + geom_point()
+
+```
+
+----
+
+
+## ggplot2
+
+Anatomy of **aes**
+
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center" }
+ggplot(data = dat, aes(x=year, y=lifeExp, by=country)) + 
+  geom_line(aes(color=continent)) + geom_point()
+```
+
+
+----
+
+
+
+## ggplot2
+
+
+**Your Turn**
+
+Switch the order of the point and line layers from the previous example. What happened?
+
+```{r}
+
+```
+
+
+
+----
+
+
+## ggplot2
+
+Labels are their own layers in ggplot.
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+# add x and y axis labels
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + 
+  geom_point() + xlab("GDP per capita") + ylab("Life Expectancy") + ggtitle("My fancy graph")
+```
+
+----
+
+
+
+## ggplot2
+
+...so are scales
+
+```{r fig.height = 4, fig.align="center", fig.width=6, warning=FALSE}
+# limit x axis from 1,000 to 20,000
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + 
+geom_point() + xlab("GDP per capita") + ylab("Life Expectancy") + ggtitle("My fancy graph") + xlim(1000, 20000)
+```
+
+----
+
+
+
+## ggplot2
+
+Transformations and Stats
+
+<small>ggplot also makes it easy to overlay statistical models over the data. To demonstrate we’ll go back to an earlier example:</small>
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point()
+```
+
+----
+
+
+## ggplot2
+
+Transformations and Stats
+
+<small>We can change the scale of units on the x axis using the **scale** functions. These control the mapping between the data values and visual values of an aesthetic.</small>
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + scale_x_log10()
+```
+
+----
+
+
+
+
+## ggplot2
+
+Transformations and Stats
+
+<small>We can fit a simple relationship to the data by adding another layer, **geom_smooth**:
+</small>
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp, color=continent)) + geom_point() + scale_x_log10() + geom_smooth(method="lm")
+```
+
+----
+
+
+
+
+
+
+## ggplot2
+
+Transformations and Stats
+
+<small>Note that we 5 lines, one for each region, because the **color** option is the global **aes** function.. But if we move it, we get different restuls:
+</small>
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) + geom_point(aes(color=continent)) + scale_x_log10() + geom_smooth(method="lm")
+```
+
+----
+
+
+
+## ggplot2
+
+Transformations and Stats
+
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = gdpPercap, y = lifeExp)) + geom_point(aes(color=continent)) + scale_x_log10() + geom_smooth(method="lm", size = 1.5)
+```
+
+----
+
+
+
+## ggplot2
+
+
+**Your Turn**
+
+
+Modify the color and size of the points on the point layer in the previous example so that they are fixed (i.e. not reflective of continent).
+
+<small>Hint: do not use the **aes** function.</small>
+
+-----
+
+
+## ggplot2
+
+Facets
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = year, y = lifeExp)) + geom_point() + facet_wrap( ~ continent)
+```
+
+----
+
+
+## ggplot2
+
+Putting it all together
+
+
+RStudio [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) of the different layers available.
+
+More extensive documentation on the [ggplot2 website](http://docs.ggplot2.org/current/). 
+
+[Stack Overflow](https://stackoverflow.com/)
+
+
+----
+
+
+
+## ggplot2
+
+Bar Plots
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = lifeExp)) + geom_bar(stat="bin")
+
+```
+
+----
+
+## ggplot2
+
+Bar Plots
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = lifeExp, fill = continent)) + geom_bar(stat="bin")
+
+```
+
+----
+
+## ggplot2
+
+Density Plots
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(dat, aes(lifeExp)) + geom_density(bw = .5, na.rm= T)
+```
+
+----
+
+
+## ggplot2
+
+Box Plots
+
+```{r fig.height = 4, fig.width = 6, fig.align = "center"}
+ggplot(data = dat, aes(x = continent, y = lifeExp)) + geom_boxplot()
+
+```
+
+----
+
+## ggplot2
+
+
+**Your Turn**
+
+
+- Create a density plot of GDP per capita, filled by continent.
+
+- Transform the x axis to better visualise the data spread. 
+
+- Add a facet layer to panel the density plots by year.
+
+-----
+
+
+
+## ggplot2
+
+Exporting- raster/bitmap
+
+```{r eval=FALSE}
+jpeg(filename="example.png", width=, height=)
+plot(x,y)
+dev.off()
+
+```
+
+
+
+Exporting- Vector
+```{r eval=FALSE}
+pdf(filename="example.pdf", width=, height=)
+plot(x,y)
+dev.off()
+
+```
+
+----
+
+## ggplot2
+
+Exporting with ggplot
+
+```{r, eval=FALSE}
+# Assume we saved our plot is an object called example.plot
+ggsave(filename="example.pdf", plot=example.plot, scale=, width=, height=)
+```
+
+
+## Getting help
+
+http://www.lib.berkeley.edu/libraries/data-lab
+
+
+http://dlab.berkeley.edu/
+
+
