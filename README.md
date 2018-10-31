@@ -2,13 +2,13 @@
 
 This workshop will provide a comprehensive overview of graphics in R, including base graphics and ggplot2. Participants will learn how to construct, customize, and export a variety of plot types in order to visualize relationships in data. We will also explore the basic grammar of graphics, including the aesthetics and geometry layers, adding statistics, transforming scales, and coloring or panelling by groups.
 
-**Prior knowledge**: Previous experience with (basic) R is assumed. 
+**Prior knowledge**: Previous experience with (basic) R is assumed.
 
-**Offered**: [UC Berkeley D-Lab](http://dlab.berkeley.edu/training), March 2, 2018
+**Offered**: [UC Berkeley D-Lab](http://dlab.berkeley.edu/training), November 1, 2018
 
 ## Setup
 
-To participate in this workshop, you will need access to the software described below. In addition, you will need an up-to-date web browser. I recommend [Google Chrome](https://www.google.com/chrome/). 
+To participate in this workshop, you will need access to the software described below. In addition, you will need an up-to-date web browser. I recommend [Google Chrome](https://www.google.com/chrome/).
 
 Once you've installed all of the software below, test your installation by following the instructions at the bottom on this page.
 
@@ -35,4 +35,4 @@ Find the Tutorial.Rmd file in the directory you just downloaded and open it in R
 
 Software Carpentry maintains a list of common issues that occur during installation may be useful for our class here: [Configuration Problems and Solutions wiki page.](https://github.com/swcarpentry/workshop-template/wiki/Configuration-Problems-and-Solutions)
 
-Credit: Thanks to [Software Carpentry](http://software-carpentry.org/workshops/) for providing installation guidelines and to Chris Paciorek, Rochelle Terman, and the [R-bootcamp](http://dlab.berkeley.edu/training/r-bootcamp-2018) for sharing these materials. 
+Credit: Thanks to [Software Carpentry](http://software-carpentry.org/workshops/) for providing installation guidelines and to Chris Paciorek, Rochelle Terman, and the [R-bootcamp](http://dlab.berkeley.edu/training/r-bootcamp-2018) for sharing these materials.
