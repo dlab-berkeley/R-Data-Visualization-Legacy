@@ -1,0 +1,42 @@
+---
+title: "Solutions"
+---
+
+## ggplot2 challenges
+
+### Challenge 1:
+    
+ggplot(data = gapminder, aes(x = year, y = lifeExp)) + geom_point()
+
+### Challenge 2:
+    
+    ggplot(data = gapminder, aes(x=year, y=lifeExp, group=country)) + 
+geom_point() + geom_line(aes(color=continent)) 
+
+### Challenge 3:
+    
+    ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + 
+  geom_point(color = "orange", size = .5) + scale_x_log10() + 
+  geom_smooth(method="lm", size = 2)
+
+
+### Challenge 4:
+      
+seAsia <- c("Myanmar","Thailand","Cambodia","Vietnam", "Indonesia")
+
+ gapminder %>% 
+  filter(country %in% seAsia) %>% 
+  ggplot(aes(x = year, y = lifeExp)) +
+  geom_line() + 
+  facet_wrap(~ country)  
+  
+### Challenge 5:
+
+gapminder_minusOceania <- gapminder %>% filter(continent != "Oceania")
+
+
+gapminder_minusOceania %>% 
+ggplot(aes(gdpPercap, fill = continent)) + geom_density(bw= .1, na.rm = T) +
+scale_x_log10() +
+facet_wrap(~ year)
+
