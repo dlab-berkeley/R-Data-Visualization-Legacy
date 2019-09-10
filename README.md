@@ -4,7 +4,7 @@ This workshop will provide a comprehensive overview of graphics in R, including 
 
 **Prior knowledge**: Previous experience with (basic) R is assumed.
 
-**Offered**: [UC Berkeley D-Lab](http://dlab.berkeley.edu/training), November 1, 2018
+**Next Offered**: [UC Berkeley D-Lab](http://dlab.berkeley.edu/training) on September 17, 2019. [Register now](https://dlab.berkeley.edu/training/r-graphics-ggplot2-9)
 
 ## Setup
 
