@@ -30,3 +30,5 @@ library(ggmap)
 - Visualizations are in the "visuals" folder  
 
 Credit: Thanks to [Software Carpentry](http://software-carpentry.org/workshops/), Chris Paciorek, Rochelle Terman, Josh Quan, and the [R-bootcamp](https://dlab.berkeley.edu/training/r-bootcamp-3) for inspiration.
+
+![](/visuals/netherlands_data.jpg)
