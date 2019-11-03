@@ -1,38 +1,25 @@
+![](/visuals/iris_compound.jpg)
+
 # R Graphics
 
-This workshop will provide a comprehensive overview of graphics in R, including base graphics and ggplot2. Participants will learn how to construct, customize, and export a variety of plot types in order to visualize relationships in data. We will also explore the basic grammar of graphics, including the aesthetics and geometry layers, adding statistics, transforming scales, and coloring or panelling by groups.
+This workshop will provide an introduction to graphics in R with ggplot2. Participants will learn how to construct, customize, and export a variety of plot types in order to visualize relationships in data. We will also explore the basic grammar of graphics, including the aesthetics and geometry layers, adding statistics, transforming scales, and coloring or panelling by groups. You will learn how to make histograms, boxplots, scatterplots, lineplots, heatmaps, and geographic maps using the Google Maps API. You will also learn how to facet plots and create compound figures. 
 
-**Prior knowledge**: Previous experience with (basic) R is assumed.
-
-**Next Offered**: [UC Berkeley D-Lab](http://dlab.berkeley.edu/training) on September 17, 2019. [Register now](https://dlab.berkeley.edu/training/r-graphics-ggplot2-9)
+**Prior experience with R is assumed such as R-Fundamentals Parts 1 through 4 or equivalent knowledge.**
 
 ## Setup
 
-To participate in this workshop, you will need access to the software described below. In addition, you will need an up-to-date web browser. I recommend [Google Chrome](https://www.google.com/chrome/).
+1. [Download R](https://cloud.r-project.org/)  
+2. [Download RStudio Desktop Open Source License FREE](https://rstudio.com/products/rstudio/download/#download)  
+3. [Download the workshop materiasl](https://github.com/dlab-berkeley/R-graphics)  
+4. Install the necessary packages by running the below code: 
 
-Once you've installed all of the software below, test your installation by following the instructions at the bottom on this page.
+```
+install.packages(c("ggplot2", "cowplot", "dplyr", "ggmap"))
 
-### R and RStudio
+library(ggplot2)
+library(cowplot)
+library(dplyr)
+library(ggmap)
+```
 
-[R](http://www.r-project.org/) is a programming language that is especially powerful for data exploration, visualization, and statistical analysis. To interact with R, we use [RStudio](http://www.rstudio.com/).
-
-#### Windows
-
-Install R by downloading and running [this .exe file from CRAN](http://cran.r-project.org/bin/windows/base/release.htm). Also, please install the [RStudio IDE](http://www.rstudio.com/ide/download/desktop).
-
-#### Mac OS X
-
-Install R by downloading and running [this .pkg file from CRAN](http://cran.r-project.org/bin/macosx/R-latest.pkg). Also, please install the [RStudio IDE](http://www.rstudio.com/ide/download/desktop).
-
-#### Linux
-
-You can download the [binary files](http://cran.r-project.org/index.html) for your distribution from CRAN. Or you can use your package manager (e.g. for Debian/Ubuntu run `sudo apt-get install r-base` and for Fedora run `sudo yum install R`). Also, please install the [RStudio IDE](http://www.rstudio.com/ide/download/desktop).
-
-
-### Testing your installation
-
-Find the Tutorial.Rmd file in the directory you just downloaded and open it in RStudio. If all goes well, RStudio should launch and you should see the tutorial.
-
-Software Carpentry maintains a list of common issues that occur during installation may be useful for our class here: [Configuration Problems and Solutions wiki page.](https://github.com/swcarpentry/workshop-template/wiki/Configuration-Problems-and-Solutions)
-
-Credit: Thanks to [Software Carpentry](http://software-carpentry.org/workshops/) for providing installation guidelines and to Chris Paciorek, Rochelle Terman, and the [R-bootcamp](http://dlab.berkeley.edu/training/r-bootcamp-2018) for sharing these materials.
+Credit: Thanks to [Software Carpentry](http://software-carpentry.org/workshops/), Chris Paciorek, Rochelle Terman, Josh Quan, and the [R-bootcamp](https://dlab.berkeley.edu/training/r-bootcamp-3) for inspiration.
