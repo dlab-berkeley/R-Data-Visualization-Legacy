@@ -10,7 +10,7 @@ This workshop will provide an introduction to graphics in R with ggplot2. Partic
 
 1. [Download R](https://cloud.r-project.org/)  
 2. [Download RStudio Desktop Open Source License FREE](https://rstudio.com/products/rstudio/download/#download)  
-3. [Download the workshop materiasl](https://github.com/dlab-berkeley/R-graphics)  
+3. [Download the workshop materials](https://github.com/dlab-berkeley/R-graphics)  
 4. Install the necessary packages by running the below code: 
 
 ```
@@ -31,4 +31,4 @@ library(ggmap)
 
 Credit: Thanks to [Software Carpentry](http://software-carpentry.org/workshops/), Chris Paciorek, Rochelle Terman, Josh Quan, and the [R-bootcamp](https://dlab.berkeley.edu/training/r-bootcamp-3) for inspiration.
 
-![](/visuals/netherlands_data.jpg)
+![](/visuals/netherlands_facet.jpg)
