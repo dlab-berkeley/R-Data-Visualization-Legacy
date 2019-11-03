@@ -1,0 +1,478 @@
+---
+title: "R Graphics with ggplot2"
+author: "Evan Muzzall"
+date: "November 4, 2019"
+theme: readable
+output:
+  html_document: 
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+    fig_width: 12
+    fig_height: 7
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+options(width = 200)
+```
+
+# Resources for data visualization
+
+Wickham et al. 2019. [ggplot2](https://ggplot2.tidyverse.org/)  
+
+[ggplot2 cheatsheet](https://rstudio.com/wp-content/uploads/2019/01/Cheatsheets_2019.pdf)
+
+Wilke CO. 2019. [Introduction to cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html)  
+
+Wilke CO. 2019. [Arranging plots in a grid](https://wilkelab.org/cowplot/articles/plot_grid.html)  
+
+Tufte ER. 2001. [The Visual Display of Quantitative Information](https://www.amazon.com/Visual-Display-Quantitative-Information/dp/1930824130)
+
+Wilke CO. 2019. [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/)  
+
+Wilkinson L. 1999. [The Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448)  
+
+### Plotting in R
+
+There are two major sets of tools for creating plots in R:
+
+* 1. base graphics, which  come with all R installations  
+* 2. ggplot2, a stand-alone package.  
+
+Note that other plotting facilities do exist (notably **lattice**), but base and ggplot2 are by far the most popular. Check out this post on comparisons between [base, lattice, and ggplot2 graphics](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2) to learn more. 
+
+### Package installation
+
+Install and library the following packages. Let's get started! 
+
+```{r eval = FALSE}
+install.packages(c("ggplot2", "cowplot", "dplyr"))
+
+library(ggplot2)
+library(cowplot)
+library(dplyr)
+```
+
+### The dataset
+
+For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy, among other things.
+
+```{r}
+gap = read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = TRUE)
+head(gap)
+```
+
+# R base graphics
+
+Base graphics are nice for quick visualizaitons of your data. You can make them publication-quality, but they take more effort than those produced by ggplot2. Let's review base plotting calls for histograms, boxplots, and scatterplots. 
+
+### Histogram
+
+Histograms are useful to illustrate the distribution of a single continuous (i.e., numeric or integer) variable. 
+
+```{r}
+hist(x = gap$lifeExp)
+
+# Define number of breaks
+hist(x = gap$lifeExp, breaks = 5)
+```
+
+You can see the 657 available stock colors available to you by typing `colors()`. Why do you think there so many "greys"?
+
+Change color of bars, title, x-axis label, and x and y scale limits
+
+```{r}
+hist(x = gap$lifeExp, 
+     breaks = 10, 
+     col = "skyblue", 
+     main = "Histogram of Life Expectancy",
+     xlab = "Years",
+     xlim = c(20, 90), 
+     ylim = c(0, 350), 
+     las = 1)
+```
+
+### Boxplot
+
+Boxplots are useful to visualize the distribution of a single continuous variable - which can be parsed by levels of a factor. For example, we can look at distributions of life expectancy *by* continent:  
+
+```{r}
+boxplot(gap$lifeExp ~ gap$continent, 
+        # Give each box its own color
+        col = c("orange", "blue", "green", "red", "purple"))
+
+# There are five continents represented in this dataset
+levels(gap$continent)
+length(levels(gap$continent))
+```
+
+### Scatterplot
+
+Scatterplots are useful for visualizing the relationship between two continuous (i.e., numeric or integer) variables.
+
+```{r}
+# Points
+plot(x = gap$gdpPercap, y = gap$lifeExp, type = "p") 
+
+# Connected lines (not a smoothing line)
+plot(x = gap$gdpPercap, y = gap$lifeExp, type = "l") 
+
+# Both
+plot(x = gap$gdpPercap, y = gap$lifeExp, type = "b") 
+```
+
+Add a title, change the x and y axis labels and limits, change point size and shape, and map each point . Type `?pch` to learn more about point shapes in base plot
+
+```{r}
+# Turn off scientific notation
+# options(scipen = 999)
+
+plot(x = gap$gdpPercap, y = gap$lifeExp, 
+     type = "p", 
+     main = "Example scatterplot", 
+     xlab = "GDP per capita income (USD)", 
+     ylab = "Life Expectancy (years)", 
+     xlim = c(0, 40000), 
+     ylim = c(20, 90),
+     cex = 2, pch = 6)
+```
+
+# The ggplot2 way
+
+Base plotting is just fine, but it takes some slightly complicated code to map colors to points and shapes of each of the five continents. And, adding a legend gets even trickier. Thankfully, ggplot2 handles these complexities with ease using more compact code inspired by Leland Wilkinsons * *g*rammar of *g*raphics. 
+
+> NOTE: ggplot2 is the name of the package, but `ggplot` is the main function call. 
+
+You need three things to make a ggplot:  
+**1. Data**  
+**2. "aes"thetics:** to define your x and y axes, map colors to factor levels, etc.  
+**3. "geom_"s:** the ways to represent your data - points, bars, lines, ribbons, polygons, etc.  
+
+One thing to remember is that ggplot2 works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. 
+
+### gg Histogram
+
+##### Define the base layer
+
+Pass in two arguments to the `ggplot` function to construct the base layer: the data and the global aesthetics (the ones that apply to all layers of the plot) defined within `aes()`. We see our coordinate system, but no data! 
+
+```{r}
+library(ggplot2)
+ggplot(data = gap, aes(x = lifeExp))
+```
+
+Add your "geom_" to see the data!
+
+```{r}
+ggplot(data = gap, aes(x = lifeExp)) + 
+  geom_histogram(color = "green", fill = "orange")
+```
+
+Ahh, my eyes! Always avoid [chartjunk](https://en.wikipedia.org/wiki/Chartjunk)! Keep your visualizations simple and crisp so that they can efficiently communicate their point without losing your audience in chartjunk.
+
+##### theme_
+
+theme_s in ggplot2 are the non-data parts like the background, gridlines, legends, etc. One way to improve the background of your figure is to use the `theme_` layer
+
+```{r}
+ggplot(data = gap, aes(x = lifeExp)) + 
+  geom_histogram(color = "black", 
+                 fill = "gray80", 
+                 bins = 10) + 
+  theme_bw()
+```
+
+Add a title and change x and y axis labels similar to before - but note the syntax differences of each layer compared to base plotting arguments from earlier
+
+```{r}
+ggplot(data = gap, aes(x = lifeExp)) + 
+  geom_histogram(color = "black", 
+                 fill = "gray80", 
+                 bins = 10) + 
+  theme_bw() + 
+  ggtitle("Histogram of Life Expectancy") + 
+  xlab("Years") + 
+  ylab("Frequency") 
+```
+
+We can also assign this visualization to a variable for later use
+
+```{r}
+lifeExp_hist = ggplot(data = gap, aes(x = lifeExp)) + 
+  geom_histogram(bins = 10, 
+                 fill = "green", 
+                 color = "black") + 
+  theme_bw() + 
+  ggtitle("Histogram of Life Expectancy") + 
+  xlab("Years") + 
+  ylab("Frequency") 
+
+# Call it to view
+lifeExp_hist
+```
+
+### gg Boxplot
+
+ggplot boxplots are similar to base boxplots, but the helpful additions and customizations are easier to understand and define. Make boxplots of lifeExp for the five continents. What has fill = continent done!?
+
+What do you think is the difference between fill and color?
+
+```{r}
+ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) + 
+  geom_boxplot() + 
+  theme_minimal()
+```
+
+### gg Scatterplot
+
+ggplot scatterplots are again similar to base scatterplots, again with the ease of feature customization. Make a scatterplot of lifeExp by gdpPercap - what has color = continent done!? 
+
+```{r}
+ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+  geom_point() + 
+  theme_test()
+```
+
+The legend can be moved around by adding the legend.position argument to the theme layer
+
+```{r}
+ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+  geom_point() + 
+  theme(legend.position = "top")
+```
+
+This is also helpful for manipulating the text of the axis labels
+
+```{r}
+ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+  geom_point() + 
+  theme_bw() + # Does it still work if you add this theme after the other theme? 
+  theme(legend.position = "top", 
+        axis.text.x = element_text(angle = 45, hjust = 1)) 
+```
+
+##### Custom scale breaks
+
+To set custom breaks we use a different layer. To create a custom scale that goes *from* a start point *to* some end point *by* some interval 
+
+```{r}
+ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+  geom_point() + 
+  theme_bw() + # Does it still work if you add this theme after the other theme? 
+  theme(legend.position = "top", 
+        axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
+  scale_y_continuous(breaks = seq(from = 20, to = 90, by = 10), limits = c(20, 90))
+```
+
+##### Point sizes, shapes, transparencies
+
+Change point sizes, shapes, and transparencies
+
+```{r}
+ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
+                       color = continent, 
+                       size = 2, 
+                       shape = continent)) + 
+  geom_point(alpha = 0.25) + 
+  theme_bw() + # Does it still work if you add this theme after the other theme? 
+  theme(legend.position = "top", 
+        axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
+  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90))
+```
+
+##### Log transform axis
+
+Alternatively, you can [log transform](https://stats.stackexchange.com/questions/298/in-linear-regression-when-is-it-appropriate-to-use-the-log-of-an-independent-va) an axis as well ...
+
+```{r}
+ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
+                       color = continent, 
+                       size = 2, 
+                       shape = continent)) + 
+  geom_point(alpha = 0.25) + 
+  theme_bw() + # Does it still work if you add this theme after the other theme? 
+  theme(legend.position = "top", 
+        axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  # scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
+  scale_x_log10() + 
+  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90))
+```
+
+... and add smoothing lines
+
+```{r}
+ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
+                       color = continent, 
+                       size = 2, 
+                       shape = continent)) + 
+  geom_point(alpha = 0.25) + 
+  theme_bw() + # Does it still work if you add this theme after the other theme? 
+  theme(legend.position = "top", 
+        axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  # scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
+  scale_x_log10() + 
+  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90)) + 
+  geom_smooth(method = "lm", se = TRUE, lwd = 1)
+```
+
+Save as a variable for later ...
+
+```{r}
+gdpLe_scatter = ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
+                       color = continent, 
+                       size = 2, 
+                       shape = continent)) + 
+  geom_point(alpha = 0.25) + 
+  theme_bw() + # Does it still work if you add this theme after the other theme? 
+  theme(legend.position = "top", 
+        axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  # scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
+  scale_x_log10() + 
+  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90)) + 
+  geom_smooth(method = "lm", se = TRUE, lwd = 1)
+
+gdpLe_scatter
+```
+
+### gg Lineplot
+
+Lineplots are useful for visualizing change in some variable on the y-axis plotted against time on the x-axis. There are many different ways to do this, including reshaping  your data using the reshape2 or tidyr packages. 
+
+We will look at a quick dplyr review to add a column to our gap dataset of the mean lifeExp for each continent by year. Check out D-Lab's [Data Wrangling and Manipulation in R](https://github.com/dlab-berkeley/R-wrang) to learn more! 
+
+```{r}
+library(dplyr)
+gap_lifeExp_mean = gap %>%
+  group_by(year, continent) %>%
+  mutate(mean_lifeExp = mean(lifeExp))
+
+head(gap_lifeExp_mean)
+```
+
+Plot! 
+
+```{r}
+ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp, 
+                             color = continent, 
+                             linetype = continent)) + 
+  geom_line(lwd = 2) + 
+  theme_bw() + 
+  theme(legend.position = "top")
+```
+
+Increase legend size using theme and change legend title
+
+```{r}
+ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp, 
+                             color = continent, 
+                             linetype = continent)) + 
+  geom_line(lwd = 2) + 
+  theme_bw() + 
+  theme(legend.position = "top", 
+        legend.title = element_text(color = "black", size = 12, face = "bold"), 
+        legend.text = element_text(color = "black", size = 12, face = "bold")) + 
+  guides(color = guide_legend(title = "PIZZA"), 
+         linetype = FALSE)
+```
+
+Or: 
+- remove the legend title  
+- increase the size of the legend lines  
+- increase the spacing of the legend items  
+- right align the legend text  
+- move labels to left of glyphs  
+- save as a variable
+
+```{r}
+gap_line = ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp, 
+                             color = continent, 
+                             linetype = continent)) + 
+  geom_line(lwd = 2) + 
+  theme_bw() + 
+  theme(legend.position = "right", 
+        legend.title = element_blank(), 
+        legend.text = element_text(color = "black", size = 10, face = "bold"), 
+        legend.key.width = unit(2.54, "cm"),
+        legend.text.align = 1,
+        legend.key = element_rect(size = 3, fill = "white", colour = NA), legend.key.size = unit(1, "cm")) + 
+  guides(color = guide_legend(label.position = "left"))
+
+gap_line
+```
+
+##### Faceting
+
+You can also facet your plots to turn overlaid figures into separate ones. For example: 
+
+```{r}
+gap_line = gap_line + 
+  facet_wrap(vars(continent)) + 
+  guides(linetype = FALSE) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+gap_line
+```
+
+### gg Heatmap
+
+Heatmaps are useful when you want to plot three variables - one continuous variable by two factors. 
+
+- Add a gradient scale fill based on lifeExp (darker colors represent more years)  
+- Put years to left of legend glyphs  
+- Save it as a varialbe
+
+```{r}
+heat = ggplot(gap, aes(x = continent, y = year, fill = lifeExp)) + 
+  geom_tile() + 
+  scale_fill_gradient(low = "white", high = "gray20", 
+                      limits = c(20,90), breaks = seq(20, 90, 10)) + 
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
+  scale_y_continuous(breaks = seq(from = 1952, to = 2007, by = 5), limits = c(1947, 2012)) + 
+  guides(fill = guide_colourbar(label.position = "left"))
+
+heat
+```
+
+# cowplot for compound figures!
+
+Combine figures into a single compound figure
+
+```{r}
+library(cowplot)
+compound = plot_grid(lifeExp_hist, gdpLe_scatter, gap_line, heat, 
+                     nrow = 2, ncol = 2,
+                     scale = 0.85, 
+                     labels = c("A)", "B)", "C)", "D)"))
+compound
+```
+
+# Exporting
+
+Exporting graphs in R is straightforward. Start by clicking the "Export" button:  
+1. Click **Copy to clipboard...** if you want to quickly copy/paste a figure into a slideshow presentation or text document  
+
+2. Click **Save as image...** (Raster/Bitmap formats such as .png, .jpeg, .tiff) if you want to explort to this format  
+
+> NOTE: Not recommended because every pixel of a plot contains its own separate coding; not so great if you want to resize the image  
+
+3. Click **Save as PDF...** (Vector format such as .pdf, .ps) to export to .pdf.  
+
+> NOTE: Recommended! Every element of a plot is encoded with a function that gives its coding conditional on several factors; great for resizing  
+
+- Export to .pdf  
+- Open this .pdf file and click File --> Export As  
+- Define resolution  
+- Save as .tiff format (with .jpeg compression is applicable)  
+- This allows you to maintain resolution while shrinking the file size!  
+
+4. Or, **export with `ggsave`**  
+
+```{r}
+# Assume we saved our plot is an object called example.plot
+ggsave(filename = "visuals/compound.pdf", plot = compound, 
+       width = 12, height = 8, units = "in", dpi = 600)
+```
