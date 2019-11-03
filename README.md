@@ -6,7 +6,7 @@ This workshop will provide an introduction to graphics in R with ggplot2. Partic
 
 **Prior experience with R is assumed such as R-Fundamentals Parts 1 through 4 or equivalent knowledge.**
 
-## Setup
+### Setup
 
 1. [Download R](https://cloud.r-project.org/)  
 2. [Download RStudio Desktop Open Source License FREE](https://rstudio.com/products/rstudio/download/#download)  
@@ -21,5 +21,12 @@ library(cowplot)
 library(dplyr)
 library(ggmap)
 ```
+
+### Getting started
+
+- Open "R-graphics-tutorial.Rmd" to work through the example code  
+- Open "challenges-ggmap.Rmd" to view the challenge problems and ggmap examples  
+- .html files can be found in the "html" folder  
+- Visualizations are in the "visuals" folder  
 
 Credit: Thanks to [Software Carpentry](http://software-carpentry.org/workshops/), Chris Paciorek, Rochelle Terman, Josh Quan, and the [R-bootcamp](https://dlab.berkeley.edu/training/r-bootcamp-3) for inspiration.
