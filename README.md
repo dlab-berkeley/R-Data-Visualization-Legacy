@@ -1,4 +1,4 @@
-![](/visuals/iris_compound.tiff)
+![](/visuals/iris_compound.jpg)
 
 # R Graphics
 
