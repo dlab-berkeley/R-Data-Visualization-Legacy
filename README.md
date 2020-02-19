@@ -31,4 +31,11 @@ library(ggmap)
 
 Credit: Thanks to [Software Carpentry](http://software-carpentry.org/workshops/), Chris Paciorek, Rochelle Terman, Josh Quan, and the [R-bootcamp](https://dlab.berkeley.edu/training/r-bootcamp-3) for inspiration.
 
+### Next Steps
+
+The ggplot2 package can also be used to make great maps! Check out the file `challenges-ggmap.Rmd` (and its solutions file) to see how to make maps such as the one displayed below.
+
+Then, if you wish to get further into advanced mapping in R,
+check out our [Geospatial-Fundamentals-in-R-with-sf](https://github.com/dlab-berkeley/Geospatial-Fundamentals-in-R-with-sf.git) workshop!
+
 ![](/visuals/netherlands_facet.jpg)
