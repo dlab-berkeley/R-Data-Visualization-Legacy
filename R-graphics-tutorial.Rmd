@@ -375,7 +375,7 @@ ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp,
   theme(legend.position = "top", 
         legend.title = element_text(color = "black", size = 12, face = "bold"), 
         legend.text = element_text(color = "black", size = 12, face = "bold")) + 
-  guides(color = guide_legend(title = "PIZZA"), 
+  guides(color = guide_legend(title = "Continent:   "), 
          linetype = FALSE)
 ```
 
