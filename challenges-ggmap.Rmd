@@ -23,7 +23,7 @@ library(ggmap)
 
 ### 1. Create six graphs
 
-Load the the [ggplot2 cheatsheet](https://rstudio.com/wp-content/uploads/2019/01/Cheatsheets_2019.pdf) and the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) to create six visualizations and combine them into a single figure. 
+Load the [ggplot2 cheatsheet](https://rstudio.com/wp-content/uploads/2019/01/Cheatsheets_2019.pdf) and the [iris dataset](https://en.wikipedia.org/wiki/Iris_flower_data_set) to create six visualizations and combine them into a single figure. 
 
 Note the code for custom colors. 
 
@@ -97,7 +97,7 @@ If you want to add your data to Google Maps, you must first 1) enable the Maps S
 
 7. Click "Credentials" then "Create Credentials" then "API key"
 
-8. You should see a popup window that says "API key created" - click "Restrict key", then select "Restrict key", click the dropdown menu and select "Static Maps API" and then save
+8. You should see a popup window that says "API key created" - click "Restrict key", then select "Restrict key", click the dropdown menu and select "Maps Static API" and then save
 
 9. In the searchbar, type "billing" and select "Billing", click "Manage Billing Accounts" and then "Add Billing Account". Enter your information and select "Save and enable billing"
 
