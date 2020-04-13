@@ -11,6 +11,14 @@ This workshop will provide an introduction to graphics in R with ggplot2. Partic
 1. [Download R](https://cloud.r-project.org/)  
 2. [Download RStudio Desktop Open Source License FREE](https://rstudio.com/products/rstudio/download/#download)  
 3. [Download the workshop materials](https://github.com/dlab-berkeley/R-graphics)  
+
+**How to download the workshop materials**
+
+* Click the green “Clone or download” button  
+* Click “Download Zip”  
+* Extract the files some place convenient (i.e., Desktop)  
+  * if you are a Git user, simply clone this repository  
+
 4. Install the necessary packages by running the below code: 
 
 ```
