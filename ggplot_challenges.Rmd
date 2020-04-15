@@ -1,0 +1,60 @@
+---
+title: "R Graphics with ggplot2"
+subtitle: "Challenges + ggmap and the Google Maps Static API"
+author: "Evan Muzzall"
+date: "April 15, 2020"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Load the heart dataset
+
+Use the heart dataset for the following challenges. Import it and save it in a variable named `heart`
+
+```{r}
+## YOUR CODE HERE
+```
+
+
+# Challenge 1 
+
+Create a gg histogram. Save it in a variable named `A`
+
+```{r}
+## YOUR CODE HERE
+```
+
+# Challenge 2 
+
+Create gg boxplots. Save this figure in a variable named `B`
+
+```{r}
+## YOUR CODE HERE
+```
+
+# Challenge 3
+
+Create a gg scatterplot. Save it in a variable named `C`
+
+```{r}
+## YOUR CODE HERE
+```
+
+# Challenge 4
+
+Create a gg lineplot. Save it in a variable named `D`
+
+```{r}
+## YOUR CODE HERE
+```
+
+# Challenge 5 
+
+Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D.
+
+```{r}
+## YOUR CODE HERE
+```
+
+

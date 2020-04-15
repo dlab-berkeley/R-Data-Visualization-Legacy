@@ -1,7 +1,7 @@
 ---
 title: "R Graphics with ggplot2"
 author: "Evan Muzzall"
-date: "November 4, 2019"
+date: "April 15, 2020"
 theme: readable
 output:
   html_document: 
@@ -48,7 +48,8 @@ Note that other plotting facilities do exist (notably **lattice**), but base and
 Install and library the following packages. Let's get started! 
 
 ```{r eval = FALSE}
-install.packages(c("ggplot2", "cowplot", "dplyr"))
+install.packages(c("ggplot2", "cowplot", "dplyr"), 
+                 dependencies = TRUE)
 
 library(ggplot2)
 library(cowplot)
@@ -62,6 +63,7 @@ For the following examples, we will using the gapminder dataset. Gapminder is a 
 ```{r}
 gap = read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = TRUE)
 head(gap)
+str(gap)
 ```
 
 # R base graphics
@@ -150,7 +152,7 @@ You need three things to make a ggplot:
 **2. "aes"thetics:** to define your x and y axes, map colors to factor levels, etc.  
 **3. "geom_"s:** the ways to represent your data - points, bars, lines, ribbons, polygons, etc.  
 
-One thing to remember is that ggplot2 works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. 
+One thing to remember is that ggplot2 works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. Add a new layer by typing a `+` symbol at the end of each line.
 
 ### gg Histogram
 
@@ -167,7 +169,7 @@ Add your "geom_" to see the data!
 
 ```{r}
 ggplot(data = gap, aes(x = lifeExp)) + 
-  geom_histogram(color = "green", fill = "orange")
+  geom_histogram(color = "orange", fill = "green")
 ```
 
 Ahh, my eyes! Always avoid [chartjunk](https://en.wikipedia.org/wiki/Chartjunk)! Keep your visualizations simple and crisp so that they can efficiently communicate their point without losing your audience in chartjunk.
@@ -235,12 +237,12 @@ ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) +
   theme_test()
 ```
 
-The legend can be moved around by adding the legend.position argument to the theme layer
+The legend can be moved around by adding the legend.position argument to a theme layer
 
 ```{r}
 ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
   geom_point() + 
-  theme(legend.position = "top")
+  theme(legend.position = "right")
 ```
 
 This is also helpful for manipulating the text of the axis labels
@@ -260,7 +262,7 @@ To set custom breaks we use a different layer. To create a custom scale that goe
 ```{r}
 ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
   geom_point() + 
-  theme_bw() + # Does it still work if you add this theme after the other theme? 
+  theme_bw() + 
   theme(legend.position = "top", 
         axis.text.x = element_text(angle = 45, hjust = 1)) + 
   scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
@@ -274,9 +276,9 @@ Change point sizes, shapes, and transparencies
 ```{r}
 ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
                        color = continent, 
-                       size = 2, 
+                       # size = 29, 
                        shape = continent)) + 
-  geom_point(alpha = 0.25) + 
+  geom_point(alpha = 0.25, size = 6) + 
   theme_bw() + # Does it still work if you add this theme after the other theme? 
   theme(legend.position = "top", 
         axis.text.x = element_text(angle = 45, hjust = 1)) + 
@@ -293,7 +295,7 @@ ggplot(data = gap, aes(x = gdpPercap, y = lifeExp,
                        color = continent, 
                        size = 2, 
                        shape = continent)) + 
-  geom_point(alpha = 0.25) + 
+  geom_point(alpha = 0.55) + 
   theme_bw() + # Does it still work if you add this theme after the other theme? 
   theme(legend.position = "top", 
         axis.text.x = element_text(angle = 45, hjust = 1)) + 
@@ -322,6 +324,7 @@ ggplot(data = gap, aes(x = gdpPercap, y = lifeExp,
 Save as a variable for later ...
 
 ```{r}
+options(scipen = 999)
 gdpLe_scatter = ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
                        color = continent, 
                        size = 2, 
@@ -345,10 +348,9 @@ Lineplots are useful for visualizing change in some variable on the y-axis plott
 We will look at a quick dplyr review to add a column to our gap dataset of the mean lifeExp for each continent by year. Check out D-Lab's [Data Wrangling and Manipulation in R](https://github.com/dlab-berkeley/R-wrang) to learn more! 
 
 ```{r}
-library(dplyr)
 gap_lifeExp_mean = gap %>%
-  group_by(year, continent) %>%
-  mutate(mean_lifeExp = mean(lifeExp))
+  dplyr::group_by(year, continent) %>%
+  dplyr::mutate(mean_lifeExp = mean(lifeExp))
 
 head(gap_lifeExp_mean)
 ```
@@ -359,7 +361,7 @@ Plot!
 ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp, 
                              color = continent, 
                              linetype = continent)) + 
-  geom_line(lwd = 2) + 
+  geom_line(lwd = 3) + 
   theme_bw() + 
   theme(legend.position = "top")
 ```

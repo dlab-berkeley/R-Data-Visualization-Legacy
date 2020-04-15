@@ -1,0 +1,104 @@
+---
+title: "R Graphics with ggplot2"
+subtitle: "ggmap and the Google Maps Static API"
+author: "Evan Muzzall"
+date: "April 15, 2020"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+### Maps!
+
+##### The data
+
+For this mapping example, we will use the first 1000 rows from the Obervation.org nature dataset from the Netherlands housed at the [Global Biodiversity Information Facility (GBIF)](https://www.gbif.org/occurrence/download?dataset_key=8a863029-f435-446a-821e-275f4f641165) (login required; [citation](https://doi.org/10.15468/dl.jgjalb), [citation guidelines](https://www.gbif.org/citation-guidelines), [data user agreement](https://www.gbif.org/terms/data-user). 
+
+```{r}
+gbif = read.csv("data/gbif_1000.csv", stringsAsFactors = TRUE, 
+                sep = "\t")
+head(gbif)
+```
+
+##### Connecting to the Google Maps Static API
+
+If you want to add your data to Google Maps, you must first 1) enable the Maps Static API and 2) enable billing by entering your credit card information. Don't worry though, Google gives you a bunch of free credits and will not charge you without your permission. 
+
+1. Point your favorite web broswer to cloud.google.com
+
+2. Click the "Go to console" button
+
+3. Click the project button in the upper-left corner of this screen (to the right of the hamburger) and click "NEW PROJECT"
+
+4. Name your project and enter your payment information
+
+5. Click the hamburger --> hover your mouse over "APIs and Services" --> then click "Library" --> search for "Maps Static API" --> click the "Maps Static API" button and click "Enable"
+
+6. Click the hamburger --> hover your mouse over "APIs and Services" --> then click "Credentials"
+
+7. Click "+ CREATE CREDENTIALS" at the top of the screen --> click "API KEY" 
+
+8. Scroll down and click "Restrict API" and check the box that says "Maps Static API" --> click "Save"
+
+9. Copy your API key into the below code (or use mine if you cannot get one to work): 
+
+```{r eval = FALSE}
+ggmap::register_google(key = "YOUR API KEY HERE") 
+
+# Instructor key
+ggmap::register_google(key = "AIzaSyAkDQsFIWaW-qRJs831EihJMT5kZbMsSOs") 
+```
+
+```{r}
+# choose the lat/lon from the first row in the gbif dataset as the center point
+# you might want to find something more central! 
+netherlands = ggmap(get_googlemap(center = c(lon = 5.55, lat = 52.00),
+                                  zoom = 7, scale = 2,
+                                  maptype = "terrain",
+                                  color = "color"))
+
+netherlands
+
+ggsave(filename = "visuals/netherlands.pdf", plot = netherlands, 
+       width = 12, height = 8, units = "in", dpi = 600)
+```
+
+> If this does not work, you might need the GitHub version of ggmap
+```
+devtools::install_github("dkahle/ggmap")
+library(ggmap)
+```
+
+Now, we can plot the rest of the data on the Google Map
+
+```{r}
+gbif_center_point = c(lon = 5.55, lat = 52.00)
+
+gbif_map = get_map(gbif_center_point, zoom = 7) 
+
+# Country overlay
+netherlands_data = ggmap(gbif_map) + 
+  geom_point(data = gbif, alpha = 0.5, 
+             aes(x = decimalLongitude, y = decimalLatitude, 
+                 col = kingdom)) 
+
+netherlands_data
+
+ggsave(filename = "visuals/netherlands_data.pdf", plot = netherlands_data, 
+       width = 12, height = 8, units = "in", dpi = 600)
+
+# Facet by province
+netherlands_facet = ggmap(gbif_map) + 
+  geom_point(data = gbif, alpha = 0.5, 
+             aes(x = decimalLongitude, y = decimalLatitude, 
+                 col = kingdom)) + 
+  ggtitle("Observation variation by Netherlands province") + 
+  facet_wrap(~stateProvince)
+
+netherlands_facet
+
+ggsave(filename = "visuals/netherlands_facet.pdf", plot = netherlands_facet, 
+       width = 12, height = 8, units = "in", dpi = 600)
+```
+
+Be sure to click "Shut Down" on your Google Cloud project when you are done so that it does not run in perpetuity :) 
