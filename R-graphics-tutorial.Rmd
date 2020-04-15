@@ -215,6 +215,14 @@ lifeExp_hist = ggplot(data = gap, aes(x = lifeExp)) +
 lifeExp_hist
 ```
 
+# Challenge 1
+
+Open "ggplot2_challenges.Rmd" and create a histogram using the heart dataset
+
+```{r}
+## YOUR CODE HERE
+```
+
 ### gg Boxplot
 
 ggplot boxplots are similar to base boxplots, but the helpful additions and customizations are easier to understand and define. Make boxplots of lifeExp for the five continents. What has fill = continent done!?
@@ -225,6 +233,14 @@ What do you think is the difference between fill and color?
 ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) + 
   geom_boxplot() + 
   theme_minimal()
+```
+
+# Challenge 2
+
+Open "ggplot2_challenges.Rmd" and create boxplots using the heart dataset
+
+```{r}
+## YOUR CODE HERE
 ```
 
 ### gg Scatterplot
@@ -341,6 +357,14 @@ gdpLe_scatter = ggplot(data = gap, aes(x = gdpPercap, y = lifeExp,
 gdpLe_scatter
 ```
 
+# Challenge 3
+
+Open "ggplot2_challenges.Rmd" and create a scatterplot using the heart dataset
+
+```{r}
+## YOUR CODE HERE
+```
+
 ### gg Lineplot
 
 Lineplots are useful for visualizing change in some variable on the y-axis plotted against time on the x-axis. There are many different ways to do this, including reshaping  your data using the reshape2 or tidyr packages. 
@@ -418,6 +442,14 @@ gap_line = gap_line +
 gap_line
 ```
 
+# Challenge 4
+
+Open "ggplot2_challenges.Rmd" and create a lineplot using the heart dataset
+
+```{r}
+## YOUR CODE HERE
+```
+
 ### gg Heatmap
 
 Heatmaps are useful when you want to plot three variables - one continuous variable by two factors. 
@@ -478,3 +510,12 @@ Exporting graphs in R is straightforward. Start by clicking the "Export" button:
 ggsave(filename = "visuals/compound.pdf", plot = compound, 
        width = 12, height = 8, units = "in", dpi = 600)
 ```
+
+# Challenge 5
+
+Open "ggplot2_challenges.Rmd" and create compound figure using the figures from the previous four challenges
+
+```{r}
+## YOUR CODE HERE
+```
+
