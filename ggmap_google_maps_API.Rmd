@@ -43,10 +43,7 @@ If you want to add your data to Google Maps, you must first 1) enable the Maps S
 9. Copy your API key into the below code (or use mine if you cannot get one to work): 
 
 ```{r eval = FALSE}
-ggmap::register_google(key = "YOUR API KEY HERE") 
-
-# Instructor key
-ggmap::register_google(key = "AIzaSyAkDQsFIWaW-qRJs831EihJMT5kZbMsSOs") 
+ggmap::register_google(key = "YOUR API KEY HERE")
 ```
 
 ```{r}
