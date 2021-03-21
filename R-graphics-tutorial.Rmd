@@ -1,7 +1,7 @@
 ---
 title: "R Graphics with ggplot2"
 author: "Evan Muzzall"
-date: "April 15, 2020"
+date: "March 21, 2021"
 theme: readable
 output:
   html_document: 
@@ -33,6 +33,8 @@ Tufte ER. 2001. [The Visual Display of Quantitative Information](https://www.ama
 Wilke CO. 2019. [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/)  
 
 Wilkinson L. 1999. [The Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448)  
+
+[The R Graph Gallery](https://www.r-graph-gallery.com/index.html)
 
 ### Plotting in R
 
@@ -436,7 +438,7 @@ You can also facet your plots to turn overlaid figures into separate ones. For e
 
 ```{r}
 gap_line = gap_line + 
-  facet_wrap(vars(continent)) + 
+  facet_wrap(~continent) + 
   guides(linetype = FALSE) + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 gap_line
