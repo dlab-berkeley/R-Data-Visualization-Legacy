@@ -5,12 +5,14 @@ date: "4/15/2020"
 output: html_document
 ---
 
-# Load the heart dataset
+# Load the [heart dataset](http://search.r-project.org/library/kmed/html/heart.html)
 
-Use the heart dataset for the following challenges. Import it and save it in a variable named `heart`
+Use the heart dataset for the following challenges. Import it and save it in a variable named `heart`. Make sure to review the data dictionary linked above!
 
 ```{r}
-## YOUR CODE HERE
+library(tidyverse)
+heart <- read.csv("data/heart.csv")
+names(heart)
 ```
 
 
@@ -19,7 +21,14 @@ Use the heart dataset for the following challenges. Import it and save it in a v
 Create a gg histogram. Save it in a variable named `A`
 
 ```{r}
-## YOUR CODE HERE
+A <- ggplot(heart, aes(x = chol)) +
+  geom_histogram(binwidth = 6) +    
+  labs(x = "Serum cholestoral in mg/dl",
+       y = "Count",
+       title = "Histogram of Serum Cholestoral (mg/dl)") +
+  theme_minimal()
+
+A
 ```
 
 # Challenge 2 
@@ -27,7 +36,22 @@ Create a gg histogram. Save it in a variable named `A`
 Create gg boxplots. Save this figure in a variable named `B`
 
 ```{r}
-## YOUR CODE HERE
+# treat sex as a factor instad of continuous variable for plotting
+heart <- heart %>%
+  mutate(sex  = as.factor(sex))
+
+B <- ggplot(heart, aes(x = sex, y = chol, fill = sex)) + 
+  geom_boxplot() +
+  scale_x_discrete(labels = c("Female", "Male")) +      # change x labels
+  scale_fill_discrete(name = "Biological Sex",          # change fill legend labels
+                      labels = c("Female", "Male")) +
+  labs(x = element_blank(),
+       y = "Serum cholestoral in mg/dl",
+       title = "Boxplot of Serum Cholesteral (mg/dl)",
+       subtitle = "by Biological Sex") +
+  theme_bw()
+
+B
 ```
 
 # Challenge 3
@@ -35,7 +59,18 @@ Create gg boxplots. Save this figure in a variable named `B`
 Create a gg scatterplot. Save it in a variable named `C`
 
 ```{r}
-## YOUR CODE HERE
+C <- ggplot(heart, aes(x = age, y = chol, color = sex, shape = sex)) +
+  geom_point(alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, lwd = 1) +
+  scale_color_discrete(name = "Biological Sex",                        # change color legend labels
+                      labels = c("Female", "Male")) +
+  scale_shape(name = "Biological Sex", labels = c("Female", "Male")) + # change shape legend labels
+  labs(x = "Age",
+       y = "Serum cholestoral in mg/dl",
+       title = "Serum Cholesteral (mg/dl) by Biological Sex") +
+  theme_bw() 
+
+C
 ```
 
 # Challenge 4
@@ -43,7 +78,23 @@ Create a gg scatterplot. Save it in a variable named `C`
 Create a gg lineplot. Save it in a variable named `D`
 
 ```{r}
-## YOUR CODE HERE
+# sometimes we will want to re-shape our data for plotting
+heart_plot <- heart %>%
+  mutate(sex = ifelse(sex == 0, "Female", "Male"),  # we can also change labels in the data instead of in ggplot
+         slope = as.factor(slope)) %>%
+  group_by(age, sex, slope) %>%
+  summarize(chol = mean(chol))
+
+D <- ggplot(heart_plot, aes(x = age, y = chol, color = sex)) +
+  facet_wrap(~sex) +
+  geom_line() +
+  scale_color_manual(values=c("#CC6666", "#9999CC"), name = "Biological Sex") + 
+  labs(x = "Age",
+       y = "Serum cholestoral in mg/dl",
+       title = "Serum Cholesteral (mg/dl) by Biological Sex") +
+  theme_minimal()
+
+D
 ```
 
 # Challenge 5 
@@ -51,7 +102,12 @@ Create a gg lineplot. Save it in a variable named `D`
 Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D.
 
 ```{r}
-## YOUR CODE HERE
+library(cowplot)
+compound = plot_grid(A, B, C, D, 
+                     nrow = 2, ncol = 2,
+                     scale = 0.85, 
+                     labels = c("A)", "B)", "C)", "D)"))
+compound
 ```
 
 
