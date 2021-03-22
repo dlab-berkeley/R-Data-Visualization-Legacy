@@ -10,7 +10,6 @@ output: html_document
 Use the heart dataset for the following challenges. Import it and save it in a variable named `heart`. Make sure to review the data dictionary linked above!
 
 ```{r}
-library(tidyverse)
 heart <- read.csv("data/heart.csv")
 names(heart)
 ```
@@ -18,14 +17,14 @@ names(heart)
 
 # Challenge 1 
 
-Create a gg histogram. Save it in a variable named `A`
+Create a gg histogram using the heart dataset. Save it in a variable named `A`
 
 ```{r}
 A <- ggplot(heart, aes(x = chol)) +
   geom_histogram(binwidth = 6) +    
-  labs(x = "Serum cholestoral in mg/dl",
+  labs(x = "Serum cholestorol in mg/dl",
        y = "Count",
-       title = "Histogram of Serum Cholestoral (mg/dl)") +
+       title = "Histogram of Serum Cholestorol (mg/dl)") +
   theme_minimal()
 
 A
@@ -33,7 +32,7 @@ A
 
 # Challenge 2 
 
-Create gg boxplots. Save this figure in a variable named `B`
+Create gg boxplots using the heart dataset. Save this figure in a variable named `B`
 
 ```{r}
 # treat sex as a factor instad of continuous variable for plotting
@@ -56,15 +55,14 @@ B
 
 # Challenge 3
 
-Create a gg scatterplot. Save it in a variable named `C`
+Create a gg scatterplot using the heart dataset and save it in a variable named `C`
 
 ```{r}
-C <- ggplot(heart, aes(x = age, y = chol, color = sex, shape = sex)) +
+C <- ggplot(heart, aes(x = age, y = chol, 
+                       color = as.factor(sex), 
+                       shape = as.factor(sex))) +
   geom_point(alpha = 0.7) +
   geom_smooth(method = "lm", se = TRUE, lwd = 1) +
-  scale_color_discrete(name = "Biological Sex",                        # change color legend labels
-                      labels = c("Female", "Male")) +
-  scale_shape(name = "Biological Sex", labels = c("Female", "Male")) + # change shape legend labels
   labs(x = "Age",
        y = "Serum cholestoral in mg/dl",
        title = "Serum Cholesteral (mg/dl) by Biological Sex") +
@@ -75,7 +73,7 @@ C
 
 # Challenge 4
 
-Create a gg lineplot. Save it in a variable named `D`
+Create a gg lineplot using the heart dataset and save it in a variable named `D`
 
 ```{r}
 # sometimes we will want to re-shape our data for plotting
@@ -99,7 +97,7 @@ D
 
 # Challenge 5 
 
-Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D.
+Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D that you created above. 
 
 ```{r}
 library(cowplot)

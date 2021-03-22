@@ -19,7 +19,7 @@ Use the heart dataset for the following challenges. Import it and save it in a v
 
 # Challenge 1 
 
-Create a gg histogram. Save it in a variable named `A`
+Create a gg histogram using the heart dataset. Save it in a variable named `A`
 
 ```{r}
 ## YOUR CODE HERE
@@ -27,7 +27,7 @@ Create a gg histogram. Save it in a variable named `A`
 
 # Challenge 2 
 
-Create gg boxplots. Save this figure in a variable named `B`
+Create gg boxplots using the heart dataset. Save this figure in a variable named `B`
 
 ```{r}
 ## YOUR CODE HERE
@@ -35,7 +35,7 @@ Create gg boxplots. Save this figure in a variable named `B`
 
 # Challenge 3
 
-Create a gg scatterplot. Save it in a variable named `C`
+Create a gg scatterplot using the heart dataset and save it in a varibale named `C`
 
 ```{r}
 ## YOUR CODE HERE
@@ -43,7 +43,7 @@ Create a gg scatterplot. Save it in a variable named `C`
 
 # Challenge 4
 
-Create a gg lineplot. Save it in a variable named `D`
+Create a lineplot using the heart dataset and save it in a variable named `D`
 
 ```{r}
 ## YOUR CODE HERE
@@ -51,7 +51,7 @@ Create a gg lineplot. Save it in a variable named `D`
 
 # Challenge 5 
 
-Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D.
+Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D that you created above. 
 
 ```{r}
 ## YOUR CODE HERE

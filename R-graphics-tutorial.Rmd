@@ -14,10 +14,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-```{r}
-options(width = 200)
-```
-
 # Resources for data visualization
 
 Wickham et al. 2019. [ggplot2](https://ggplot2.tidyverse.org/)  
@@ -50,8 +46,7 @@ Note that other plotting facilities do exist (notably **lattice**), but base and
 Install and library the following packages. Let's get started! 
 
 ```{r eval = FALSE}
-install.packages(c("ggplot2", "cowplot", "dplyr"), 
-                 dependencies = TRUE)
+install.packages(c("ggplot2", "cowplot", "dplyr"))
 
 library(ggplot2)
 library(cowplot)
@@ -152,9 +147,9 @@ Base plotting is just fine, but it takes some slightly complicated code to map c
 You need three things to make a ggplot:  
 **1. Data**  
 **2. "aes"thetics:** to define your x and y axes, map colors to factor levels, etc.  
-**3. "geom_"s:** the ways to represent your data - points, bars, lines, ribbons, polygons, etc.  
+**3. "geom_"s:** the visual marks to represent your data - points, bars, lines, ribbons, polygons, etc. 
 
-One thing to remember is that ggplot2 works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. Add a new layer by typing a `+` symbol at the end of each line.
+One thing to remember is that ggplot2 works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. Add a new layer by typing a **`+`** symbol at the end of each line. Furthermore, **"theme_"s** are used to customize the non-data related aspects of your plots. 
 
 ### gg Histogram
 
@@ -219,11 +214,7 @@ lifeExp_hist
 
 # Challenge 1
 
-Open "ggplot2_challenges.Rmd" and create a histogram using the heart dataset
-
-```{r}
-## YOUR CODE HERE
-```
+Open "ggplot2_challenges.Rmd". Create a gg histogram using the heart dataset. Save it in a variable named `A`
 
 ### gg Boxplot
 
@@ -239,11 +230,7 @@ ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) +
 
 # Challenge 2
 
-Open "ggplot2_challenges.Rmd" and create boxplots using the heart dataset
-
-```{r}
-## YOUR CODE HERE
-```
+Open "ggplot2_challenges.Rmd". Create gg boxplots using the heart dataset. Save this figure in a variable named `B`
 
 ### gg Scatterplot
 
@@ -361,11 +348,7 @@ gdpLe_scatter
 
 # Challenge 3
 
-Open "ggplot2_challenges.Rmd" and create a scatterplot using the heart dataset
-
-```{r}
-## YOUR CODE HERE
-```
+Open "ggplot2_challenges.Rmd". Create a gg scatterplot using the heart dataset and save it in a varibale named `C`
 
 ### gg Lineplot
 
@@ -446,11 +429,7 @@ gap_line
 
 # Challenge 4
 
-Open "ggplot2_challenges.Rmd" and create a lineplot using the heart dataset
-
-```{r}
-## YOUR CODE HERE
-```
+Open "ggplot2_challenges.Rmd" Create a gg lineplot using the heart dataset and save it in a variable named `D`
 
 ### gg Heatmap
 
@@ -515,9 +494,8 @@ ggsave(filename = "visuals/compound.pdf", plot = compound,
 
 # Challenge 5
 
-Open "ggplot2_challenges.Rmd" and create compound figure using the figures from the previous four challenges
+Open "ggplot2_challenges.Rmd". Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D that you created above. 
 
-```{r}
-## YOUR CODE HERE
-```
+# Custom colors
 
+Are you interested in custom colors for your plots? Check out the ["Color and fill scales" section for discrete and continuous variables](https://rstudio.com/wp-content/uploads/2015/04/ggplot2-cheatsheet.pdf) in the RStudio Visualizaiton cheatsheet!
