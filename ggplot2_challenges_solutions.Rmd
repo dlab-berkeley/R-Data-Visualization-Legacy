@@ -10,6 +10,7 @@ output: html_document
 Use the heart dataset for the following challenges. Import it and save it in a variable named `heart`. Make sure to review the data dictionary linked above!
 
 ```{r}
+library(ggplot2)
 heart <- read.csv("data/heart.csv")
 names(heart)
 ```
@@ -35,6 +36,7 @@ A
 Create gg boxplots using the heart dataset. Save this figure in a variable named `B`
 
 ```{r}
+library(dplyr)
 # treat sex as a factor instad of continuous variable for plotting
 heart <- heart %>%
   mutate(sex  = as.factor(sex))
@@ -107,5 +109,3 @@ compound = plot_grid(A, B, C, D,
                      labels = c("A)", "B)", "C)", "D)"))
 compound
 ```
-
-

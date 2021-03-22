@@ -357,6 +357,7 @@ Lineplots are useful for visualizing change in some variable on the y-axis plott
 We will look at a quick dplyr review to add a column to our gap dataset of the mean lifeExp for each continent by year. Check out D-Lab's [Data Wrangling and Manipulation in R](https://github.com/dlab-berkeley/R-wrang) to learn more! 
 
 ```{r}
+library(dplyr)
 gap_lifeExp_mean = gap %>%
   dplyr::group_by(year, continent) %>%
   dplyr::mutate(mean_lifeExp = mean(lifeExp))
@@ -486,9 +487,9 @@ Exporting graphs in R is straightforward. Start by clicking the "Export" button:
 
 4. Or, **export with `ggsave`**  
 
-```{r}
+```{r eval = FALSE}
 # Assume we saved our plot is an object called example.plot
-ggsave(filename = "visuals/compound.pdf", plot = compound, 
+ggsave(filename = "compound/compound.pdf", plot = compound, 
        width = 12, height = 8, units = "in", dpi = 600)
 ```
 
@@ -498,4 +499,4 @@ Open "ggplot2_challenges.Rmd". Use cowplot to create a compound figure named "co
 
 # Custom colors
 
-Are you interested in custom colors for your plots? Check out the ["Color and fill scales" section for discrete and continuous variables](https://rstudio.com/wp-content/uploads/2015/04/ggplot2-cheatsheet.pdf) in the RStudio Visualizaiton cheatsheet!
+Are you interested in custom colors for your plots? Check out the ["Color and fill scales" section for discrete and continuous variables](https://rstudio.com/wp-content/uploads/2015/04/ggplot2-cheatsheet.pdf) in the RStudio Visualization cheatsheet!
