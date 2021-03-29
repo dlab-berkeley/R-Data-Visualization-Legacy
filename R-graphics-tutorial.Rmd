@@ -58,7 +58,7 @@ library(dplyr)
 For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy, among other things.
 
 ```{r}
-gap = read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = TRUE)
+gap <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = TRUE)
 head(gap)
 str(gap)
 ```
@@ -199,7 +199,7 @@ ggplot(data = gap, aes(x = lifeExp)) +
 We can also assign this visualization to a variable for later use
 
 ```{r}
-lifeExp_hist = ggplot(data = gap, aes(x = lifeExp)) + 
+lifeExp_hist <- ggplot(data = gap, aes(x = lifeExp)) + 
   geom_histogram(bins = 10, 
                  fill = "green", 
                  color = "black") + 
@@ -330,7 +330,7 @@ Save as a variable for later ...
 
 ```{r}
 options(scipen = 999)
-gdpLe_scatter = ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
+gdpLe_scatter <- ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
                        color = continent, 
                        size = 2, 
                        shape = continent)) + 
@@ -400,7 +400,7 @@ Or:
 - save as a variable
 
 ```{r}
-gap_line = ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp, 
+gap_line <- ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp, 
                              color = continent, 
                              linetype = continent)) + 
   geom_line(lwd = 2) + 
@@ -421,7 +421,7 @@ gap_line
 You can also facet your plots to turn overlaid figures into separate ones. For example: 
 
 ```{r}
-gap_line = gap_line + 
+gap_line <- gap_line + 
   facet_wrap(~continent) + 
   guides(linetype = FALSE) + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -441,7 +441,7 @@ Heatmaps are useful when you want to plot three variables - one continuous varia
 - Save it as a varialbe
 
 ```{r}
-heat = ggplot(gap, aes(x = continent, y = year, fill = lifeExp)) + 
+heat <- ggplot(gap, aes(x = continent, y = year, fill = lifeExp)) + 
   geom_tile() + 
   scale_fill_gradient(low = "white", high = "gray20", 
                       limits = c(20,90), breaks = seq(20, 90, 10)) + 
@@ -459,7 +459,7 @@ Combine figures into a single compound figure
 
 ```{r}
 library(cowplot)
-compound = plot_grid(lifeExp_hist, gdpLe_scatter, gap_line, heat, 
+compound <- plot_grid(lifeExp_hist, gdpLe_scatter, gap_line, heat, 
                      nrow = 2, ncol = 2,
                      scale = 0.85, 
                      labels = c("A)", "B)", "C)", "D)"))
