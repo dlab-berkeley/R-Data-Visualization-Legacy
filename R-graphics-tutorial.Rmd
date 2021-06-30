@@ -69,7 +69,7 @@ Base graphics are nice for quick visualizaitons of your data. You can make them 
 
 ### Histogram
 
-Histograms are useful to illustrate the distribution of a single continuous (i.e., numeric or integer) variable. 
+Histograms are useful to illustrate the distribution of a single continuous (i.e., numeric or integer) variable. The breaks argument within the hist() function allows you to control the amount of bins that are displayed in the histogram.
 
 ```{r}
 hist(x = gap$lifeExp)
@@ -77,6 +77,18 @@ hist(x = gap$lifeExp)
 # Define number of breaks
 hist(x = gap$lifeExp, breaks = 5)
 ```
+
+### Kernal density plots
+
+Kernal density plots are helpful in seeing the distribution of a variable. The density function creates the data that will be plotted and the plot function creates a graph of that data.
+
+
+```{r}
+
+plot(density(gap$lifeExp))
+
+```
+
 
 You can see the 657 available stock colors available to you by typing `colors()`. Why do you think there so many "greys"?
 
@@ -93,6 +105,39 @@ hist(x = gap$lifeExp,
      las = 1)
 ```
 
+### Barplot
+
+Barplots are useful to visualize counts and or averages of a single continuous variable - which can be parsed by levels of a factor (if needed). For example, we can use a bar plot to learn how many countries there are per continent that we have data for.
+
+
+```{r}
+# Loading the dplyr package to use distinct function 
+library(dplyr)
+
+# Subsetting gap dataset to only include the country and continent
+gap_countries <- subset(gap,
+                     select = c(country,
+                                continent))
+
+# This line of code only includes the unique combinations of country and continent by dropping all duplicate rows using the distinct function
+gap_countries <- distinct(gap_countries,
+                  country,
+                  continent,
+                  .keep_all = T)
+
+# This line of code creates a data frame that has two columns such that the first column contains the names of the continent and the second column has the total number of countries in each continent
+gap_countries <- as.data.frame(table(gap_countries$continent))
+
+# This line of code renames the columns in the data frame
+names(gap_countries) <- c("continent",
+                          "n_country")
+
+# This line of code creates a bar graph that shows the continent on the x-axis and the number of countries in each continent on the y-axis using subset notation. 
+barplot(gap_countries[,"n_country"],
+        names.arg= as.character(gap_countries[,"continent"]),
+        main = "Number of Countries per Continent")
+```
+
 ### Boxplot
 
 Boxplots are useful to visualize the distribution of a single continuous variable - which can be parsed by levels of a factor. For example, we can look at distributions of life expectancy *by* continent:  
@@ -100,7 +145,8 @@ Boxplots are useful to visualize the distribution of a single continuous variabl
 ```{r}
 boxplot(gap$lifeExp ~ gap$continent, 
         # Give each box its own color
-        col = c("orange", "blue", "green", "red", "purple"))
+        col = c("orange", "blue", "green", "red", "purple"),
+        main = "Boxplot of Life Expectancy per Continent")
 
 # There are five continents represented in this dataset
 levels(gap$continent)
@@ -109,17 +155,30 @@ length(levels(gap$continent))
 
 ### Scatterplot
 
-Scatterplots are useful for visualizing the relationship between two continuous (i.e., numeric or integer) variables.
+Scatterplots are useful for visualizing the relationship between two continuous (i.e., numeric or integer) variables. In the following example, we will look at the relationship between GDP per capita and life expectancy in country of Portugal.
 
 ```{r}
+
+gap_Portugal <- filter(gap,
+                       country == "Portugal")
+
 # Points
-plot(x = gap$gdpPercap, y = gap$lifeExp, type = "p") 
+plot(x = gap_Portugal$gdpPercap, y = gap_Portugal$lifeExp, type = "p",
+     xlab = "GDP per-capita",
+     ylab = "Life Expectancy",
+     main = "Relation Between GDP per-capita and \n Life Expectancy in Portugal") 
 
 # Connected lines (not a smoothing line)
-plot(x = gap$gdpPercap, y = gap$lifeExp, type = "l") 
+plot(x = gap_Portugal$gdpPercap, y = gap_Portugal$lifeExp, type = "l",
+     xlab = "GDP per-capita",
+     ylab = "Life Expectancy",
+     main = "Relation Between GDP per-capita and \n Life Expectancy in Portugal") 
 
 # Both
-plot(x = gap$gdpPercap, y = gap$lifeExp, type = "b") 
+plot(x = gap_Portugal$gdpPercap, y = gap_Portugal$lifeExp, type = "b",
+     xlab = "GDP per-capita",
+     ylab = "Life Expectancy",
+     main = "Relation Between GDP per-capita and \n Life Expectancy in Portugal") 
 ```
 
 Add a title, change the x and y axis labels and limits, change point size and shape, and map each point . Type `?pch` to learn more about point shapes in base plot
@@ -167,6 +226,8 @@ Add your "geom_" to see the data!
 ```{r}
 ggplot(data = gap, aes(x = lifeExp)) + 
   geom_histogram(color = "orange", fill = "green")
+
+density(mtcars$mpg)
 ```
 
 Ahh, my eyes! Always avoid [chartjunk](https://en.wikipedia.org/wiki/Chartjunk)! Keep your visualizations simple and crisp so that they can efficiently communicate their point without losing your audience in chartjunk.
@@ -260,6 +321,45 @@ ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) +
         axis.text.x = element_text(angle = 45, hjust = 1)) 
 ```
 
+### gg Barplot
+
+ggplot barplots are again similar to base barplots with the ease of feature customization. For example, we can use a bar plot to learn how many countries there are per continent that we have data for.
+
+
+```{r}
+# Loading the dplyr package to use distinct function 
+library(dplyr)
+
+# Subsetting gap dataset to only include the country and continent
+gap_countries <- subset(gap,
+                     select = c(country,
+                                continent))
+
+# This line of code only includes the unique combinations of country and continent by dropping all duplicate rows using the distinct function
+gap_countries <- distinct(gap_countries,
+                  country,
+                  continent,
+                  .keep_all = T)
+
+# This line of code creates a data frame that has two columns such that the first column contains the names of the continent and the second column has the total number of countries in each continent
+gap_countries <- as.data.frame(table(gap_countries$continent))
+
+# This line of code renames the columns in the data frame
+names(gap_countries) <- c("continent",
+                          "n_country")
+
+# This line of code creates a bar graph that shows the continent on the x-axis and the number of countries in each continent on the y-axis
+ggplot(gap_countries,
+       aes(x = continent,
+           y = n_country)) +
+  geom_bar(stat = "identity") + 
+  theme_bw() + 
+  labs(x = NULL, 
+       y = NULL,
+      title = "Number of Countries per Continent")
+
+```
+
 ##### Custom scale breaks
 
 To set custom breaks we use a different layer. To create a custom scale that goes *from* a start point *to* some end point *by* some interval 
@@ -283,7 +383,9 @@ ggplot(data = gap, aes(x = gdpPercap, y = lifeExp,
                        color = continent, 
                        # size = 29, 
                        shape = continent)) + 
-  geom_point(alpha = 0.25, size = 6) + 
+  # Here we are adding the alpha argument to control the opacity of each
+  # data point that is displayed. Alpha accepts scores between 0-1 in         which lower values correspond to more transparency
+  geom_point(alpha = 0.55, size = 6) + 
   theme_bw() + # Does it still work if you add this theme after the other theme? 
   theme(legend.position = "top", 
         axis.text.x = element_text(angle = 45, hjust = 1)) + 
