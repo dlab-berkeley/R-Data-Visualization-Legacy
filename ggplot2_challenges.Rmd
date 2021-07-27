@@ -1,5 +1,5 @@
 ---
-title: "R Graphics with ggplot2"
+title: "ggplot2_challenges"
 subtitle: "Challenges + ggmap and the Google Maps Static API"
 author: "Evan Muzzall"
 date: "April 15, 2020"
@@ -8,9 +8,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-# Load the heart dataset
+# Load the [heart dataset](http://search.r-project.org/library/kmed/html/heart.html)
 
-Use the heart dataset for the following challenges. Import it and save it in a variable named `heart`
+Use the heart dataset for the following challenges. Import it and save it in a variable named `heart`. Make sure to review the data dictionary linked above!
 
 ```{r}
 ## YOUR CODE HERE
