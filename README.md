@@ -1,6 +1,6 @@
 ![](/visuals/iris_compound.jpg)
 
-# R Graphics
+# R Data Visualization with ggplot
 
 This workshop will provide an introduction to graphics in R with ggplot2. Participants will learn how to construct, customize, and export a variety of plot types in order to visualize relationships in data. We will also explore the basic grammar of graphics, including the aesthetics and geometry layers, adding statistics, transforming scales, and coloring or panelling by groups. You will learn how to make histograms, boxplots, scatterplots, lineplots, and heatmaps. You will also learn how to facet plots and create compound figures. 
 
