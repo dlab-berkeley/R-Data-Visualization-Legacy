@@ -1,6 +1,5 @@
 ---
 title: "R Data Visualization"
-author: "D-Lab"
 theme: readable
 output:
   html_document: 
@@ -9,8 +8,6 @@ output:
     toc_float: yes
     fig_width: 12
     fig_height: 7
-editor_options: 
-  chunk_output_type: console
 ---
 
 # Theory of Data Visualization
@@ -102,8 +99,8 @@ Ultimately, identify your audience and their needs and interests. The same data 
 
 There are two major sets of tools for creating plots in R:
 
-* 1. base graphics, which  come with all R installations  
-* 2. `ggplot2`, a stand-alone package.  
+1. base graphics, which  come with all R installations  
+2. `ggplot2`, a stand-alone package.  
 
 Note that other plotting facilities do exist (notably, `lattice`), but base graphics and `ggplot2` are by far the most popular. Check out [this post](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2) on comparisons between base, `ggplot2`, and `lattice` graphics to learn more.
 
@@ -111,7 +108,7 @@ Note that other plotting facilities do exist (notably, `lattice`), but base grap
 
 First, we'll install and import the necessary packages. Let's get started! 
 
-```{r eval = FALSE}
+```{r import}
 # Uncomment this to install packages, if necessary.
 # install.packages(c("cowplot", "dplyr", "ggplot2"))
 
@@ -124,7 +121,7 @@ library(ggplot2)
 
 For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy and GDP per-capita.
 
-```{r}
+```{r import_gap}
 gap <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = TRUE)
 head(gap)
 str(gap)
@@ -132,7 +129,7 @@ str(gap)
 
 # R base graphics
 
-Base graphics are nice for quick visualizations of your data. You can make them publication-quality, but they take more effort than those produced by `ggplot2`. Let's review base plotting calls for histograms, boxplots, and scatterplots.
+Base graphics are nice for quick visualizations of your data. You can make them publication-quality, but they take more effort than those produced by `ggplot2`. Let's review base plotting calls for histograms, boxplots, and scatter plots.
 
 ## Histograms
 
@@ -162,36 +159,21 @@ hist(x = gap$lifeExp,
 
 You can see the 657 available stock colors available to you by typing `colors()`. Why do you think there so many "greys"?
 
-## Barplot
+## Barplots
 
 Barplots are useful to visualize counts and or averages of a single continuous variable - which can be parsed by levels of a factor (if needed). For example, we can use a bar plot to learn how many countries there are per continent that we have data for.
 
+```{r barplot}
+# Calculate the number of countries per continent
+countries_by_continent <- gap %>%
+  dplyr::distinct(country, .keep_all = TRUE) %>%
+  dplyr::group_by(continent) %>%
+  dplyr::count() %>%
+  dplyr::rename(n_countries = n)
 
-```{r}
-# Loading the dplyr package to use distinct function 
-library(dplyr)
-
-# Subsetting gap dataset to only include the country and continent
-gap_countries <- subset(gap,
-                     select = c(country,
-                                continent))
-
-# This line of code only includes the unique combinations of country and continent by dropping all duplicate rows using the distinct function
-gap_countries <- distinct(gap_countries,
-                  country,
-                  continent,
-                  .keep_all = T)
-
-# This line of code creates a data frame that has two columns such that the first column contains the names of the continent and the second column has the total number of countries in each continent
-gap_countries <- as.data.frame(table(gap_countries$continent))
-
-# This line of code renames the columns in the data frame
-names(gap_countries) <- c("continent",
-                          "n_country")
-
-# This line of code creates a bar graph that shows the continent on the x-axis and the number of countries in each continent on the y-axis using subset notation. 
-barplot(gap_countries[,"n_country"],
-        names.arg= as.character(gap_countries[,"continent"]),
+# Creates a bar plot that shows continent on the x-axis and number of countries on the y-axis 
+barplot(countries_by_continent$n_countries,
+        names.arg = countries_by_continent$continent,
         main = "Number of Countries per Continent")
 ```
 
@@ -208,11 +190,14 @@ levels(gap$continent)
 length(levels(gap$continent))
 ```
 
+Notice that we used a formula in the base R function to specify the relationship we wanted the boxplot to demonstrate.
+
+
 ## Scatter plots
 
 Scatter plots are useful for visualizing the relationship between two numeric quantities. Typically, these quantities are continuous, but scatterplots can sometimes effectively convey comparisons of discrete quantities as well.
 
-In the following example, we will look at the relationship between GDP per capita and life expectancy in country of Portugal.
+In the following example, we will look at the relationship between GDP per capita and life expectancy in country of Portugal. Notice that we can also view these plots as line plots. However, line plots are typically used when one axis is ordered (e.g., it might be a year).
 
 ```{r scatter_plot}
 portugal <- dplyr::filter(gap, country == "Portugal")
@@ -239,57 +224,66 @@ plot(x = portugal$gdpPercap, y = portugal$lifeExp,
      main = "GDP per-capita vs. Life Expectancy in Portugal") 
 ```
 
-# The ggplot2 way
+# The `ggplot2` way
 
-Base plotting is just fine, but it takes some slightly complicated code to map colors to points and shapes of each of the five continents. And, adding a legend gets even trickier. Thankfully, ggplot2 handles these complexities with ease using more compact code inspired by Leland Wilkinsons * *g*rammar of *g*raphics. 
+Base plotting is just fine, but it takes some slightly complicated code to map colors to points and shapes of a given variable. And, adding a legend gets even trickier. Thankfully, a package called `ggplot2` handles these complexities with ease using more compact code inspired by Leland Wilkinson's **g**rammar of **g**raphics. 
 
-> NOTE: ggplot2 is the name of the package, but `ggplot` is the main function call. 
+> NOTE: `ggplot2` is the name of the package, but `ggplot` is the main function call. 
+A ggplot is comprised of three fundamental building blocks:
 
-You need three things to make a ggplot:  
-**1. Data**  
-**2. "aes"thetics:** to define your x and y axes, map colors to factor levels, etc.  
-**3. "geom_"s:** the visual marks to represent your data - points, bars, lines, ribbons, polygons, etc. 
+1. **Data:** typically as a dataframe.
+2. **"aes"thetics:** to define your x and y axes, map colors to factor levels, etc.  
+3. **"geom_"s:** the visual marks to represent your data - points, bars, lines, ribbons, polygons, etc. 
 
-One thing to remember is that ggplot2 works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. Add a new layer by typing a **`+`** symbol at the end of each line. Furthermore, **"theme_"s** are used to customize the non-data related aspects of your plots. 
+One thing to remember is that `ggplot2` works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. New layers are added to a plot using  the addition **`+`** symbol. Lastly, plots can be further customized using a host of **"theme_"** functions.
+ 
+## Building a histogram layer by layer
 
-### gg Histogram
+We'll demonstrate the layer-based approach in `ggplot2` by building the same histogram of age as in the previous section.
 
-##### Define the base layer
+### Define the base layer
 
-Pass in two arguments to the `ggplot` function to construct the base layer: the data and the global aesthetics (the ones that apply to all layers of the plot) defined within `aes()`. We see our coordinate system, but no data! 
+First, to construct the base layer, we pass in two arguments to the `ggplot` function: the data and the global aesthetics (the ones that apply to all layers of the plot) defined within `aes()`. Once we do this, we see our coordinate system, but no data! 
 
-```{r}
-library(ggplot2)
-ggplot(data = gap, aes(x = lifeExp))
+Notice that the output of the `ggplot` function can be stored in a variable, which we've called `plot`. This allows us to continually add layers to `plot` in downstream code, and visualize how it looks at different points.
+
+```{r base_layer}
+plot <- ggplot(data = gap, aes(x = lifeExp))
+print(plot)
 ```
 
-Add your "geom_" to see the data!
+### Add the histogram layer
 
-```{r}
-ggplot(data = gap, aes(x = lifeExp)) + 
+We need the last building block: a `geom_` function, which in this case, is `geom_histogram`. Add `geom_histogram` to see the data!
+
+```{r histogram_layer}
+plot <- 
+  ggplot(data = gap, aes(x = lifeExp)) + 
   geom_histogram(color = "orange", fill = "green")
-
-density(mtcars$mpg)
+show(plot)
 ```
 
 Ahh, my eyes! Always avoid [chartjunk](https://en.wikipedia.org/wiki/Chartjunk)! Keep your visualizations simple and crisp so that they can efficiently communicate their point without losing your audience in chartjunk.
 
-##### theme_
+### Customize with theme layers
 
-theme_s in ggplot2 are the non-data parts like the background, gridlines, legends, etc. One way to improve the background of your figure is to use the `theme_` layer
+Themes in `ggplot2` are top-level layers which can be use to stylize and customize plots. These themes contain many components, which can be used to change every part of the plot, including the fonts, label sizes, label placements, and more. `ggplot2` comes with some built-in themes that you can easily add to a plot to give it a clean, recognizable, and consistent style. One of the most commonly used themes is a black and white theme, denoted by `theme_bw()`:
 
-```{r}
-ggplot(data = gap, aes(x = lifeExp)) + 
+```{r hist_w_theme}
+plot <- 
+  ggplot(data = gap, aes(x = lifeExp)) + 
   geom_histogram(color = "black", 
                  fill = "gray80", 
                  bins = 10) + 
   theme_bw()
+show(plot)
 ```
 
-Add a title and change x and y axis labels similar to before - but note the syntax differences of each layer compared to base plotting arguments from earlier
+We can also use label and title layers to customize the axis and title labels. Note, however, the syntax differences of each layer compared to base plotting arguments from earlier.
 
-```{r}
-ggplot(data = gap, aes(x = lifeExp)) + 
+```{r hist_w_labels}
+hist <- 
+  ggplot(data = gap, aes(x = lifeExp)) + 
   geom_histogram(color = "black", 
                  fill = "gray80", 
                  bins = 10) + 
@@ -297,116 +291,84 @@ ggplot(data = gap, aes(x = lifeExp)) +
   ggtitle("Histogram of Life Expectancy") + 
   xlab("Years") + 
   ylab("Frequency") 
+show(hist)
 ```
 
 We can also assign this visualization to a variable for later use
 
-```{r}
-lifeExp_hist <- ggplot(data = gap, aes(x = lifeExp)) + 
-  geom_histogram(bins = 10, 
-                 fill = "green", 
-                 color = "black") + 
-  theme_bw() + 
-  ggtitle("Histogram of Life Expectancy") + 
-  xlab("Years") + 
-  ylab("Frequency") 
+> **Challenge 1:** Open `R-Data-Visualization-Challenges.Rmd`. Create a histogram of cholesterol in the heart dataset using `ggplot`. Save it in a variable named `A`.
 
-# Call it to view
-lifeExp_hist
+## Barplots, `ggplot` style
+
+Barplots operate similarly in `ggplot`, but instead of providing a formula, we simply specify the aesthetic and tack on a `geom_col`:
+
+```{r barplot_ggplot}
+ggplot(countries_by_continent, aes(x = continent, y = n_countries)) +
+  geom_col() + 
+  theme_bw() + 
+  xlab("Continent") +
+  ylab("Number of Countries") +
+  ggtitle("Number of Countries per Continent")
 ```
 
-# Challenge 1
+There also exists a `geom_bar` function. This can be used to count the number of entries per group for us, so we don't have to do it ourselves:
 
-Open "ggplot2_challenges.Rmd". Create a gg histogram using the heart dataset. Save it in a variable named `A`
+```{r geom_bar}
+ggplot(gap %>% dplyr::distinct(country, .keep_all = TRUE),
+       aes(x = continent)) +
+  geom_bar() + 
+  theme_bw() + 
+  xlab("Continent") +
+  ylab("Number of Countries") +
+  ggtitle("Number of Countries per Continent")
+```
 
-### gg Boxplot
+## Boxplots, `ggplot` style
 
-ggplot boxplots are similar to base boxplots, but the helpful additions and customizations are easier to understand and define. Make boxplots of lifeExp for the five continents. What has fill = continent done!?
+Boxplots in `ggplot2` are similar to base boxplots, but the helpful additions and customizations are easier to understand and define. In this case, however, the aesthetic is a little more involved that in the case of the histogram.
 
-What do you think is the difference between fill and color?
+Let's repeat the previous exercise with boxplots. We have two variables: the continent status and the life expectancy. We need to provide both of these to the aesthetic, so that `ggplot2` knows how to structure the boxplot. We can also provide an optional `fill` variable, which we'll assign to be the diabetes status. 
 
-```{r}
+Take a look at the plot: how did our inputs to the aesthetic correspond to the outputs? What did the fill variable do? How is it different from a color option? Try removing the fill to see how the plot looks without it.
+
+```{r boxplot_gap}
 ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) + 
   geom_boxplot() + 
   theme_minimal()
 ```
 
-# Challenge 2
+Notice that the fill in this case is a **redundant encoding** of continent. It doesn't tell us any new information. In general, this is considered bad practice - we want to keep our plots as simple as possible. If the continent is already captured by the $x$-axis, we shouldn't need to use color to convey it as well. However, there are exceptions to every rule, and sometimes it may be useful to redundantly encode a variable.
 
-Open "ggplot2_challenges.Rmd". Create gg boxplots using the heart dataset. Save this figure in a variable named `B`
+In the above plot, we have a legend, now that we've used the `fill` option. The legend can be moved around by adding the `legend.position` argument of a theme layer that is applied on top of the minimal theme we're working with:
 
-### gg Scatterplot
+```{r boxplot_gap_legend}
+ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) + 
+  geom_boxplot() + 
+  theme_minimal() +
+  theme(legend.position = "top")
+```
 
-ggplot scatterplots are again similar to base scatterplots, again with the ease of feature customization. Make a scatterplot of lifeExp by gdpPercap - what has color = continent done!? 
+> **Challenge 2:** Open `R-Data-Visualization-Challenges.Rmd`. Create a boxplot of cholesterol as a function of sex in the heart dataset using `ggplot`. Save it in a variable named `B`.
 
-```{r}
+## Scatter plots, `ggplot` style
+
+Scatter plots in `ggplot2` are very similar as above, but this time, we use the `geom_point` function. Let's examine life expectancy by GDP per capita, but also include information about the continent, using the color option:
+
+```{r scatter_ggplot}
 ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
   geom_point() + 
   theme_test()
 ```
 
-The legend can be moved around by adding the legend.position argument to a theme layer
+Notice that the `color` argument in the aesthetic allowed us to capture another dimension of the data. This is a key idea: the aesthetic captures the relationships amongst the data, while the geometry specifies how they're visualized.
 
-```{r}
-ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
-  geom_point() + 
-  theme(legend.position = "right")
-```
+Now, let's take a look at a variety of ways we can further customize the scatter plot.
 
-This is also helpful for manipulating the text of the axis labels
+### Custom scale breaks
 
-```{r}
-ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
-  geom_point() + 
-  theme_bw() + # Does it still work if you add this theme after the other theme? 
-  theme(legend.position = "top", 
-        axis.text.x = element_text(angle = 45, hjust = 1)) 
-```
+Suppose we want to adjust the points at which the axis ticks appear. We can use the `scale_` theme layers to do so, by specifying "custom breaks". Specifically, to create a custom scale that goes *from* a start point *to* some end point *by* some interval, we do:
 
-### gg Barplot
-
-ggplot barplots are again similar to base barplots with the ease of feature customization. For example, we can use a bar plot to learn how many countries there are per continent that we have data for.
-
-
-```{r}
-# Loading the dplyr package to use distinct function 
-library(dplyr)
-
-# Subsetting gap dataset to only include the country and continent
-gap_countries <- subset(gap,
-                     select = c(country,
-                                continent))
-
-# This line of code only includes the unique combinations of country and continent by dropping all duplicate rows using the distinct function
-gap_countries <- distinct(gap_countries,
-                  country,
-                  continent,
-                  .keep_all = T)
-
-# This line of code creates a data frame that has two columns such that the first column contains the names of the continent and the second column has the total number of countries in each continent
-gap_countries <- as.data.frame(table(gap_countries$continent))
-
-# This line of code renames the columns in the data frame
-names(gap_countries) <- c("continent",
-                          "n_country")
-
-# This line of code creates a bar graph that shows the continent on the x-axis and the number of countries in each continent on the y-axis
-ggplot(gap_countries,
-       aes(x = continent,
-           y = n_country)) +
-  geom_bar(stat = "identity") + 
-  theme_bw() + 
-  labs(x = NULL, 
-       y = NULL,
-      title = "Number of Countries per Continent")
-
-```
-
-##### Custom scale breaks
-
-To set custom breaks we use a different layer. To create a custom scale that goes *from* a start point *to* some end point *by* some interval 
-
-```{r}
+```{r custom_scale}
 ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
   geom_point() + 
   theme_bw() + 
@@ -416,137 +378,87 @@ ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) +
   scale_y_continuous(breaks = seq(from = 20, to = 90, by = 10), limits = c(20, 90))
 ```
 
-##### Point sizes, shapes, transparencies
+### Point sizes, shapes, transparencies
 
-Change point sizes, shapes, and transparencies
+Let's push how far we can take the aesthetic and theme customizations we can do:
 
-```{r}
+```{r point_sizes_theme}
 ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
                        color = continent, 
-                       # size = 29, 
                        shape = continent)) + 
-  # Here we are adding the alpha argument to control the opacity of each
-  # data point that is displayed. Alpha accepts scores between 0-1 in         which lower values correspond to more transparency
-  geom_point(alpha = 0.55, size = 6) + 
+  # We add the alpha argument to control the opacity of each data point that is displayed.
+  # Alpha accepts values between 0 and 1, with lower values indicating more transparency.
+  geom_point(alpha = 0.50, size = 2) + 
   theme_bw() + # Does it still work if you add this theme after the other theme? 
   theme(legend.position = "top", 
         axis.text.x = element_text(angle = 45, hjust = 1)) + 
   scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
-  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90))
+  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90)) +
+  xlab("GDP Per Capita") +
+  ylab("Life Expectancy") + 
+  ggtitle("Life Expectancy vs. GDP Per Capita across Years and Countries")
 ```
 
-##### Log transform axis
+Notice that we are redundantly encoding continent via shape and color. In this plot, it probably doesn't serve much purpose - but we are demonstrating how you can easily use both aspects of the aesthetic to provide more information in ``ggplot``.
 
-Alternatively, you can [log transform](https://stats.stackexchange.com/questions/298/in-linear-regression-when-is-it-appropriate-to-use-the-log-of-an-independent-va) an axis as well ...
+### Log-transforming axes
 
-```{r}
-ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
-                       color = continent, 
-                       size = 2, 
-                       shape = continent)) + 
-  geom_point(alpha = 0.55) + 
-  theme_bw() + # Does it still work if you add this theme after the other theme? 
+Alternatively, you can [log transform](https://stats.stackexchange.com/questions/298/in-linear-regression-when-is-it-appropriate-to-use-the-log-of-an-independent-va) an axis. This is useful in the plot we are examining, because GDP per capita varies over several orders of magnitude:
+
+```{r log_transform}
+scatter <- ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
+                       color = continent)) + 
+  geom_point(alpha = 0.50, size = 2) + 
+  theme_bw() +
   theme(legend.position = "top", 
         axis.text.x = element_text(angle = 45, hjust = 1)) + 
-  # scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
   scale_x_log10() + 
-  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90))
+  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90)) +
+  xlab("GDP Per Capita") +
+  ylab("Life Expectancy") + 
+  ggtitle("Life Expectancy vs. GDP Per Capita across Years and Countries")
+show(scatter)
 ```
 
-... and add smoothing lines
+> **Challenge 3:** Open `R-Data-Visualization-Challenges.Rmd`. Create a scatter plot of cholesterol as a function of age in the heart dataset using `ggplot`. Save it in a variable named `C`.
 
-```{r}
-ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
-                       color = continent, 
-                       size = 2, 
-                       shape = continent)) + 
-  geom_point(alpha = 0.25) + 
-  theme_bw() + # Does it still work if you add this theme after the other theme? 
-  theme(legend.position = "top", 
-        axis.text.x = element_text(angle = 45, hjust = 1)) + 
-  # scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
-  scale_x_log10() + 
-  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90)) + 
-  geom_smooth(method = "lm", se = TRUE, lwd = 1)
-```
+## Line plots, `ggplot` style
 
-Save as a variable for later ...
+Line plots are useful for visualizing change in some variable on the y-axis plotted against time
 
-```{r}
-options(scipen = 999)
-gdpLe_scatter <- ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
-                       color = continent, 
-                       size = 2, 
-                       shape = continent)) + 
-  geom_point(alpha = 0.25) + 
-  theme_bw() + # Does it still work if you add this theme after the other theme? 
-  theme(legend.position = "top", 
-        axis.text.x = element_text(angle = 45, hjust = 1)) + 
-  # scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
-  scale_x_log10() + 
-  scale_y_continuous(breaks = seq(from = 0, to = 90, by = 10), limits = c(20, 90)) + 
-  geom_smooth(method = "lm", se = TRUE, lwd = 1)
+We'll calculate the the mean `lifeExp` for each continent by year. Check out D-Lab's [Data Wrangling and Manipulation in R](https://github.com/dlab-berkeley/R-wrang) to learn more! 
 
-gdpLe_scatter
-```
-
-# Challenge 3
-
-Open "ggplot2_challenges.Rmd". Create a gg scatterplot using the heart dataset and save it in a varibale named `C`
-
-### gg Lineplot
-
-Lineplots are useful for visualizing change in some variable on the y-axis plotted against time on the x-axis. There are many different ways to do this, including reshaping  your data using the reshape2 or tidyr packages. 
-
-We will look at a quick dplyr review to add a column to our gap dataset of the mean lifeExp for each continent by year. Check out D-Lab's [Data Wrangling and Manipulation in R](https://github.com/dlab-berkeley/R-wrang) to learn more! 
-
-```{r}
-library(dplyr)
-gap_lifeExp_mean = gap %>%
+```{r mean_life_exp}
+gap_mean_life_exp = gap %>%
   dplyr::group_by(year, continent) %>%
   dplyr::mutate(mean_lifeExp = mean(lifeExp))
 
-head(gap_lifeExp_mean)
+head(gap_mean_life_exp)
 ```
 
-Plot! 
+Next, we'll plot the mean life expectancy using `geom_line`:
 
-```{r}
-ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp, 
-                             color = continent, 
-                             linetype = continent)) + 
-  geom_line(lwd = 3) + 
+```{r lineplot}
+ggplot(gap_mean_life_exp, aes(x = year,
+                              y = mean_lifeExp,
+                              color = continent)) + 
+  geom_line(lwd = 2) + 
   theme_bw() + 
   theme(legend.position = "top")
 ```
 
-Increase legend size using theme and change legend title
+Let's customize the legend. We can:
 
-```{r}
-ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp, 
-                             color = continent, 
-                             linetype = continent)) + 
-  geom_line(lwd = 2) + 
-  theme_bw() + 
-  theme(legend.position = "top", 
-        legend.title = element_text(color = "black", size = 12, face = "bold"), 
-        legend.text = element_text(color = "black", size = 12, face = "bold")) + 
-  guides(color = guide_legend(title = "Continent:   "), 
-         linetype = FALSE)
-```
-
-Or: 
 - remove the legend title  
-- increase the size of the legend lines  
 - increase the spacing of the legend items  
 - right align the legend text  
 - move labels to left of glyphs  
-- save as a variable
 
-```{r}
-gap_line <- ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp, 
-                             color = continent, 
-                             linetype = continent)) + 
+```{r line_plot_legend}
+line <- ggplot(gap_mean_life_exp,
+               aes(x = year,
+                   y = mean_lifeExp, 
+                   color = continent)) + 
   geom_line(lwd = 2) + 
   theme_bw() + 
   theme(legend.position = "right", 
@@ -554,93 +466,88 @@ gap_line <- ggplot(gap_lifeExp_mean, aes(x = year, y = mean_lifeExp,
         legend.text = element_text(color = "black", size = 10, face = "bold"), 
         legend.key.width = unit(2.54, "cm"),
         legend.text.align = 1,
-        legend.key = element_rect(size = 3, fill = "white", colour = NA), legend.key.size = unit(1, "cm")) + 
-  guides(color = guide_legend(label.position = "left"))
+        legend.key = element_rect(size = 3, fill = "white", colour = NA),
+        legend.key.size = unit(1, "cm")) + 
+  guides(color = guide_legend(label.position = "left")) +
+  xlab("Year") +
+  ylab("Mean Life Expectancy")
 
-gap_line
+show(line)
 ```
 
-##### Faceting
+## Heatmaps, `ggplot` style
 
-You can also facet your plots to turn overlaid figures into separate ones. For example: 
+Heatmaps are useful when you want to plot three variables: one (usually) continuous variable (as the color on the heatmap) by two factors (each of the axes). Let's make a simple heatmap, examining the life expectancy as a function of continent and year:
 
-```{r}
-gap_line <- gap_line + 
-  facet_wrap(~continent) + 
-  guides(linetype = FALSE) + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-gap_line
-```
-
-# Challenge 4
-
-Open "ggplot2_challenges.Rmd" Create a gg lineplot using the heart dataset and save it in a variable named `D`
-
-### gg Heatmap
-
-Heatmaps are useful when you want to plot three variables - one continuous variable by two factors. 
-
-- Add a gradient scale fill based on lifeExp (darker colors represent more years)  
-- Put years to left of legend glyphs  
-- Save it as a varialbe
-
-```{r}
+```{r heatmap}
 heat <- ggplot(gap, aes(x = continent, y = year, fill = lifeExp)) + 
   geom_tile() + 
-  scale_fill_gradient(low = "white", high = "gray20", 
-                      limits = c(20,90), breaks = seq(20, 90, 10)) + 
+  scale_fill_gradient(low = "white",
+                      high = "gray20", 
+                      limits = c(20,90),
+                      breaks = seq(20, 90, 10)) + 
   theme_bw() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + 
-  scale_y_continuous(breaks = seq(from = 1952, to = 2007, by = 5), limits = c(1947, 2012)) + 
+  scale_y_continuous(breaks = seq(from = 1952, to = 2007, by = 5),
+                     limits = c(1947, 2012)) + 
   guides(fill = guide_colourbar(label.position = "left"))
-
-heat
+show(heat)
 ```
 
-# cowplot for compound figures!
+## Subplots with a facet wrap
 
-Combine figures into a single compound figure
+An alternative approach to showing the previous plot is to separate each of the individual curves into their own subplots. This can be done with a `facet_wrap`, in which we choose a variable (i.e., a facet) by which to split the plot into individual subplots:
 
-```{r}
-library(cowplot)
-compound <- plot_grid(lifeExp_hist, gdpLe_scatter, gap_line, heat, 
-                     nrow = 2, ncol = 2,
-                     scale = 0.85, 
-                     labels = c("A)", "B)", "C)", "D)"))
-compound
+```{r facet_wrap}
+facet_line <- line + 
+  facet_wrap(~continent) + 
+  guides(linetype = "none") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+show(facet_line)
+```
+
+> **Challenge 4:** Open `R-Data-Visualization-Challenges.Rmd`. Create a line plot of the mean cholesterol for each age, separated by sex using the heart data. You will need to do some data manipulation with `dplyr` to make this plot. Save your plot to a variable named `D`.
+
+# Creating compound figures using `cowplot`
+
+Publication quality figures often incorporate several subplots, which together tell a narrative about the problem being studied. We saw above that `ggplot2` can create something like a subplot using facets, but it can be quite limited. A package called `cowplot` makes it easy to stitch together individual plots into a bigger figure:
+
+```{r compound_figure}
+compound <- plot_grid(hist, scatter, facet_line, heat, 
+                      nrow = 2,
+                      ncol = 2,
+                      scale = 0.85, 
+                      labels = c("A)", "B)", "C)", "D)"))
+show(compound)
 ```
 
 # Exporting
 
-Exporting graphs in R is straightforward. Start by clicking the "Export" button:  
-1. Click **Copy to clipboard...** if you want to quickly copy/paste a figure into a slideshow presentation or text document  
+Exporting graphs in R is straightforward. Start by clicking the "Export" button:
 
-2. Click **Save as image...** (Raster/Bitmap formats such as .png, .jpeg, .tiff) if you want to explort to this format  
+1. Click **Copy to clipboard...** if you want to quickly copy/paste a figure into a slideshow presentation or text document.
+
+2. Click **Save as image...** (Raster/Bitmap formats such as .png, .jpeg, .tiff) if you want to explort to this format.
 
 > NOTE: Not recommended because every pixel of a plot contains its own separate coding; not so great if you want to resize the image  
 
 3. Click **Save as PDF...** (Vector format such as .pdf, .ps) to export to .pdf.  
 
-> NOTE: Recommended! Every element of a plot is encoded with a function that gives its coding conditional on several factors; great for resizing  
-
-- Export to .pdf  
-- Open this .pdf file and click File --> Export As  
-- Define resolution  
-- Save as .tiff format (with .jpeg compression is applicable)  
-- This allows you to maintain resolution while shrinking the file size!  
+> NOTE: Recommended! Every element of a plot is encoded with a function that gives its coding conditional on several factors, which makes it great for resizing. 
 
 4. Or, **export with `ggsave`**  
 
 ```{r eval = FALSE}
 # Assume we saved our plot is an object called example.plot
-ggsave(filename = "compound/compound.pdf", plot = compound, 
-       width = 12, height = 8, units = "in", dpi = 600)
+ggsave(filename = "compound.pdf",
+       plot = compound, 
+       width = 12,
+       height = 8,
+       units = "in",
+       dpi = 600)
 ```
 
-# Challenge 5
-
-Open "ggplot2_challenges.Rmd". Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D that you created above. 
-
+> **Challenge 5:** Open `R-Data-Visualization-Challenges.Rmd`. Use `cowplot` to create a compound figure named `compound_figure` that contains subplots `A`, `B`, `C`, and `D` that you created above. 
 
 # Resources for data visualization
 
@@ -661,4 +568,3 @@ Here, we provide some useful resources that may deepen your data visualization s
 * Wilkinson L. 1999. [The Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448): A classic text on data visualization, which served as the inspiration for the structure of `ggplot2`.
 
 * [The R Graph Gallery](https://www.r-graph-gallery.com/index.html): A handy repository of example visualizations in R.
-
