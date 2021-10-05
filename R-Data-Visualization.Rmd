@@ -103,25 +103,26 @@ Ultimately, identify your audience and their needs and interests. The same data 
 There are two major sets of tools for creating plots in R:
 
 * 1. base graphics, which  come with all R installations  
-* 2. ggplot2, a stand-alone package.  
+* 2. `ggplot2`, a stand-alone package.  
 
-Note that other plotting facilities do exist (notably **lattice**), but base and ggplot2 are by far the most popular. Check out this post on comparisons between [base, lattice, and ggplot2 graphics](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2) to learn more. 
+Note that other plotting facilities do exist (notably, `lattice`), but base graphics and `ggplot2` are by far the most popular. Check out [this post](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2) on comparisons between base, `ggplot2`, and `lattice` graphics to learn more.
 
 ## Package installation
 
-Install and library the following packages. Let's get started! 
+First, we'll install and import the necessary packages. Let's get started! 
 
 ```{r eval = FALSE}
-install.packages(c("ggplot2", "cowplot", "dplyr"))
+# Uncomment this to install packages, if necessary.
+# install.packages(c("cowplot", "dplyr", "ggplot2"))
 
-library(ggplot2)
 library(cowplot)
 library(dplyr)
+library(ggplot2)
 ```
 
-## The dataset
+## Dataset Details
 
-For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy, among other things.
+For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy and GDP per-capita.
 
 ```{r}
 gap <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = TRUE)
@@ -131,36 +132,24 @@ str(gap)
 
 # R base graphics
 
-Base graphics are nice for quick visualizaitons of your data. You can make them publication-quality, but they take more effort than those produced by ggplot2. Let's review base plotting calls for histograms, boxplots, and scatterplots. 
+Base graphics are nice for quick visualizations of your data. You can make them publication-quality, but they take more effort than those produced by `ggplot2`. Let's review base plotting calls for histograms, boxplots, and scatterplots.
 
-### Histogram
+## Histograms
 
-Histograms are useful to illustrate the distribution of a single continuous (i.e., numeric or integer) variable. The breaks argument within the hist() function allows you to control the amount of bins that are displayed in the histogram.
+Histograms are useful to illustrate the distribution of a single continuous (i.e., numeric or integer) variable. In the gapminder dataset, the histogram is a natural choice for visualizing `lifeExp`:
 
-```{r}
+```{r histogram}
 hist(x = gap$lifeExp)
 
 # Define number of breaks
 hist(x = gap$lifeExp, breaks = 5)
 ```
 
-### Kernal density plots
+The breaks argument within the `hist()` function allows you to control the amount of bins that are displayed in the histogram.
 
-Kernal density plots are helpful in seeing the distribution of a variable. The density function creates the data that will be plotted and the plot function creates a graph of that data.
+To make the histogram more informative, we can adjust visual features of the plot. For example, we can customize the title, x-axis label, x- and y-axes limits, the color of bar, and more:
 
-
-```{r}
-
-plot(density(gap$lifeExp))
-
-```
-
-
-You can see the 657 available stock colors available to you by typing `colors()`. Why do you think there so many "greys"?
-
-Change color of bars, title, x-axis label, and x and y scale limits
-
-```{r}
+```{r histogram_customize}
 hist(x = gap$lifeExp, 
      breaks = 10, 
      col = "skyblue", 
@@ -171,7 +160,9 @@ hist(x = gap$lifeExp,
      las = 1)
 ```
 
-### Barplot
+You can see the 657 available stock colors available to you by typing `colors()`. Why do you think there so many "greys"?
+
+## Barplot
 
 Barplots are useful to visualize counts and or averages of a single continuous variable - which can be parsed by levels of a factor (if needed). For example, we can use a bar plot to learn how many countries there are per continent that we have data for.
 
@@ -204,14 +195,12 @@ barplot(gap_countries[,"n_country"],
         main = "Number of Countries per Continent")
 ```
 
-### Boxplot
+## Boxplots
 
-Boxplots are useful to visualize the distribution of a single continuous variable - which can be parsed by levels of a factor. For example, we can look at distributions of life expectancy *by* continent:  
+Boxplots are useful to visualize the distribution of a single continuous variable that can be parsed by levels of a factor (i.e., a categorical feature). For example, we can look at distributions of life expectancy *by* continent:  
 
-```{r}
-boxplot(gap$lifeExp ~ gap$continent, 
-        # Give each box its own color
-        col = c("orange", "blue", "green", "red", "purple"),
+```{r boxplot}
+boxplot(gap$lifeExp ~ gap$continent,
         main = "Boxplot of Life Expectancy per Continent")
 
 # There are five continents represented in this dataset
@@ -219,48 +208,35 @@ levels(gap$continent)
 length(levels(gap$continent))
 ```
 
-### Scatterplot
+## Scatter plots
 
-Scatterplots are useful for visualizing the relationship between two continuous (i.e., numeric or integer) variables. In the following example, we will look at the relationship between GDP per capita and life expectancy in country of Portugal.
+Scatter plots are useful for visualizing the relationship between two numeric quantities. Typically, these quantities are continuous, but scatterplots can sometimes effectively convey comparisons of discrete quantities as well.
 
-```{r}
+In the following example, we will look at the relationship between GDP per capita and life expectancy in country of Portugal.
 
-gap_Portugal <- filter(gap,
-                       country == "Portugal")
+```{r scatter_plot}
+portugal <- dplyr::filter(gap, country == "Portugal")
 
 # Points
-plot(x = gap_Portugal$gdpPercap, y = gap_Portugal$lifeExp, type = "p",
-     xlab = "GDP per-capita",
+plot(x = portugal$gdpPercap, y = portugal$lifeExp,
+     type = "p",
+     xlab = "GDP per capita",
      ylab = "Life Expectancy",
-     main = "Relation Between GDP per-capita and \n Life Expectancy in Portugal") 
+     main = "GDP per-capita vs. Life Expectancy in Portugal") 
 
 # Connected lines (not a smoothing line)
-plot(x = gap_Portugal$gdpPercap, y = gap_Portugal$lifeExp, type = "l",
-     xlab = "GDP per-capita",
+plot(x = portugal$gdpPercap, y = portugal$lifeExp,
+     type = "l",
+     xlab = "GDP per capita",
      ylab = "Life Expectancy",
-     main = "Relation Between GDP per-capita and \n Life Expectancy in Portugal") 
+     main = "GDP per-capita vs. Life Expectancy in Portugal") 
 
 # Both
-plot(x = gap_Portugal$gdpPercap, y = gap_Portugal$lifeExp, type = "b",
-     xlab = "GDP per-capita",
+plot(x = portugal$gdpPercap, y = portugal$lifeExp,
+     type = "b",
+     xlab = "GDP per capita",
      ylab = "Life Expectancy",
-     main = "Relation Between GDP per-capita and \n Life Expectancy in Portugal") 
-```
-
-Add a title, change the x and y axis labels and limits, change point size and shape, and map each point . Type `?pch` to learn more about point shapes in base plot
-
-```{r}
-# Turn off scientific notation
-# options(scipen = 999)
-
-plot(x = gap$gdpPercap, y = gap$lifeExp, 
-     type = "p", 
-     main = "Example scatterplot", 
-     xlab = "GDP per capita income (USD)", 
-     ylab = "Life Expectancy (years)", 
-     xlim = c(0, 40000), 
-     ylim = c(20, 90),
-     cex = 2, pch = 6)
+     main = "GDP per-capita vs. Life Expectancy in Portugal") 
 ```
 
 # The ggplot2 way
@@ -665,24 +641,24 @@ ggsave(filename = "compound/compound.pdf", plot = compound,
 
 Open "ggplot2_challenges.Rmd". Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D that you created above. 
 
-# Custom colors
 
-Are you interested in custom colors for your plots? Check out the ["Color and fill scales" section for discrete and continuous variables](https://rstudio.com/wp-content/uploads/2015/04/ggplot2-cheatsheet.pdf) in the RStudio Visualization cheatsheet!
+# Resources for data visualization
 
-## Additional Resources
+Here, we provide some useful resources that may deepen your data visualization skills:
 
-Wickham et al. 2019. [ggplot2](https://ggplot2.tidyverse.org/)  
+* Wickham et al. 2019. [ggplot2](https://ggplot2.tidyverse.org/): The `ggplot2` documentation.
 
-[ggplot2 cheatsheet](https://rstudio.com/wp-content/uploads/2019/01/Cheatsheets_2019.pdf)
+* [ggplot2 cheatsheet](https://rstudio.com/wp-content/uploads/2019/01/Cheatsheets_2019.pdf): A helpful cheatsheet to `ggplot2`.
 
-Wilke CO. 2019. [Introduction to cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html)  
+* Wilke CO. 2019. [Introduction to cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html): An introductory vignette (and accompanying documentation) to `cowplot`.
 
-Wilke CO. 2019. [Arranging plots in a grid](https://wilkelab.org/cowplot/articles/plot_grid.html)  
+* Wilke CO. 2019. [Arranging plots in a grid](https://wilkelab.org/cowplot/articles/plot_grid.html): A vignette detailing subplotting in `cowplot`.
 
-Tufte ER. 2001. [The Visual Display of Quantitative Information](https://www.amazon.com/Visual-Display-Quantitative-Information/dp/1930824130)
+* Tufte ER. 2001. [The Visual Display of Quantitative Information](https://www.amazon.com/Visual-Display-Quantitative-Information/dp/1930824130): One of the definitive books on data visualization.
 
-Wilke CO. 2019. [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/)  
+* Wilke CO. 2019. [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/): Online (i.e., free) textbook covering data visualization, written by the creator of `cowplot`. 
 
-Wilkinson L. 1999. [The Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448)  
+* Wilkinson L. 1999. [The Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448): A classic text on data visualization, which served as the inspiration for the structure of `ggplot2`.
 
-[The R Graph Gallery](https://www.r-graph-gallery.com/index.html)
+* [The R Graph Gallery](https://www.r-graph-gallery.com/index.html): A handy repository of example visualizations in R.
+
