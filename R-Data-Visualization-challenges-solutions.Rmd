@@ -15,10 +15,11 @@ heart <- read.csv("data/heart.csv")
 names(heart)
 ```
 
+**For each challenge, use ggplot2**
 
 # Challenge 1 
 
-Create a gg histogram using the heart dataset. Save it in a variable named `A`
+Create a histogram of the Serum cholesterol using the heart dataset. Save it in a variable named `A`
 
 ```{r}
 A <- ggplot(heart, aes(x = chol)) +
@@ -33,7 +34,9 @@ A
 
 # Challenge 2 
 
-Create gg boxplots using the heart dataset. Save this figure in a variable named `B`
+Using the heart dataset, create a boxplot of Serum cholesterol based on patient self described sex. Save this figure in a variable named `B`. 
+
+Hint: The variable that identifies patient sex needs to be coerced into a different variable type in order to make this visualization.
 
 ```{r}
 library(dplyr)
@@ -57,7 +60,7 @@ B
 
 # Challenge 3
 
-Create a gg scatterplot using the heart dataset and save it in a variable named `C`
+Using the heart dataset, create a scatterplot that visualizes the relationship between patient age and Serum cholesterol. Save it in a variable named `C`
 
 ```{r}
 C <- ggplot(heart, aes(x = age, y = chol, 
@@ -75,7 +78,7 @@ C
 
 # Challenge 4
 
-Create a gg lineplot using the heart dataset and save it in a variable named `D`
+Using the heart dataset, create a lineplot depicting the relationship between patient age and Serum cholesterol. Save it in a variable named `D`
 
 ```{r}
 # sometimes we will want to re-shape our data for plotting
