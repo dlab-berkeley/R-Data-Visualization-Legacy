@@ -348,7 +348,7 @@ ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) +
   theme(legend.position = "top")
 ```
 
-> **Challenge 2:** Open `R-Data-Visualization-Challenges.Rmd`. Create a boxplot of cholesterol as a function of sex in the heart dataset using `ggplot`. Save it in a variable named `B`.
+> **Challenge 2:** Open `R-Data-Visualization-Challenges.Rmd`. Create a boxplot of Serum cholesterol based on patient self described sex using `ggplot`. Save it in a variable named `B`.
 
 ## Scatter plots, `ggplot` style
 
@@ -420,7 +420,7 @@ scatter <- ggplot(data = gap, aes(x = gdpPercap, y = lifeExp,
 show(scatter)
 ```
 
-> **Challenge 3:** Open `R-Data-Visualization-Challenges.Rmd`. Create a scatter plot of cholesterol as a function of age in the heart dataset using `ggplot`. Save it in a variable named `C`.
+> **Challenge 3:** Open `R-Data-Visualization-Challenges.Rmd`. Create a scatterplot that visualizes the relationship between patient age and Serum cholesterol using `ggplot`. Save it in a variable named `C`.
 
 ## Line plots, `ggplot` style
 

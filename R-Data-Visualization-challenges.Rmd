@@ -46,7 +46,7 @@ Using the heart dataset, create a scatterplot that visualizes the relationship b
 
 # Challenge 4
 
-Using the heart dataset, create a lineplot depicting the relationship between patient age and Serum cholesterol. Save it in a variable named `D`
+Create a line plot of the mean cholesterol for each age, separated by sex using the heart data. You will need to do some data manipulation with `dplyr` to make this plot. Save your plot to a variable named `D`.
 
 ```{r}
 ## YOUR CODE HERE
