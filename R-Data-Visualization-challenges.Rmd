@@ -1,8 +1,6 @@
 ---
-title: "ggplot2_challenges"
+title: "R-Data-Visualization Challenges"
 subtitle: "Challenges + ggmap and the Google Maps Static API"
-author: "Evan Muzzall"
-date: "April 15, 2020"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -16,10 +14,11 @@ Use the heart dataset for the following challenges. Import it and save it in a v
 ## YOUR CODE HERE
 ```
 
+**For each challenge, use ggplot2**
 
 # Challenge 1 
 
-Create a gg histogram using the heart dataset. Save it in a variable named `A`
+Using the heart dataset, create a histogram of the Serum cholesterol. Save it in a variable named `A`.
 
 ```{r}
 ## YOUR CODE HERE
@@ -27,7 +26,11 @@ Create a gg histogram using the heart dataset. Save it in a variable named `A`
 
 # Challenge 2 
 
-Create gg boxplots using the heart dataset. Save this figure in a variable named `B`
+Using the heart dataset, create a boxplot of Serum cholesterol based on patient self described sex. Save this figure in a variable named `B`. 
+
+Hint: The variable that identifies patient sex needs to be coerced into a different variable type in order to make this visualization.
+
+
 
 ```{r}
 ## YOUR CODE HERE
@@ -35,7 +38,7 @@ Create gg boxplots using the heart dataset. Save this figure in a variable named
 
 # Challenge 3
 
-Create a gg scatterplot using the heart dataset and save it in a varibale named `C`
+Using the heart dataset, create a scatterplot that visualizes the relationship between patient age and Serum cholesterol. Save it in a variable named `C`
 
 ```{r}
 ## YOUR CODE HERE
@@ -43,7 +46,7 @@ Create a gg scatterplot using the heart dataset and save it in a varibale named 
 
 # Challenge 4
 
-Create a lineplot using the heart dataset and save it in a variable named `D`
+Using the heart dataset, create a lineplot depicting the relationship between patient age and Serum cholesterol. Save it in a variable named `D`
 
 ```{r}
 ## YOUR CODE HERE
