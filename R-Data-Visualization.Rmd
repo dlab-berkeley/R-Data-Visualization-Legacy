@@ -110,11 +110,12 @@ First, we'll install and import the necessary packages. Let's get started!
 
 ```{r import}
 # Uncomment this to install packages, if necessary.
-# install.packages(c("cowplot", "dplyr", "ggplot2"))
+# install.packages(c("cowplot", "dplyr", "ggplot2", "viridis"))
 
 library(cowplot)
 library(dplyr)
 library(ggplot2)
+library(viridis)
 ```
 
 ## Dataset Details
@@ -515,6 +516,22 @@ facet_line <- line +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 show(facet_line)
 ```
+
+A word about the colors here. While these colors are arguably distinct, it's not the case that the base colors necessarily will be. It's estimated that, "globally, 1 in 12 males and 1 in 200 females are colorblind." The most common form of color blindness is red-green color blindness. **Viridis** is a color palette with an emphasis on accessibility for those of us who experience colorblindness. 
+
+To show the difference with a colorblind friendly palette, let's remake the same facet_line chart. 
+
+```{r, facet_colorblind}
+facet_line_cb <- line + 
+  facet_wrap(~continent) + 
+  guides(linetype = "none") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  scale_color_viridis_d()
+show(facet_line_cb)
+```
+
+Note that we have overridden the default colors from our line graph and replaced them with a colorblind friendly palette. Every line color is now clearly distinct for users. 
+
 
 > **Challenge 4:** Open `R-Data-Visualization-Challenges.Rmd`. Create a line plot of the mean cholesterol for each age, separated by sex using the heart data. You will need to do some data manipulation with `dplyr` to make this plot. Save your plot to a variable named `D`.
 
