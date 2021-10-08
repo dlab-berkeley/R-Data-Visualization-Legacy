@@ -265,6 +265,16 @@ show(plot)
 
 Ahh, my eyes! Always avoid [chartjunk](https://en.wikipedia.org/wiki/Chartjunk)! Keep your visualizations simple and crisp so that they can efficiently communicate their point without losing your audience in chartjunk.
 
+Note that we can also make a density plot with a similar structure as a histogram. This time we will make sure to avoid the ugly coloring. 
+
+```{r density_layer}
+plot <- ggplot(data = gap, aes(x=lifeExp))+
+  geom_density()
+
+```
+
+A density plot computes a kernel density estimate, which you can think of as the smoothed version of the histogram. We like using them when we have continuous data that comes from a smooth distribution. Importantly for this workshop, note that the only difference we made between the histogram and the density plot was changing which geom_* we were interested in. 
+
 ### Customize with theme layers
 
 Themes in `ggplot2` are top-level layers which can be use to stylize and customize plots. These themes contain many components, which can be used to change every part of the plot, including the fonts, label sizes, label placements, and more. `ggplot2` comes with some built-in themes that you can easily add to a plot to give it a clean, recognizable, and consistent style. One of the most commonly used themes is a black and white theme, denoted by `theme_bw()`:
