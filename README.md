@@ -60,14 +60,26 @@ If you don't have a Berkeley CalNet ID, you can still run these lessons in the c
 
 By using this button, however, you cannot save your work.
 
+# Additional Resources
+
+Check out the following resources to learn more about data visualization and R:
+
+* [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)  
+* [The tidyverse style guide](http://style.tidyverse.org/)  
+* [Software Carpentry](https://swcarpentry.github.io/) 
+* [Quick-R](http://statmethods.net/)  
+* [UCLA idre](https://stats.idre.ucla.edu/r/)  
+* [R-bloggers](https://www.r-bloggers.com/)  
+* [Stack Overflow - R](http://stackoverflow.com/questions/tagged/r)  
 # About the UC Berkeley D-Lab
 
 D-Lab works with Berkeley faculty, research staff, and students to advance data-intensive social science and humanities research. Our goal at D-Lab is to provide practical training, staff support, resources, and space to enable you to use R for your own research applications. Our services cater to all skill levels and no programming, statistical, or computer science backgrounds are necessary. We offer these services in the form of workshops, one-to-one consulting, and working groups that cover a variety of research topics, digital tools, and programming languages.  
 
 Visit the [D-Lab homepage](https://dlab.berkeley.edu/) to learn more about us. You can view our [calendar](https://dlab.berkeley.edu/events/calendar) for upcoming events, learn about how to utilize our [consulting](https://dlab.berkeley.edu/consulting) and [data](https://dlab.berkeley.edu/data) services, and check out upcoming [workshops](https://dlab.berkeley.edu/events/workshops).
 
-# Other D-Lab R workshops
- 
+# Other D-Lab R Workshops
+
+ Here are other R workshops offered by the D-Lab:
 ## Basic Competency
 * [Fast-R](https://github.com/dlab-berkeley/Fast-R)
 * [R Data Wrangling](https://github.com/dlab-berkeley/R-wrang)
@@ -81,19 +93,12 @@ Visit the [D-Lab homepage](https://dlab.berkeley.edu/) to learn more about us. Y
 * [Introduction to Deep Learning in R](https://github.com/dlab-berkeley/Deep-Learning-in-R)
 * [R Package Development](https://github.com/dlab-berkeley/R-package-development)
 
-# Additional Resources
-* [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)  
-* [The tidyverse style guide](http://style.tidyverse.org/)  
-* [Software Carpentry](https://swcarpentry.github.io/) 
-* [Quick-R](http://statmethods.net/)  
-* [UCLA idre](https://stats.idre.ucla.edu/r/)  
-* [R-bloggers](https://www.r-bloggers.com/)  
-* [Stack Overflow - R](http://stackoverflow.com/questions/tagged/r)  
 # Contributors
-* [Evan Muzzall](https://dlab.berkeley.edu/people/evan-muzzall)
-* [Lawrence Yin Tello](https://dlab.berkeley.edu/people/lawrence-yin-tello)
-* [Josh Quan](https://dlab.berkeley.edu/people/josh-quan-0)
 * [Alexander Stephenson](https://dlab.berkeley.edu/people/alex-stephenson)
 * [Pratik Sachdeva](https://dlab.berkeley.edu/people/pratik-sachdeva)
+* [Evan Muzzall](https://dlab.berkeley.edu/people/evan-muzzall)
+* Lawrence Yin Tello
+* Josh Quan
+
 
 Thanks to [Software Carpentry](http://software-carpentry.org/workshops/), Chris Paciorek, Rochelle Terman, and the [R-bootcamp](https://dlab.berkeley.edu/training/r-bootcamp-3) for inspiration.
