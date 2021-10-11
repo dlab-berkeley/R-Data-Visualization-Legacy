@@ -66,9 +66,34 @@ D-Lab works with Berkeley faculty, research staff, and students to advance data-
 
 Visit the [D-Lab homepage](https://dlab.berkeley.edu/) to learn more about us. You can view our [calendar](https://dlab.berkeley.edu/events/calendar) for upcoming events, learn about how to utilize our [consulting](https://dlab.berkeley.edu/consulting) and [data](https://dlab.berkeley.edu/data) services, and check out upcoming [workshops](https://dlab.berkeley.edu/events/workshops).
 
+# Other D-Lab R workshops
+ 
+## Basic Competency
+* [Fast-R](https://github.com/dlab-berkeley/Fast-R)
+* [R Data Wrangling](https://github.com/dlab-berkeley/R-wrang)
+* [R Functional Programming](https://github.com/dlab-berkeley/R-functional-programming)
+* [Geospatial Fundamentals in R with sf](https://github.com/dlab-berkeley/Geospatial-Fundamentals-in-R-with-sf)
+* [Census Data in R](https://github.com/dlab-berkeley/Census-Data-in-R)
+## Intermediate/Advanced Competency
+* [Advanced Data Wrangling in R](https://github.com/dlab-berkeley/advanced-data-wrangling-in-R)
+* [Unsupervised Learning in R](https://github.com/dlab-berkeley/Unsupervised-Learning-in-R)
+* [R Machine Learning with tidymodels](https://github.com/dlab-berkeley/Machine-Learning-with-tidymodels)
+* [Introduction to Deep Learning in R](https://github.com/dlab-berkeley/Deep-Learning-in-R)
+* [R Package Development](https://github.com/dlab-berkeley/R-package-development)
+
+# Additional Resources
+* [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)  
+* [The tidyverse style guide](http://style.tidyverse.org/)  
+* [Software Carpentry](https://swcarpentry.github.io/) 
+* [Quick-R](http://statmethods.net/)  
+* [UCLA idre](https://stats.idre.ucla.edu/r/)  
+* [R-bloggers](https://www.r-bloggers.com/)  
+* [Stack Overflow - R](http://stackoverflow.com/questions/tagged/r)  
 # Contributors
 * [Evan Muzzall](https://dlab.berkeley.edu/people/evan-muzzall)
 * [Lawrence Yin Tello](https://dlab.berkeley.edu/people/lawrence-yin-tello)
 * [Josh Quan](https://dlab.berkeley.edu/people/josh-quan-0)
+* [Alexander Stephenson](https://dlab.berkeley.edu/people/alex-stephenson)
+* [Pratik Sachdeva](https://dlab.berkeley.edu/people/pratik-sachdeva)
 
-Credit: Thanks to [Software Carpentry](http://software-carpentry.org/workshops/), Chris Paciorek, Rochelle Terman, and the [R-bootcamp](https://dlab.berkeley.edu/training/r-bootcamp-3) for inspiration.
+Thanks to [Software Carpentry](http://software-carpentry.org/workshops/), Chris Paciorek, Rochelle Terman, and the [R-bootcamp](https://dlab.berkeley.edu/training/r-bootcamp-3) for inspiration.
