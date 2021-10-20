@@ -193,7 +193,6 @@ length(levels(gap$continent))
 
 Notice that we used a formula in the base R function to specify the relationship we wanted the boxplot to demonstrate.
 
-
 ## Scatter plots
 
 Scatter plots are useful for visualizing the relationship between two numeric quantities. Typically, these quantities are continuous, but scatterplots can sometimes effectively convey comparisons of discrete quantities as well.
@@ -258,10 +257,9 @@ print(plot)
 We need the last building block: a `geom_` function, which in this case, is `geom_histogram`. Add `geom_histogram` to see the data!
 
 ```{r histogram_layer}
-plot <- 
-  ggplot(data = gap, aes(x = lifeExp)) + 
+plot <- ggplot(data = gap, aes(x = lifeExp)) + 
   geom_histogram(color = "orange", fill = "green")
-show(plot)
+print(plot)
 ```
 
 Ahh, my eyes! Always avoid [chartjunk](https://en.wikipedia.org/wiki/Chartjunk)! Keep your visualizations simple and crisp so that they can efficiently communicate their point without losing your audience in chartjunk.
@@ -269,9 +267,9 @@ Ahh, my eyes! Always avoid [chartjunk](https://en.wikipedia.org/wiki/Chartjunk)!
 Note that we can also make a density plot with a similar structure as a histogram. This time we will make sure to avoid the ugly coloring. 
 
 ```{r density_layer}
-plot <- ggplot(data = gap, aes(x=lifeExp))+
+plot <- ggplot(data = gap, aes(x=lifeExp)) +
   geom_density()
-
+print(plot)
 ```
 
 A density plot computes a kernel density estimate, which you can think of as the smoothed version of the histogram. We like using them when we have continuous data that comes from a smooth distribution. Importantly for this workshop, note that the only difference we made between the histogram and the density plot was changing which geom_* we were interested in. 
@@ -287,7 +285,7 @@ plot <-
                  fill = "gray80", 
                  bins = 10) + 
   theme_bw()
-show(plot)
+print(plot)
 ```
 
 We can also use label and title layers to customize the axis and title labels. Note, however, the syntax differences of each layer compared to base plotting arguments from earlier.
@@ -302,7 +300,7 @@ hist <-
   ggtitle("Histogram of Life Expectancy") + 
   xlab("Years") + 
   ylab("Frequency") 
-show(hist)
+print(hist)
 ```
 
 We can also assign this visualization to a variable for later use
@@ -314,24 +312,25 @@ We can also assign this visualization to a variable for later use
 Barplots operate similarly in `ggplot`, but instead of providing a formula, we simply specify the aesthetic and tack on a `geom_col`:
 
 ```{r barplot_ggplot}
-ggplot(countries_by_continent, aes(x = continent, y = n_countries)) +
+bar <- ggplot(countries_by_continent, aes(x = continent, y = n_countries)) +
   geom_col() + 
   theme_bw() + 
   xlab("Continent") +
   ylab("Number of Countries") +
   ggtitle("Number of Countries per Continent")
+print(bar)
 ```
 
 There also exists a `geom_bar` function. This can be used to count the number of entries per group for us, so we don't have to do it ourselves:
 
 ```{r geom_bar}
-ggplot(gap %>% dplyr::distinct(country, .keep_all = TRUE),
-       aes(x = continent)) +
+bar2 <- ggplot(gap %>% dplyr::distinct(country, .keep_all = TRUE), aes(x = continent)) +
   geom_bar() + 
   theme_bw() + 
   xlab("Continent") +
   ylab("Number of Countries") +
   ggtitle("Number of Countries per Continent")
+print(bar2)
 ```
 
 ## Boxplots, `ggplot` style
@@ -343,9 +342,10 @@ Let's repeat the previous exercise with boxplots. We have two variables: the con
 Take a look at the plot: how did our inputs to the aesthetic correspond to the outputs? What did the fill variable do? How is it different from a color option? Try removing the fill to see how the plot looks without it.
 
 ```{r boxplot_gap}
-ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) + 
+box <- ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) + 
   geom_boxplot() + 
   theme_minimal()
+print(box)
 ```
 
 Notice that the fill in this case is a **redundant encoding** of continent. It doesn't tell us any new information. In general, this is considered bad practice - we want to keep our plots as simple as possible. If the continent is already captured by the $x$-axis, we shouldn't need to use color to convey it as well. However, there are exceptions to every rule, and sometimes it may be useful to redundantly encode a variable.
@@ -353,22 +353,24 @@ Notice that the fill in this case is a **redundant encoding** of continent. It d
 In the above plot, we have a legend, now that we've used the `fill` option. The legend can be moved around by adding the `legend.position` argument of a theme layer that is applied on top of the minimal theme we're working with:
 
 ```{r boxplot_gap_legend}
-ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) + 
+boxplot_legend <- ggplot(data = gap, aes(x = continent, y = lifeExp, fill = continent)) +
   geom_boxplot() + 
   theme_minimal() +
   theme(legend.position = "top")
+print(boxplot_legend)
 ```
 
-> **Challenge 2:** Open `R-Data-Visualization-Challenges.Rmd`. Create a boxplot of Serum cholesterol based on patient self described sex using `ggplot`. Save it in a variable named `B`.
+> **Challenge 2:** Open `R-Data-Visualization-Challenges.Rmd`. Create a boxplot of Serum cholesterol based on patient self-described sex using `ggplot`. Save it in a variable named `B`.
 
 ## Scatter plots, `ggplot` style
 
 Scatter plots in `ggplot2` are very similar as above, but this time, we use the `geom_point` function. Let's examine life expectancy by GDP per capita, but also include information about the continent, using the color option:
 
 ```{r scatter_ggplot}
-ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+scatter <- ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
   geom_point() + 
   theme_test()
+print(scatter)
 ```
 
 Notice that the `color` argument in the aesthetic allowed us to capture another dimension of the data. This is a key idea: the aesthetic captures the relationships amongst the data, while the geometry specifies how they're visualized.
@@ -380,13 +382,14 @@ Now, let's take a look at a variety of ways we can further customize the scatter
 Suppose we want to adjust the points at which the axis ticks appear. We can use the `scale_` theme layers to do so, by specifying "custom breaks". Specifically, to create a custom scale that goes *from* a start point *to* some end point *by* some interval, we do:
 
 ```{r custom_scale}
-ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+scale_break <- ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
   geom_point() + 
   theme_bw() + 
   theme(legend.position = "top", 
         axis.text.x = element_text(angle = 45, hjust = 1)) + 
   scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
   scale_y_continuous(breaks = seq(from = 20, to = 90, by = 10), limits = c(20, 90))
+print(scale_break)
 ```
 
 ### Point sizes, shapes, transparencies
@@ -394,9 +397,12 @@ ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) +
 Let's push how far we can take the aesthetic and theme customizations we can do:
 
 ```{r point_sizes_theme}
-ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, 
-                       color = continent, 
-                       shape = continent)) + 
+fancy_plot <- 
+  ggplot(data = gap,
+         aes(x = gdpPercap,
+             y = lifeExp, 
+             color = continent, 
+             shape = continent)) + 
   # We add the alpha argument to control the opacity of each data point that is displayed.
   # Alpha accepts values between 0 and 1, with lower values indicating more transparency.
   geom_point(alpha = 0.50, size = 2) + 
@@ -408,6 +414,7 @@ ggplot(data = gap, aes(x = gdpPercap, y = lifeExp,
   xlab("GDP Per Capita") +
   ylab("Life Expectancy") + 
   ggtitle("Life Expectancy vs. GDP Per Capita across Years and Countries")
+print(fancy_plot)
 ```
 
 Notice that we are redundantly encoding continent via shape and color. In this plot, it probably doesn't serve much purpose - but we are demonstrating how you can easily use both aspects of the aesthetic to provide more information in ``ggplot``.
@@ -450,12 +457,13 @@ head(gap_mean_life_exp)
 Next, we'll plot the mean life expectancy using `geom_line`:
 
 ```{r lineplot}
-ggplot(gap_mean_life_exp, aes(x = year,
-                              y = mean_lifeExp,
-                              color = continent)) + 
-  geom_line(lwd = 2) + 
+line <- ggplot(gap_mean_life_exp, aes(x = year,
+                                      y = mean_lifeExp,
+                                      color = continent)) + 
+  geom_line(lwd = 1) + 
   theme_bw() + 
   theme(legend.position = "top")
+print(line)
 ```
 
 Let's customize the legend. We can:
@@ -470,7 +478,7 @@ line <- ggplot(gap_mean_life_exp,
                aes(x = year,
                    y = mean_lifeExp, 
                    color = continent)) + 
-  geom_line(lwd = 2) + 
+  geom_line(lwd = 1) + 
   theme_bw() + 
   theme(legend.position = "right", 
         legend.title = element_blank(), 
@@ -482,8 +490,7 @@ line <- ggplot(gap_mean_life_exp,
   guides(color = guide_legend(label.position = "left")) +
   xlab("Year") +
   ylab("Mean Life Expectancy")
-
-show(line)
+print(line)
 ```
 
 ## Heatmaps, `ggplot` style
@@ -502,7 +509,7 @@ heat <- ggplot(gap, aes(x = continent, y = year, fill = lifeExp)) +
   scale_y_continuous(breaks = seq(from = 1952, to = 2007, by = 5),
                      limits = c(1947, 2012)) + 
   guides(fill = guide_colourbar(label.position = "left"))
-show(heat)
+print(heat)
 ```
 
 ## Subplots with a facet wrap
@@ -514,20 +521,20 @@ facet_line <- line +
   facet_wrap(~continent) + 
   guides(linetype = "none") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-show(facet_line)
+print(facet_line)
 ```
 
 A word about the colors here. While these colors are arguably distinct, it's not the case that the base colors necessarily will be. It's estimated that, "globally, 1 in 12 males and 1 in 200 females are colorblind." The most common form of color blindness is red-green color blindness. **Viridis** is a color palette with an emphasis on accessibility for those of us who experience colorblindness. 
 
-To show the difference with a colorblind friendly palette, let's remake the same facet_line chart. 
+To show the difference with a colorblind friendly palette, let's remake the same `facet_line` chart. 
 
 ```{r, facet_colorblind}
 facet_line_cb <- line + 
   facet_wrap(~continent) + 
   guides(linetype = "none") + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_color_viridis_d()
-show(facet_line_cb)
+print(facet_line_cb)
 ```
 
 Note that we have overridden the default colors from our line graph and replaced them with a colorblind friendly palette. Every line color is now clearly distinct for users. 
@@ -545,7 +552,7 @@ compound <- plot_grid(hist, scatter, facet_line, heat,
                       ncol = 2,
                       scale = 0.85, 
                       labels = c("A)", "B)", "C)", "D)"))
-show(compound)
+print(compound)
 ```
 
 # Exporting
