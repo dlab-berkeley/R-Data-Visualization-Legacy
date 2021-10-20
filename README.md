@@ -71,6 +71,7 @@ Check out the following resources to learn more about data visualization and R:
 * [UCLA idre](https://stats.idre.ucla.edu/r/)  
 * [R-bloggers](https://www.r-bloggers.com/)  
 * [Stack Overflow - R](http://stackoverflow.com/questions/tagged/r)  
+
 # About the UC Berkeley D-Lab
 
 D-Lab works with Berkeley faculty, research staff, and students to advance data-intensive social science and humanities research. Our goal at D-Lab is to provide practical training, staff support, resources, and space to enable you to use R for your own research applications. Our services cater to all skill levels and no programming, statistical, or computer science backgrounds are necessary. We offer these services in the form of workshops, one-to-one consulting, and working groups that cover a variety of research topics, digital tools, and programming languages.  
@@ -79,14 +80,18 @@ Visit the [D-Lab homepage](https://dlab.berkeley.edu/) to learn more about us. Y
 
 # Other D-Lab R Workshops
 
- Here are other R workshops offered by the D-Lab:
+Here are other R workshops offered by the D-Lab:
+
 ## Basic Competency
+
 * [Fast-R](https://github.com/dlab-berkeley/Fast-R)
 * [R Data Wrangling](https://github.com/dlab-berkeley/R-wrang)
 * [R Functional Programming](https://github.com/dlab-berkeley/R-functional-programming)
 * [Geospatial Fundamentals in R with sf](https://github.com/dlab-berkeley/Geospatial-Fundamentals-in-R-with-sf)
 * [Census Data in R](https://github.com/dlab-berkeley/Census-Data-in-R)
+
 ## Intermediate/Advanced Competency
+
 * [Advanced Data Wrangling in R](https://github.com/dlab-berkeley/advanced-data-wrangling-in-R)
 * [Unsupervised Learning in R](https://github.com/dlab-berkeley/Unsupervised-Learning-in-R)
 * [R Machine Learning with tidymodels](https://github.com/dlab-berkeley/Machine-Learning-with-tidymodels)
@@ -99,6 +104,5 @@ Visit the [D-Lab homepage](https://dlab.berkeley.edu/) to learn more about us. Y
 * [Evan Muzzall](https://dlab.berkeley.edu/people/evan-muzzall)
 * Lawrence Yin Tello
 * Josh Quan
-
 
 Thanks to [Software Carpentry](http://software-carpentry.org/workshops/), Chris Paciorek, Rochelle Terman, and the [R-bootcamp](https://dlab.berkeley.edu/training/r-bootcamp-3) for inspiration.

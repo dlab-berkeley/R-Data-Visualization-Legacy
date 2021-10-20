@@ -1,7 +1,5 @@
 ---
-title: "ggplot2_challenges_solutions"
-author: "D-Lab and workshop participants"
-date: "3/21/2021"
+title: "R Data Visualization Solutions"
 output: html_document
 ---
 
@@ -9,19 +7,19 @@ output: html_document
 
 Use the heart dataset for the following challenges. Import it and save it in a variable named `heart`. Make sure to review the data dictionary linked above!
 
-```{r}
+```{r import}
 library(ggplot2)
 heart <- read.csv("data/heart.csv")
 names(heart)
 ```
 
-**For each challenge, use ggplot2**
+**For each challenge, use** `ggplot2`
 
 # Challenge 1 
 
-Create a histogram of the Serum cholesterol using the heart dataset. Save it in a variable named `A`
+Using the heart dataset, create a histogram of the Serum cholesterol. Save it in a variable named `A`.
 
-```{r}
+```{r challenge_1}
 A <- ggplot(heart, aes(x = chol)) +
   geom_histogram(binwidth = 6) +    
   labs(x = "Serum cholestorol in mg/dl",
@@ -29,16 +27,16 @@ A <- ggplot(heart, aes(x = chol)) +
        title = "Histogram of Serum Cholestorol (mg/dl)") +
   theme_minimal()
 
-A
+print(A)
 ```
 
 # Challenge 2 
 
-Using the heart dataset, create a boxplot of Serum cholesterol based on patient self described sex. Save this figure in a variable named `B`. 
+Using the heart dataset, create a boxplot of Serum cholesterol based on patient self-described sex. Save this figure in a variable named `B`. 
 
 Hint: The variable that identifies patient sex needs to be coerced into a different variable type in order to make this visualization.
 
-```{r}
+```{r challenge_2}
 library(dplyr)
 # treat sex as a factor instad of continuous variable for plotting
 heart <- heart %>%
@@ -55,14 +53,14 @@ B <- ggplot(heart, aes(x = sex, y = chol, fill = sex)) +
        subtitle = "by Biological Sex") +
   theme_bw()
 
-B
+print(B)
 ```
 
 # Challenge 3
 
 Using the heart dataset, create a scatterplot that visualizes the relationship between patient age and Serum cholesterol. Save it in a variable named `C`
 
-```{r}
+```{r challenge_3}
 C <- ggplot(heart, aes(x = age, y = chol, 
                        color = as.factor(sex), 
                        shape = as.factor(sex))) +
@@ -73,15 +71,15 @@ C <- ggplot(heart, aes(x = age, y = chol,
        title = "Serum Cholesteral (mg/dl) by Biological Sex") +
   theme_bw() 
 
-C
+print(C)
 ```
 
 # Challenge 4
 
-Using the heart dataset, create a lineplot depicting the relationship between patient age and Serum cholesterol. Save it in a variable named `D`
+Create a line plot of the mean cholesterol for each age, separated by sex using the heart data. You will need to do some data manipulation with `dplyr` to make this plot. Save your plot to a variable named `D`.
 
-```{r}
-# sometimes we will want to re-shape our data for plotting
+```{r challenge_4}
+# Sometimes we will want to re-shape our data for plotting
 heart_plot <- heart %>%
   mutate(sex = ifelse(sex == 0, "Female", "Male"),  # we can also change labels in the data instead of in ggplot
          slope = as.factor(slope)) %>%
@@ -97,18 +95,18 @@ D <- ggplot(heart_plot, aes(x = age, y = chol, color = sex)) +
        title = "Serum Cholesteral (mg/dl) by Biological Sex") +
   theme_minimal()
 
-D
+print(D)
 ```
 
 # Challenge 5 
 
-Use cowplot to create a compound figure named "compound_figure" that contains subplots A, B, C, and D that you created above. 
+Use cowplot to create a compound figure named `compound_figure` that contains subplots `A`, `B`, `C`, and `D` that you created above. 
 
-```{r}
+```{r challenge_5}
 library(cowplot)
 compound = plot_grid(A, B, C, D, 
                      nrow = 2, ncol = 2,
                      scale = 0.85, 
                      labels = c("A)", "B)", "C)", "D)"))
-compound
+print(compound)
 ```
