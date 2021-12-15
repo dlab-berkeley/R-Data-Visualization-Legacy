@@ -55,7 +55,7 @@ We can tell that "Y" and "L" had the highest cumulative scores. What if we want 
 
 Now, it's easier to see that "R" scored quite well on the math exam. The tradeoff with this layout is that it's difficult to compare cumulative scores. Comparing "Z" and "O," for example, is a challenge. Again, it depends on what the message is.
 
-These findings are a *guide* for what works when the goal is to make accurate judgments. Sometimes, however, the goal might not be to allow for precise comparisons but, rather, to facilitate the perception of larger patterns. This is usually the case with choropleth maps.
+These findings are a *guide* for what works when the goal is to make accurate judgments. Sometimes, however, the goal might not be to allow for precise comparisons but, rather, to facilitate the perception of larger patterns. In those cases, we'll be required to use elements lower on the list of perceptual tasks - particularly color and shading - in order to efficiently convey a point.
 
 ## Form and Function
 
@@ -107,7 +107,6 @@ Note that other plotting facilities do exist (notably, `lattice`), but base grap
 ## Package installation
 
 First, we'll install and import the necessary packages. Let's get started! 
-
 ```{r import}
 # Uncomment this to install packages, if necessary.
 # install.packages(c("cowplot", "dplyr", "ggplot2", "viridis"))
@@ -120,7 +119,7 @@ library(viridis)
 
 ## Dataset Details
 
-For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy and GDP per-capita.
+For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy and GDP per-capita. Check out more on gapminder in this [Github repository](https://github.com/jennybc/gapminder).
 
 ```{r import_gap}
 gap <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = TRUE)
@@ -143,7 +142,7 @@ hist(x = gap$lifeExp)
 hist(x = gap$lifeExp, breaks = 5)
 ```
 
-The breaks argument within the `hist()` function allows you to control the amount of bins that are displayed in the histogram.
+The breaks argument within the `hist()` function allows you to control the amount of bins that are displayed in the histogram. Note, however, when you provide an integer, R only uses it as a suggestion. If you want to force a certain number of bins, you're best off choosing the exact breaks yourself (which the `breaks` argument will happily accept as a vector input).
 
 To make the histogram more informative, we can adjust visual features of the plot. For example, we can customize the title, x-axis label, x- and y-axes limits, the color of bar, and more:
 
