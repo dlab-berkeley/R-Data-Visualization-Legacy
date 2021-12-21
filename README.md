@@ -40,9 +40,9 @@ Now that you have all the required software and materials, you need to run the c
 
 3. Double click on the `R-Data-Visualization.Rproj` file, and click "yes" when RStudio asks you to confirm whether you want to open up the project.
 
-4. Open up the `R-Data-Visualization.Rmd` file.
+4. Open up the `R-Data-Visualization.Rmd` file, located in the `lessons` folder.
 
-5. If you do not have the `cowplot`, `dplyr`, and `ggplot2` packages installed, be sure to install them using the `install.packages()` function in the first code block of the `R-Data-Visualization.Rmd` file.
+5. If you do not have the `cowplot`, `dplyr`, `ggplot2`, and `here` packages installed, be sure to install them using the `install.packages()` function in the first code block of the `R-Data-Visualization.Rmd` file.
 
 6. Run a chunk of code by clicking the green "play" button in the upper right hand corner of each code chunk. Alternatively, place your cursor on a given line and press "Command + Enter" (Mac) or "Control + Enter" (PC) to run an individual line of code. 
 
