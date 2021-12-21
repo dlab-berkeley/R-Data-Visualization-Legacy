@@ -8,8 +8,9 @@ output: html_document
 Use the heart dataset for the following challenges. Import it and save it in a variable named `heart`. Make sure to review the data dictionary linked above!
 
 ```{r import}
+library(here)
 library(ggplot2)
-heart <- read.csv("data/heart.csv")
+heart <- read.csv(here::here("data/heart.csv"))
 names(heart)
 ```
 
@@ -21,7 +22,7 @@ Using the heart dataset, create a histogram of the Serum cholesterol. Save it in
 
 ```{r challenge_1}
 A <- ggplot(heart, aes(x = chol)) +
-  geom_histogram(binwidth = 6) +    
+  geom_histogram(binwidth = 15) +    
   labs(x = "Serum cholestorol in mg/dl",
        y = "Count",
        title = "Histogram of Serum Cholestorol (mg/dl)") +

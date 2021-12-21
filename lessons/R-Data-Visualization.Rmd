@@ -35,23 +35,23 @@ In 2010, [Heer and Bostock](http://vis.stanford.edu/files/2010-MTurk-CHI.pdf) co
 
 Let's take a look at a few examples. Because we're only interested in relative sizes, we don't include a legend with size information or reference points.
 
-![](images/circles.png)
+![](../images/circles.png)
 
 
 For circles of distinctly different sizes, the comparison is simple. For example, "A" is smaller than "B." However, for circles, such as "L" and "M," that are almost the same size, it's difficult to tell which is smaller. Area, according to Cleveland and McGill's research, is less accurate than, say, length, which we consider next.
 
-![](images/bars.png)
+![](../images/bars.png)
 
 
 Focusing on "L" and "M," it is clear to see which is larger. You might be wondering whether scale makes a difference -- that is, if the small circle sizes make it difficult to compare -- it doesn't.
 
 Next, we consider a case where we want to plot two series. For this example, let's suppose we're working with student English and math test scores. Here, we'll want to use bars, which we arbitrarily label Z-L. The question is, which bars should we use? This is a case where the answer depends on what we're trying to communicate. If we're interested in showing total scores, we could use a stacked bar chart.
 
-![](images/two-series-0.png)
+![](../images/two-series-0.png)
 
 We can tell that "Y" and "L" had the highest cumulative scores. What if we want to know which students scored highest on the math exam? Because the math portions of each bar are on "non-aligned scales," as Cleveland and McGill call it, it's difficult to tell. One solution is to plot these on opposite sides of the x-axis.
 
-![](images/two-series-1.png)
+![](../images/two-series-1.png)
 
 Now, it's easier to see that "R" scored quite well on the math exam. The tradeoff with this layout is that it's difficult to compare cumulative scores. Comparing "Z" and "O," for example, is a challenge. Again, it depends on what the message is.
 
@@ -106,11 +106,13 @@ Note that other plotting facilities do exist (notably, `lattice`), but base grap
 
 ## Package installation
 
-First, we'll install and import the necessary packages. Let's get started! 
+First, we'll install and import the necessary packages. Let's get started!
+
 ```{r import}
 # Uncomment this to install packages, if necessary.
-# install.packages(c("cowplot", "dplyr", "ggplot2", "viridis"))
+# install.packages(c("here", cowplot", "dplyr", "ggplot2", "viridis"))
 
+library(here)
 library(cowplot)
 library(dplyr)
 library(ggplot2)
@@ -122,7 +124,7 @@ library(viridis)
 For the following examples, we will using the gapminder dataset. Gapminder is a country-year dataset with information on life expectancy and GDP per-capita. Check out more on gapminder in this [Github repository](https://github.com/jennybc/gapminder).
 
 ```{r import_gap}
-gap <- read.csv("data/gapminder-FiveYearData.csv", stringsAsFactors = TRUE)
+gap <- read.csv(here::here("data/gapminder-FiveYearData.csv"), stringsAsFactors = TRUE)
 head(gap)
 str(gap)
 ```

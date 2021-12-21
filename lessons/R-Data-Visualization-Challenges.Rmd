@@ -1,8 +1,6 @@
 ---
 title: "R Data Visualization Challenges"
 output: html_document
-editor_options: 
-  chunk_output_type: console
 ---
 
 # Load the [heart dataset](http://search.r-project.org/library/kmed/html/heart.html)
