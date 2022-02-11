@@ -156,8 +156,12 @@ hist(x = gap$lifeExp,
      xlab = "Years",
      xlim = c(20, 90), 
      ylim = c(0, 350), 
+     # las styles the axis labels. 1 makes our labels parallel
+     # to the axis
      las = 1)
 ```
+
+The full set of options available to customize a base graphic can be seen by typing `?par` into your console. 
 
 You can see the 657 available stock colors available to you by typing `colors()`. Why do you think there so many "greys"?
 
