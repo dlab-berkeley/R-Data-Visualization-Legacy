@@ -156,6 +156,8 @@ hist(x = gap$lifeExp,
      xlab = "Years",
      xlim = c(20, 90), 
      ylim = c(0, 350), 
+     # las styles the axis labels. 1 makes our labels parallel
+     # to the axis
      las = 1)
 ```
 
