@@ -603,3 +603,5 @@ Here, we provide some useful resources that may deepen your data visualization s
 -   Wilkinson L. 1999. [The Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448): A classic text on data visualization, which served as the inspiration for the structure of `ggplot2`.
 
 -   [The R Graph Gallery](https://www.r-graph-gallery.com/index.html): A handy repository of example visualizations in R.
+
+-   [Accessibility Design](https://www.storytellingwithdata.com/blog/2018/6/26/accessible-data-viz-is-better-data-viz): A nice blog post on considering accessibility in data visualization. Also consider the accessibility principles laid out in the [CFPB Design System](https://cfpb.github.io/design-system/guidelines/accessibility-principles).
