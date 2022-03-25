@@ -24,12 +24,12 @@ Certain techniques make that information easier to interpret and understand. In 
 
 Whereas graph design had, up to that point, been "largely unscientific," Cleveland and McGill took a systematic approach in analyzing human graphical perception through experimentation. Their researched helped identify the most and least accurate elementary perceptual tasks, ordered below:
 
-1. Position along a common scale
-2. Position along non-aligned scales
-3. Length, direction, angle
-4. Area
-5. Volume, curvature
-6. Shading, color saturation
+1.  Position along a common scale
+2.  Position along non-aligned scales
+3.  Length, direction, angle
+4.  Area
+5.  Volume, curvature
+6.  Shading, color saturation
 
 In 2010, [Heer and Bostock](http://vis.stanford.edu/files/2010-MTurk-CHI.pdf) confirmed these results using Amazon's Mechanical Turk.
 
@@ -37,11 +37,9 @@ Let's take a look at a few examples. Because we're only interested in relative s
 
 ![](../images/circles.png)
 
-
 For circles of distinctly different sizes, the comparison is simple. For example, "A" is smaller than "B." However, for circles, such as "L" and "M," that are almost the same size, it's difficult to tell which is smaller. Area, according to Cleveland and McGill's research, is less accurate than, say, length, which we consider next.
 
 ![](../images/bars.png)
-
 
 Focusing on "L" and "M," it is clear to see which is larger. You might be wondering whether scale makes a difference -- that is, if the small circle sizes make it difficult to compare -- it doesn't.
 
@@ -63,31 +61,31 @@ These findings are a *guide* for what works when the goal is to make accurate ju
 
 \- Alberto Cairo
 
--------------------------
+------------------------------------------------------------------------
 
 > A data visualization should only be beautiful when beauty can promote understanding in some way without undermining it in another. Is beauty sometimes useful? Certainly. Is beauty always useful? Certainly not.
 
 \- Stephen Few
 
--------------------------
+------------------------------------------------------------------------
 
 > Good displays of data help to reveal knowledge relevant to understanding mechanism, process and dynamics, cause and effect.
 
 \- Edward Tufte
 
--------------------------
+------------------------------------------------------------------------
 
->A figure is ineffective if it "wastes too much real estate (and the designer's time) on things that don't help readers understand [it]." 
+> A figure is ineffective if it "wastes too much real estate (and the designer's time) on things that don't help readers understand [it]."
 
 \- Alberto Cairo
 
--------------------------
+------------------------------------------------------------------------
 
 > The important criterion for a graph is not simply how fast we can see a result; rather it is whether through the use of the graph we can see something that would have been harder to see otherwise or that could not have been seen at all.
 
 \- William Cleveland
 
--------------------------
+------------------------------------------------------------------------
 
 > [A]lways take advantage of the space you have available to seek depth within reasonable limits. After that, *and only after that*, worry about how to make the presentation prettier.
 
@@ -99,8 +97,8 @@ Ultimately, identify your audience and their needs and interests. The same data 
 
 There are two major sets of tools for creating plots in R:
 
-1. base graphics, which  come with all R installations  
-2. `ggplot2`, a stand-alone package.  
+1.  base graphics, which come with all R installations\
+2.  `ggplot2`, a stand-alone package.
 
 Note that other plotting facilities do exist (notably, `lattice`), but base graphics and `ggplot2` are by far the most popular. Check out [this post](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2) on comparisons between base, `ggplot2`, and `lattice` graphics to learn more.
 
@@ -108,7 +106,7 @@ Note that other plotting facilities do exist (notably, `lattice`), but base grap
 
 First, we'll install and import the necessary packages. Let's get started!
 
-```{r import}
+```{r import, message = F, warning = F}
 # Uncomment this to install packages, if necessary.
 # install.packages(c("here", cowplot", "dplyr", "ggplot2", "viridis"))
 
@@ -161,7 +159,7 @@ hist(x = gap$lifeExp,
      las = 1)
 ```
 
-The full set of options available to customize a base graphic can be seen by typing `?par` into your console. 
+The full set of options available to customize a base graphic can be seen by typing `?par` into your console.
 
 You can see the 657 available stock colors available to you by typing `colors()`. Why do you think there so many "greys"?
 
@@ -171,10 +169,10 @@ Barplots are useful to visualize counts and or averages of a single continuous v
 
 ```{r barplot}
 # Calculate the number of countries per continent
-countries_by_continent <- gap %>%
-  dplyr::distinct(country, .keep_all = TRUE) %>%
-  dplyr::group_by(continent) %>%
-  dplyr::count() %>%
+countries_by_continent <- gap |>
+  dplyr::distinct(country, .keep_all = TRUE) |>
+  dplyr::group_by(continent) |>
+  dplyr::count() |>
   dplyr::rename(n_countries = n)
 
 # Creates a bar plot that shows continent on the x-axis and number of countries on the y-axis 
@@ -185,7 +183,7 @@ barplot(countries_by_continent$n_countries,
 
 ## Boxplots
 
-Boxplots are useful to visualize the distribution of a single continuous variable that can be parsed by levels of a factor (i.e., a categorical feature). For example, we can look at distributions of life expectancy *by* continent:  
+Boxplots are useful to visualize the distribution of a single continuous variable that can be parsed by levels of a factor (i.e., a categorical feature). For example, we can look at distributions of life expectancy *by* continent:
 
 ```{r boxplot}
 boxplot(gap$lifeExp ~ gap$continent,
@@ -231,24 +229,23 @@ plot(x = portugal$gdpPercap, y = portugal$lifeExp,
 
 # The `ggplot2` way
 
-Base plotting is just fine, but it takes some slightly complicated code to map colors to points and shapes of a given variable. And, adding a legend gets even trickier. Thankfully, a package called `ggplot2` handles these complexities with ease using more compact code inspired by Leland Wilkinson's **g**rammar of **g**raphics. 
+Base plotting is just fine, but it takes some slightly complicated code to map colors to points and shapes of a given variable. And, adding a legend gets even trickier. Thankfully, a package called `ggplot2` handles these complexities with ease using more compact code inspired by Leland Wilkinson's **g**rammar of **g**raphics.
 
-> NOTE: `ggplot2` is the name of the package, but `ggplot` is the main function call. 
-A ggplot is comprised of three fundamental building blocks:
+> NOTE: `ggplot2` is the name of the package, but `ggplot` is the main function call. A ggplot is comprised of three fundamental building blocks:
 
-1. **Data:** typically as a dataframe.
-2. **"aes"thetics:** to define your x and y axes, map colors to factor levels, etc.  
-3. **"geom_"s:** the visual marks to represent your data - points, bars, lines, ribbons, polygons, etc. 
+1.  **Data:** typically as a dataframe.
+2.  **"aes"thetics:** to define your x and y axes, map colors to factor levels, etc.\
+3.  **"geom\_"s:** the visual marks to represent your data - points, bars, lines, ribbons, polygons, etc.
 
-One thing to remember is that `ggplot2` works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. New layers are added to a plot using  the addition **`+`** symbol. Lastly, plots can be further customized using a host of **"theme_"** functions.
- 
+One thing to remember is that `ggplot2` works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. New layers are added to a plot using the addition **`+`** symbol. Lastly, plots can be further customized using a host of **"theme\_"** functions.
+
 ## Building a histogram layer by layer
 
 We'll demonstrate the layer-based approach in `ggplot2` by building the same histogram of age as in the previous section.
 
 ### Define the base layer
 
-First, to construct the base layer, we pass in two arguments to the `ggplot` function: the data and the global aesthetics (the ones that apply to all layers of the plot) defined within `aes()`. Once we do this, we see our coordinate system, but no data! 
+First, to construct the base layer, we pass in two arguments to the `ggplot` function: the data and the global aesthetics (the ones that apply to all layers of the plot) defined within `aes()`. Once we do this, we see our coordinate system, but no data!
 
 Notice that the output of the `ggplot` function can be stored in a variable, which we've called `plot`. This allows us to continually add layers to `plot` in downstream code, and visualize how it looks at different points.
 
@@ -269,7 +266,7 @@ print(plot)
 
 Ahh, my eyes! Always avoid [chartjunk](https://en.wikipedia.org/wiki/Chartjunk)! Keep your visualizations simple and crisp so that they can efficiently communicate their point without losing your audience in chartjunk.
 
-Note that we can also make a density plot with a similar structure as a histogram. This time we will make sure to avoid the ugly coloring. 
+Note that we can also make a density plot with a similar structure as a histogram. This time we will make sure to avoid the ugly coloring.
 
 ```{r density_layer}
 plot <- ggplot(data = gap, aes(x=lifeExp)) +
@@ -277,7 +274,7 @@ plot <- ggplot(data = gap, aes(x=lifeExp)) +
 print(plot)
 ```
 
-A density plot computes a kernel density estimate, which you can think of as the smoothed version of the histogram. We like using them when we have continuous data that comes from a smooth distribution. Importantly for this workshop, note that the only difference we made between the histogram and the density plot was changing which geom_* we were interested in. 
+A density plot computes a kernel density estimate, which you can think of as the smoothed version of the histogram. We like using them when we have continuous data that comes from a smooth distribution. Importantly for this workshop, note that the only difference we made between the histogram and the density plot was changing which geom\_\* we were interested in.
 
 ### Customize with theme layers
 
@@ -329,7 +326,7 @@ print(bar)
 There also exists a `geom_bar` function. This can be used to count the number of entries per group for us, so we don't have to do it ourselves:
 
 ```{r geom_bar}
-bar2 <- ggplot(gap %>% dplyr::distinct(country, .keep_all = TRUE), aes(x = continent)) +
+bar2 <- ggplot(gap |> dplyr::distinct(country, .keep_all = TRUE), aes(x = continent)) +
   geom_bar() + 
   theme_bw() + 
   xlab("Continent") +
@@ -342,7 +339,7 @@ print(bar2)
 
 Boxplots in `ggplot2` are similar to base boxplots, but the helpful additions and customizations are easier to understand and define. In this case, however, the aesthetic is a little more involved that in the case of the histogram.
 
-Let's repeat the previous exercise with boxplots. We have two variables: the continent status and the life expectancy. We need to provide both of these to the aesthetic, so that `ggplot2` knows how to structure the boxplot. We can also provide an optional `fill` variable, which we'll assign to be the diabetes status. 
+Let's repeat the previous exercise with boxplots. We have two variables: the continent status and the life expectancy. We need to provide both of these to the aesthetic, so that `ggplot2` knows how to structure the boxplot. We can also provide an optional `fill` variable, which we'll assign to be the diabetes status.
 
 Take a look at the plot: how did our inputs to the aesthetic correspond to the outputs? What did the fill variable do? How is it different from a color option? Try removing the fill to see how the plot looks without it.
 
@@ -422,7 +419,7 @@ fancy_plot <-
 print(fancy_plot)
 ```
 
-Notice that we are redundantly encoding continent via shape and color. In this plot, it probably doesn't serve much purpose - but we are demonstrating how you can easily use both aspects of the aesthetic to provide more information in ``ggplot``.
+Notice that we are redundantly encoding continent via shape and color. In this plot, it probably doesn't serve much purpose - but we are demonstrating how you can easily use both aspects of the aesthetic to provide more information in `ggplot`.
 
 ### Log-transforming axes
 
@@ -449,11 +446,11 @@ show(scatter)
 
 Line plots are useful for visualizing change in some variable on the y-axis plotted against time
 
-We'll calculate the the mean `lifeExp` for each continent by year. Check out D-Lab's [Data Wrangling and Manipulation in R](https://github.com/dlab-berkeley/R-wrang) to learn more! 
+We'll calculate the the mean `lifeExp` for each continent by year. Check out D-Lab's [Data Wrangling and Manipulation in R](https://github.com/dlab-berkeley/R-wrang) to learn more!
 
 ```{r mean_life_exp}
-gap_mean_life_exp = gap %>%
-  dplyr::group_by(year, continent) %>%
+gap_mean_life_exp = gap |>
+  dplyr::group_by(year, continent) |>
   dplyr::mutate(mean_lifeExp = mean(lifeExp))
 
 head(gap_mean_life_exp)
@@ -473,10 +470,10 @@ print(line)
 
 Let's customize the legend. We can:
 
-- remove the legend title  
-- increase the spacing of the legend items  
-- right align the legend text  
-- move labels to left of glyphs  
+-   remove the legend title\
+-   increase the spacing of the legend items\
+-   right align the legend text\
+-   move labels to left of glyphs
 
 ```{r line_plot_legend}
 line <- ggplot(gap_mean_life_exp,
@@ -529,9 +526,9 @@ facet_line <- line +
 print(facet_line)
 ```
 
-A word about the colors here. While these colors are arguably distinct, it's not the case that the base colors necessarily will be. It's estimated that, "globally, 1 in 12 males and 1 in 200 females are colorblind." The most common form of color blindness is red-green color blindness. **Viridis** is a color palette with an emphasis on accessibility for those of us who experience colorblindness. 
+A word about the colors here. While these colors are arguably distinct, it's not the case that the base colors necessarily will be. It's estimated that, "globally, 1 in 12 males and 1 in 200 females are colorblind." The most common form of color blindness is red-green color blindness. **Viridis** is a color palette with an emphasis on accessibility for those of us who experience colorblindness.
 
-To show the difference with a colorblind friendly palette, let's remake the same `facet_line` chart. 
+To show the difference with a colorblind friendly palette, let's remake the same `facet_line` chart.
 
 ```{r, facet_colorblind}
 facet_line_cb <- line + 
@@ -542,8 +539,7 @@ facet_line_cb <- line +
 print(facet_line_cb)
 ```
 
-Note that we have overridden the default colors from our line graph and replaced them with a colorblind friendly palette. Every line color is now clearly distinct for users. 
-
+Note that we have overridden the default colors from our line graph and replaced them with a colorblind friendly palette. Every line color is now clearly distinct for users.
 
 > **Challenge 4:** Open `R-Data-Visualization-Challenges.Rmd`. Create a line plot of the mean cholesterol for each age, separated by sex using the heart data. You will need to do some data manipulation with `dplyr` to make this plot. Save your plot to a variable named `D`.
 
@@ -564,17 +560,17 @@ print(compound)
 
 Exporting graphs in R is straightforward. Start by clicking the "Export" button:
 
-1. Click **Copy to clipboard...** if you want to quickly copy/paste a figure into a slideshow presentation or text document.
+1.  Click **Copy to clipboard...** if you want to quickly copy/paste a figure into a slideshow presentation or text document.
 
-2. Click **Save as image...** (Raster/Bitmap formats such as .png, .jpeg, .tiff) if you want to explort to this format.
+2.  Click **Save as image...** (Raster/Bitmap formats such as .png, .jpeg, .tiff) if you want to explort to this format.
 
-> NOTE: Not recommended because every pixel of a plot contains its own separate coding; not so great if you want to resize the image  
+> NOTE: Not recommended because every pixel of a plot contains its own separate coding; not so great if you want to resize the image
 
-3. Click **Save as PDF...** (Vector format such as .pdf, .ps) to export to .pdf.  
+3.  Click **Save as PDF...** (Vector format such as .pdf, .ps) to export to .pdf.
 
-> NOTE: Recommended! Every element of a plot is encoded with a function that gives its coding conditional on several factors, which makes it great for resizing. 
+> NOTE: Recommended! Every element of a plot is encoded with a function that gives its coding conditional on several factors, which makes it great for resizing.
 
-4. Or, **export with `ggsave`**  
+4.  Or, **export with `ggsave`**
 
 ```{r eval = FALSE}
 # Assume we saved our plot is an object called example.plot
@@ -586,24 +582,24 @@ ggsave(filename = "compound.pdf",
        dpi = 600)
 ```
 
-> **Challenge 5:** Open `R-Data-Visualization-Challenges.Rmd`. Use `cowplot` to create a compound figure named `compound_figure` that contains subplots `A`, `B`, `C`, and `D` that you created above. 
+> **Challenge 5:** Open `R-Data-Visualization-Challenges.Rmd`. Use `cowplot` to create a compound figure named `compound_figure` that contains subplots `A`, `B`, `C`, and `D` that you created above.
 
 # Resources for data visualization
 
 Here, we provide some useful resources that may deepen your data visualization skills:
 
-* Wickham et al. 2019. [ggplot2](https://ggplot2.tidyverse.org/): The `ggplot2` documentation.
+-   Wickham et al. 2019. [ggplot2](https://ggplot2.tidyverse.org/): The `ggplot2` documentation.
 
-* [ggplot2 cheatsheet](https://rstudio.com/wp-content/uploads/2019/01/Cheatsheets_2019.pdf): A helpful cheatsheet to `ggplot2`.
+-   [ggplot2 cheatsheet](https://rstudio.com/wp-content/uploads/2019/01/Cheatsheets_2019.pdf): A helpful cheatsheet to `ggplot2`.
 
-* Wilke CO. 2019. [Introduction to cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html): An introductory vignette (and accompanying documentation) to `cowplot`.
+-   Wilke CO. 2019. [Introduction to cowplot](https://cran.r-project.org/web/packages/cowplot/vignettes/introduction.html): An introductory vignette (and accompanying documentation) to `cowplot`.
 
-* Wilke CO. 2019. [Arranging plots in a grid](https://wilkelab.org/cowplot/articles/plot_grid.html): A vignette detailing subplotting in `cowplot`.
+-   Wilke CO. 2019. [Arranging plots in a grid](https://wilkelab.org/cowplot/articles/plot_grid.html): A vignette detailing subplotting in `cowplot`.
 
-* Tufte ER. 2001. [The Visual Display of Quantitative Information](https://www.amazon.com/Visual-Display-Quantitative-Information/dp/1930824130): One of the definitive books on data visualization.
+-   Tufte ER. 2001. [The Visual Display of Quantitative Information](https://www.amazon.com/Visual-Display-Quantitative-Information/dp/1930824130): One of the definitive books on data visualization.
 
-* Wilke CO. 2019. [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/): Online (i.e., free) textbook covering data visualization, written by the creator of `cowplot`. 
+-   Wilke CO. 2019. [Fundamentals of Data Visualization](https://serialmentor.com/dataviz/): Online (i.e., free) textbook covering data visualization, written by the creator of `cowplot`.
 
-* Wilkinson L. 1999. [The Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448): A classic text on data visualization, which served as the inspiration for the structure of `ggplot2`.
+-   Wilkinson L. 1999. [The Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448): A classic text on data visualization, which served as the inspiration for the structure of `ggplot2`.
 
-* [The R Graph Gallery](https://www.r-graph-gallery.com/index.html): A handy repository of example visualizations in R.
+-   [The R Graph Gallery](https://www.r-graph-gallery.com/index.html): A handy repository of example visualizations in R.
