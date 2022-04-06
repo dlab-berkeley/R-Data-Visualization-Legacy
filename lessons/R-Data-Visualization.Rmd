@@ -100,7 +100,7 @@ There are two major sets of tools for creating plots in R:
 1.  base graphics, which come with all R installations\
 2.  `ggplot2`, a stand-alone package.
 
-Note that other plotting facilities do exist (notably, `lattice`), but base graphics and `ggplot2` are by far the most popular. Check out [this post](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2) on comparisons between base, `ggplot2`, and `lattice` graphics to learn more.
+Note that other plotting facilities do exist (notably, `lattice`), but base graphics and `ggplot2` are by far the most popular. Check out [this post](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2) on comparisons between base, `ggplot2`, and `lattice` graphics to learn more. In this workshop, we are going to use `ggplot2` to make our graphics because we think that `ggplot2` provides a nice framework to think about how to make visualizations.
 
 ## Package installation
 
@@ -110,11 +110,10 @@ First, we'll install and import the necessary packages. Let's get started!
 # Uncomment this to install packages, if necessary.
 # install.packages(c("here", "cowplot", "dplyr", "ggplot2", "viridis"))
 
-library(here)
-library(cowplot)
 library(dplyr)
+library(cowplot)
 library(ggplot2)
-library(viridis)
+library(here)
 ```
 
 ## Dataset Details
@@ -124,7 +123,7 @@ For the following examples, we will using the gapminder dataset. Gapminder is a 
 ```{r import_gap}
 gap <- read.csv(here::here("data/gapminder-FiveYearData.csv"), stringsAsFactors = TRUE)
 head(gap)
-str(gap)
+glimpse(gap)
 ```
 
 # Using `ggplot2`
