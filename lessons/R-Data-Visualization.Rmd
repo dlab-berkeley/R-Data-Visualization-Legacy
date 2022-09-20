@@ -259,7 +259,7 @@ print(bar2)
 
 Boxplots are useful to visualize the distribution of a single continuous variable that can be parsed by levels of a factor (i.e., a categorical feature).
 
-Let's pick two variables: the continent and the life expectancy. We need to provide both of these to the aesthetic, so that `ggplot2` knows how to structure the boxplot. We can also provide an optional `fill` variable, which we'll assign to be the diabetes status.
+Let's pick two variables: the continent and the life expectancy. We need to provide both of these to the aesthetic, so that `ggplot2` knows how to structure the boxplot. We can also provide an optional `fill` variable, which we'll assign to be the continent.
 
 Take a look at the plot: how did our inputs to the aesthetic correspond to the outputs? What did the fill variable do? How is it different from a color option? Try removing the fill to see how the plot looks without it.
 
@@ -502,8 +502,7 @@ Exporting graphs in R is straightforward. Start by clicking the "Export" button:
 4.  Or, **export with `ggsave`**
 
 ```{r eval = FALSE}
-# Assume we saved our plot is an object called example.plot
-ggsave(filename = "compound.pdf",
+ggsave(filename = "../images/compound.pdf",
        plot = compound, 
        width = 12,
        height = 8,
