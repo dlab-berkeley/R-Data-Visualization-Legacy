@@ -132,10 +132,45 @@ Base-R provides graphical capabilities, but we are going to focus on a package c
 
 > NOTE: `ggplot2` is the name of the package, but `ggplot` is the main function call.
 
-A ggplot is comprised of three fundamental building blocks:
+## Scatter plots
+
+Scatter plots are useful for visualizing the relationship between two numeric quantities. Typically, these quantities are continuous, but scatterplots can sometimes effectively convey comparisons of discrete quantities as well.
+
+In the following example, we will look at the relationship between GDP per capita and life expectancy in country of Portugal. Notice that we can also view these plots as line plots. However, line plots are typically used when one axis is ordered (e.g., it might be a year).
+
+```{r scatter_plot}
+portugal <- dplyr::filter(gap, country == "Portugal")
+
+# Points
+plot(x = portugal$gdpPercap, y = portugal$lifeExp,
+     type = "p",
+     xlab = "GDP per capita",
+     ylab = "Life Expectancy",
+     main = "GDP per-capita vs. Life Expectancy in Portugal") 
+
+# Connected lines (not a smoothing line)
+plot(x = portugal$gdpPercap, y = portugal$lifeExp,
+     type = "l",
+     xlab = "GDP per capita",
+     ylab = "Life Expectancy",
+     main = "GDP per-capita vs. Life Expectancy in Portugal") 
+
+# Both
+plot(x = portugal$gdpPercap, y = portugal$lifeExp,
+     type = "b",
+     xlab = "GDP per capita",
+     ylab = "Life Expectancy",
+     main = "GDP per-capita vs. Life Expectancy in Portugal") 
+```
+
+# The `ggplot2` way
+
+Base plotting is just fine, but it takes some slightly complicated code to map colors to points and shapes of a given variable. And, adding a legend gets even trickier. Thankfully, a package called `ggplot2` handles these complexities with ease using more compact code inspired by Leland Wilkinson's **g**rammar of **g**raphics.
+
+> NOTE: `ggplot2` is the name of the package, but `ggplot` is the main function call. A ggplot is comprised of three fundamental building blocks:
 
 1.  **Data:** typically as a dataframe.
-2.  **"aes"thetics:** to define your x and y axes, map colors to factor levels, etc.
+2.  **"aes"thetics:** to define your x and y axes, map colors to factor levels, etc.\
 3.  **"geom\_"s:** the visual marks to represent your data - points, bars, lines, ribbons, polygons, etc.
 
 One thing to remember is that `ggplot2` works in layers, similar to photoimaging software such as Photoshop, Illustrator, Inkscape, GIMP, ImageJ, etc. We create a base layer, and then stack layers on top of that base layer. New layers are added to a plot using the addition **`+`** symbol. Lastly, plots can be further customized using a host of **"theme\_"** functions.
@@ -175,7 +210,7 @@ plot <- ggplot(data = gap, aes(x = lifeExp)) +
 print(plot)
 ```
 
-We can also make a density plot with a similar structure as a histogram.
+Note that we can also make a density plot with a similar structure as a histogram. This time we will make sure to avoid the ugly coloring.
 
 ```{r density_layer}
 plot <- ggplot(data = gap, aes(x=lifeExp)) +
@@ -246,7 +281,7 @@ print(bar)
 There also exists a `geom_bar` function. This can be used to count the number of entries per group for us, so we don't have to do it ourselves:
 
 ```{r geom_bar}
-bar2 <- ggplot(gap %>% dplyr::distinct(country, .keep_all = TRUE), aes(x = continent)) +
+bar2 <- ggplot(gap |> dplyr::distinct(country, .keep_all = TRUE), aes(x = continent)) +
   geom_bar() + 
   theme_bw() + 
   xlab("Continent") +
@@ -259,7 +294,7 @@ print(bar2)
 
 Boxplots are useful to visualize the distribution of a single continuous variable that can be parsed by levels of a factor (i.e., a categorical feature).
 
-Let's pick two variables: the continent and the life expectancy. We need to provide both of these to the aesthetic, so that `ggplot2` knows how to structure the boxplot. We can also provide an optional `fill` variable, which we'll assign to be the continent.
+Let's repeat the previous exercise with boxplots. We have two variables: the continent status and the life expectancy. We need to provide both of these to the aesthetic, so that `ggplot2` knows how to structure the boxplot. We can also provide an optional `fill` variable, which we'll assign to be the diabetes status.
 
 Take a look at the plot: how did our inputs to the aesthetic correspond to the outputs? What did the fill variable do? How is it different from a color option? Try removing the fill to see how the plot looks without it.
 
@@ -377,8 +412,8 @@ Line plots are useful for visualizing change in some variable on the y-axis plot
 We'll calculate the the mean `lifeExp` for each continent by year. Check out D-Lab's [Data Wrangling and Manipulation in R](https://github.com/dlab-berkeley/R-wrang) to learn more!
 
 ```{r mean_life_exp}
-gap_mean_life_exp = gap %>%
-  dplyr::group_by(year, continent) %>%
+gap_mean_life_exp = gap |>
+  dplyr::group_by(year, continent) |>
   dplyr::mutate(mean_lifeExp = mean(lifeExp))
 
 head(gap_mean_life_exp)
@@ -532,4 +567,4 @@ Here, we provide some useful resources that may deepen your data visualization s
 
 -   [The R Graph Gallery](https://www.r-graph-gallery.com/index.html): A handy repository of example visualizations in R.
 
--   [Accessibility Design](https://www.storytellingwithdata.com/blog/2018/6/26/accessible-data-viz-is-better-data-viz):A nice blog post on considering accessibility in data visualization. Also consider the accessibility principles laid out in the [CFPB Design System](https://cfpb.github.io/design-system/guidelines/accessibility-principles).
+-   [Accessibility Design](https://www.storytellingwithdata.com/blog/2018/6/26/accessible-data-viz-is-better-data-viz): A nice blog post on considering accessibility in data visualization. Also consider the accessibility principles laid out in the [CFPB Design System](https://cfpb.github.io/design-system/guidelines/accessibility-principles).
