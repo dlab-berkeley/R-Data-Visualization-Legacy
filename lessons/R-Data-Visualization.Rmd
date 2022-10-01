@@ -100,21 +100,20 @@ There are two major sets of tools for creating plots in R:
 1.  base graphics, which come with all R installations\
 2.  `ggplot2`, a stand-alone package.
 
-Note that other plotting facilities do exist (notably, `lattice`), but base graphics and `ggplot2` are by far the most popular. Check out [this post](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2) on comparisons between base, `ggplot2`, and `lattice` graphics to learn more.
+Note that other plotting facilities do exist (notably, `lattice`), but base graphics and `ggplot2` are by far the most popular. Check out [this post](https://stackoverflow.com/questions/2759556/r-what-are-the-pros-and-cons-of-using-lattice-versus-ggplot2) on comparisons between base, `ggplot2`, and `lattice` graphics to learn more. In this workshop, we are going to use `ggplot2` to make our graphics because we think that `ggplot2` provides a nice framework to think about how to make visualizations.
 
 ## Package installation
 
 First, we'll install and import the necessary packages. Let's get started!
 
-```{r import, message = F, warning = F}
+```{r import, message=F, warning = F}
 # Uncomment this to install packages, if necessary.
-# install.packages(c("here", cowplot", "dplyr", "ggplot2", "viridis"))
+# install.packages(c("here", "cowplot", "dplyr", "ggplot2", "viridis"))
 
-library(here)
-library(cowplot)
 library(dplyr)
+library(cowplot)
 library(ggplot2)
-library(viridis)
+library(here)
 ```
 
 ## Dataset Details
@@ -124,77 +123,14 @@ For the following examples, we will using the gapminder dataset. Gapminder is a 
 ```{r import_gap}
 gap <- read.csv(here::here("data/gapminder-FiveYearData.csv"), stringsAsFactors = TRUE)
 head(gap)
-str(gap)
+glimpse(gap)
 ```
 
-# R base graphics
+# Using `ggplot2`
 
-Base graphics are nice for quick visualizations of your data. You can make them publication-quality, but they take more effort than those produced by `ggplot2`. Let's review base plotting calls for histograms, boxplots, and scatter plots.
+Base-R provides graphical capabilities, but we are going to focus on a package called `ggplot2` inspired by Leland Wilkinson's **g**rammar of **g**raphics.
 
-## Histograms
-
-Histograms are useful to illustrate the distribution of a single continuous (i.e., numeric or integer) variable. In the gapminder dataset, the histogram is a natural choice for visualizing `lifeExp`:
-
-```{r histogram}
-hist(x = gap$lifeExp)
-
-# Define number of breaks
-hist(x = gap$lifeExp, breaks = 5)
-```
-
-The breaks argument within the `hist()` function allows you to control the amount of bins that are displayed in the histogram. Note, however, when you provide an integer, R only uses it as a suggestion. If you want to force a certain number of bins, you're best off choosing the exact breaks yourself (which the `breaks` argument will happily accept as a vector input).
-
-To make the histogram more informative, we can adjust visual features of the plot. For example, we can customize the title, x-axis label, x- and y-axes limits, the color of bar, and more:
-
-```{r histogram_customize}
-hist(x = gap$lifeExp, 
-     breaks = 10, 
-     col = "skyblue", 
-     main = "Histogram of Life Expectancy",
-     xlab = "Years",
-     xlim = c(20, 90), 
-     ylim = c(0, 350), 
-     # las styles the axis labels. 1 makes our labels parallel
-     # to the axis
-     las = 1)
-```
-
-The full set of options available to customize a base graphic can be seen by typing `?par` into your console.
-
-You can see the 657 available stock colors available to you by typing `colors()`. Why do you think there so many "greys"?
-
-## Barplots
-
-Barplots are useful to visualize counts and or averages of a single continuous variable - which can be parsed by levels of a factor (if needed). For example, we can use a bar plot to learn how many countries there are per continent that we have data for.
-
-```{r barplot}
-# Calculate the number of countries per continent
-countries_by_continent <- gap |>
-  dplyr::distinct(country, .keep_all = TRUE) |>
-  dplyr::group_by(continent) |>
-  dplyr::count() |>
-  dplyr::rename(n_countries = n)
-
-# Creates a bar plot that shows continent on the x-axis and number of countries on the y-axis 
-barplot(countries_by_continent$n_countries,
-        names.arg = countries_by_continent$continent,
-        main = "Number of Countries per Continent")
-```
-
-## Boxplots
-
-Boxplots are useful to visualize the distribution of a single continuous variable that can be parsed by levels of a factor (i.e., a categorical feature). For example, we can look at distributions of life expectancy *by* continent:
-
-```{r boxplot}
-boxplot(gap$lifeExp ~ gap$continent,
-        main = "Boxplot of Life Expectancy per Continent")
-
-# There are five continents represented in this dataset
-levels(gap$continent)
-length(levels(gap$continent))
-```
-
-Notice that we used a formula in the base R function to specify the relationship we wanted the boxplot to demonstrate.
+> NOTE: `ggplot2` is the name of the package, but `ggplot` is the main function call.
 
 ## Scatter plots
 
@@ -241,7 +177,9 @@ One thing to remember is that `ggplot2` works in layers, similar to photoimaging
 
 ## Building a histogram layer by layer
 
-We'll demonstrate the layer-based approach in `ggplot2` by building the same histogram of age as in the previous section.
+We'll demonstrate the layer-based approach in `ggplot2` by building a histogram of life expectancy globally.
+
+Histograms are useful to illustrate the distribution of a single continuous (i.e., numeric or integer) variable. In the gapminder dataset, the histogram is a natural choice for visualizing `lifeExp`:
 
 ### Define the base layer
 
@@ -260,11 +198,17 @@ We need the last building block: a `geom_` function, which in this case, is `geo
 
 ```{r histogram_layer}
 plot <- ggplot(data = gap, aes(x = lifeExp)) + 
-  geom_histogram(color = "orange", fill = "green")
+  geom_histogram()
 print(plot)
 ```
 
-Ahh, my eyes! Always avoid [chartjunk](https://en.wikipedia.org/wiki/Chartjunk)! Keep your visualizations simple and crisp so that they can efficiently communicate their point without losing your audience in chartjunk.
+`ggplot` prints a note when using `geom_histogram` that the default number of bins is 30. We can eliminate that note by setting explicitly the number of bins to any number. Here we picked `bins=30` to replicate the default behavior.
+
+```{r}
+plot <- ggplot(data = gap, aes(x = lifeExp)) + 
+  geom_histogram(bins = 30)
+print(plot)
+```
 
 Note that we can also make a density plot with a similar structure as a histogram. This time we will make sure to avoid the ugly coloring.
 
@@ -311,9 +255,20 @@ We can also assign this visualization to a variable for later use
 
 ## Barplots, `ggplot` style
 
-Barplots operate similarly in `ggplot`, but instead of providing a formula, we simply specify the aesthetic and tack on a `geom_col`:
+Barplots are useful to visualize counts and or averages of a single continuous variable - which can be parsed by levels of a factor (if needed). For example, we can use a bar plot to learn how many countries there are per continent that we have data for.
+
+In `ggplot`, we simply specify the aesthetic and tack on a `geom_col`:
 
 ```{r barplot_ggplot}
+## Calculate the number of countries per continent
+countries_by_continent <- gap %>%
+  dplyr::distinct(country, .keep_all = TRUE) %>%
+  dplyr::group_by(continent) %>%
+  dplyr::count() %>%
+  ## by default count() will give us a column named n
+  ## change to n_countries to be more informative 
+  dplyr::rename(n_countries = n)
+                
 bar <- ggplot(countries_by_continent, aes(x = continent, y = n_countries)) +
   geom_col() + 
   theme_bw() + 
@@ -335,9 +290,9 @@ bar2 <- ggplot(gap |> dplyr::distinct(country, .keep_all = TRUE), aes(x = contin
 print(bar2)
 ```
 
-## Boxplots, `ggplot` style
+## Boxplots
 
-Boxplots in `ggplot2` are similar to base boxplots, but the helpful additions and customizations are easier to understand and define. In this case, however, the aesthetic is a little more involved that in the case of the histogram.
+Boxplots are useful to visualize the distribution of a single continuous variable that can be parsed by levels of a factor (i.e., a categorical feature).
 
 Let's repeat the previous exercise with boxplots. We have two variables: the continent status and the life expectancy. We need to provide both of these to the aesthetic, so that `ggplot2` knows how to structure the boxplot. We can also provide an optional `fill` variable, which we'll assign to be the diabetes status.
 
@@ -364,7 +319,11 @@ print(boxplot_legend)
 
 > **Challenge 2:** Open `R-Data-Visualization-Challenges.Rmd`. Create a boxplot of Serum cholesterol based on patient self-described sex using `ggplot`. Save it in a variable named `B`.
 
-## Scatter plots, `ggplot` style
+## Scatter plots
+
+Scatter plots are useful for visualizing the relationship between two numeric quantities. Typically, these quantities are continuous, but scatterplots can sometimes effectively convey comparisons of discrete quantities as well.
+
+In the following example, we will look at the relationship between GDP per capita and life expectancy in country of Portugal. Notice that we can also view these plots as line plots. However, line plots are typically used when one axis is ordered (e.g., it might be a year).
 
 Scatter plots in `ggplot2` are very similar as above, but this time, we use the `geom_point` function. Let's examine life expectancy by GDP per capita, but also include information about the continent, using the color option:
 
@@ -384,12 +343,16 @@ Now, let's take a look at a variety of ways we can further customize the scatter
 Suppose we want to adjust the points at which the axis ticks appear. We can use the `scale_` theme layers to do so, by specifying "custom breaks". Specifically, to create a custom scale that goes *from* a start point *to* some end point *by* some interval, we do:
 
 ```{r custom_scale}
-scale_break <- ggplot(data = gap, aes(x = gdpPercap, y = lifeExp, color = continent)) + 
+scale_break <- ggplot(data = gap, aes(x = gdpPercap, 
+                                      y = lifeExp, 
+                                      color = continent)) + 
   geom_point() + 
   theme_bw() + 
   theme(legend.position = "top", 
         axis.text.x = element_text(angle = 45, hjust = 1)) + 
-  scale_x_continuous(breaks = seq(from = 0, to = 120000, by = 20000), limits = c(0, 120000)) + 
+  scale_x_continuous(breaks = seq(from = 0, to = 120000, 
+                                  by = 20000), 
+                     limits = c(0, 120000)) + 
   scale_y_continuous(breaks = seq(from = 20, to = 90, by = 10), limits = c(20, 90))
 print(scale_break)
 ```
@@ -548,7 +511,8 @@ Note that we have overridden the default colors from our line graph and replaced
 Publication quality figures often incorporate several subplots, which together tell a narrative about the problem being studied. We saw above that `ggplot2` can create something like a subplot using facets, but it can be quite limited. A package called `cowplot` makes it easy to stitch together individual plots into a bigger figure:
 
 ```{r compound_figure}
-compound <- plot_grid(hist, scatter, facet_line, heat, 
+compound <- plot_grid(hist, scatter, 
+                      facet_line, heat, 
                       nrow = 2,
                       ncol = 2,
                       scale = 0.85, 
@@ -573,8 +537,7 @@ Exporting graphs in R is straightforward. Start by clicking the "Export" button:
 4.  Or, **export with `ggsave`**
 
 ```{r eval = FALSE}
-# Assume we saved our plot is an object called example.plot
-ggsave(filename = "compound.pdf",
+ggsave(filename = "../images/compound.pdf",
        plot = compound, 
        width = 12,
        height = 8,
