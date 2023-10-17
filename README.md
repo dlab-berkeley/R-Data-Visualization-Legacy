@@ -1,5 +1,8 @@
 # D-Lab's R Data Visualization Workshop
 
+[![Datahub](https://img.shields.io/badge/launch-datahub-blue)](http://dlab.datahub.berkeley.edu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Fdlab-berkeley%2FR-Data-Visualization&urlpath=rstudio%2F) [![Binder](http://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/dlab-berkeley/R-Data-Visualization/HEAD?urlpath=rstudio)
+
+
 This repository contains the materials for D-Lab's R Data Visualization workshop. Prior experience with [R Fundamentals](https://github.com/dlab-berkeley/R-Fundamentals) is assumed.
 
 ## Workshop Goals
