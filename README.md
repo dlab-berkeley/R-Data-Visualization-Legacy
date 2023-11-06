@@ -2,6 +2,9 @@
 
 This repository contains the materials for D-Lab's R Data Visualization workshop. Prior experience with [R Fundamentals](https://github.com/dlab-berkeley/R-Fundamentals) is assumed.
 
+Check D-Lab's [Learning Pathways](https://dlab-berkeley.github.io/dlab-workshops/R_path.html) to figure out which of our workshops to take!
+
+
 ## Workshop Goals
 
 In this workshop, we provide an introduction to data visualization in R. First, we'll cover some basics of visualization theory. Then, we'll explore how to plot data in R using base R functions as well as `ggplot2`. We aim to cover the following types of plots:
